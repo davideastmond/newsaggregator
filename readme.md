@@ -15,6 +15,7 @@ App that will allow user to enter a date and a topic. The app will query a news 
 - Express.js
 - body-parser
 - Bootstrap
+- dotenv
 
 ### Getting Started
 
