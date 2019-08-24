@@ -6,8 +6,6 @@ const bodyParser = require('body-parser');
 const PORT = 6565;
 const axios = require('axios');
 
-
-
 // Middle-ware
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.urlencoded());
@@ -31,9 +29,6 @@ app.get("/news", (req, res) => {
     console.log(response.data.articles);
     res.render('news.ejs', { articles: response.data.articles, searchQuery: reqQuery, requestDate: reqDate });
   });
-    
-
-  
 });
 
 app.listen(PORT, () => {
