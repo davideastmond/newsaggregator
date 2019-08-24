@@ -25,8 +25,6 @@ app.get("/news", (req, res) => {
   const url = `https://newsapi.org/v2/everything?q=${reqQuery}&from=${reqDate}&sortBy=publishedAt&apiKey=${process.env.PERSONAL_API_KEY}`;
     // Create an API URI based on received info, query the URI, get a response, and send that data to render in news.ejs view
   axios.get(url).then((response) => {
-  
-    console.log(response.data.articles);
     res.render('news.ejs', { articles: response.data.articles, searchQuery: reqQuery, requestDate: reqDate });
   });
 });

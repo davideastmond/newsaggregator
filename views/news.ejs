@@ -18,7 +18,14 @@
 		<h1>News Results</h1>
     <p class="lead"> Here are your results</p>
     <% articles.forEach((article) => { %>
-      <p> <%= article.title %> </p>
+      <div class="media">
+        <img src=<%= article.urlToImage %> class="align-self-center mr-3" style= "width: 200px; height: 140px;">
+        <div class="media-body">
+          <h5 class="mt-0"><%= article.title %></h5>
+          <p> <%= article.description %></p>
+          
+        </div>
+      </div>
     <% }); %>
 	</div>
 	
