@@ -4,6 +4,9 @@ const app = express();
 const path = require('path');
 const bodyParser = require('body-parser');
 const PORT = 6565;
+const axios = require('axios');
+
+
 
 // Middle-ware
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -14,14 +17,25 @@ app.set('view engine', 'ejs');
 
 // Get Requests
 app.get("/", (req, res) => {
-	res.render('home.ejs');
+  res.render('home.ejs');
 });
 
 app.get("/news", (req, res) => {
-	console.log(req.query.date, " ", req.query.newsQuery);
-	res.render('news.ejs');
+  // Obtain the query parameters to be used for a API fetch request
+  const reqDate = req.query.date;
+  const reqQuery = req.query.newsQuery;
+  const url = `https://newsapi.org/v2/everything?q=${reqQuery}&from=${reqDate}&sortBy=publishedAt&apiKey=${process.env.PERSONAL_API_KEY}`;
+    // Create an API URI based on received info, query the URI, get a response, and send that data to render in news.ejs view
+  axios.get(url).then((response) => {
+  
+    console.log(response.data.articles);
+    res.render('news.ejs', { articles: response.data.articles, searchQuery: reqQuery, requestDate: reqDate });
+  });
+    
+
+  
 });
 
 app.listen(PORT, () => {
-	console.log("Listening on port", PORT);
+  console.log("Listening on port", PORT);
 });

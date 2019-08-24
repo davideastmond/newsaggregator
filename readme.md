@@ -9,6 +9,17 @@ App that will allow user to enter a date and a topic. The app will query a news 
 - Database (for users, logins and saved topics)
 - User log-ins
 
+### Requirements
+
+- This app uses [!NewsAPI](https://newsapi.org/) to grab news articles. You'll need to obtain your own API key for their service.
+
+### How to Use
+
+- Clone or fork the project.
+- Run `npm i` to install all required packages
+- Obtain your own api key from [!NewsAPI](https://newsapi.org/)
+- Run the server using `npm start`
+
 ### Dependencies
 
 - Node.js
@@ -16,6 +27,7 @@ App that will allow user to enter a date and a topic. The app will query a news 
 - body-parser
 - Bootstrap
 - dotenv
+- axios
 
 ### Getting Started
 
