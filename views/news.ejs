@@ -1,33 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-	<link rel="stylesheet" href="../styles/news-articles.css" crossorigin="anonymous">
-	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-	
-	<title>News Results</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="../styles/news-articles.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+  
+  <title>News Results</title>
 
 </head>
 <body>
-	<div class="jumbotron">
-		<h1>News Results</h1>
-    <p class="lead"> Here are your results</p>
-    <% articles.forEach((article) => { %>
-      <div class="media">
-        <img src=<%= article.urlToImage %> class="align-self-center mr-3">
-        <div class="media-body">
-          <h5 class="mt-0"><%= article.title %></h5>
-          <p> <%= article.description %></p>
+  <div class="jumbotron">
+    <h1>News Results</h1>
+    <p class="lead"> Here are your results for '<%= searchQuery %>' total: <%= count %> items  </p>
+    <input type="text" placeholder=<%= searchQuery %>> <button type="button" class="btn btn-primary">Search Again</button>
+    <div id="articles-master-container">
+      <br>
+      <% articles.forEach((article) => { %>
+        <div class="media">
+          <img class="align-self-center mr-3 article-thumbnail" src= <%= article.urlToImage %>>
+          <div class="media-body">
+            <h5 class="mt-0"><%= article.title %></h5>
+            <p> <%= article.description %></p>
+            <footer>
+            <p> <a href=<%= article.url %>> <%= article.source.name %> </a></p>
+            </footer>
+          </div>
           
         </div>
-      </div>
-    <% }); %>
-	</div>
-	
+      <% }); %>
+    </div>
+  </div>
+  
 </body>
 </html>

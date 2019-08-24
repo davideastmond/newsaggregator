@@ -1,5 +1,7 @@
 
-#article-mini-square {
+.article-thumbnail {
   width: 200px;
-  height: 140px;
+	height: 8em;
+	margin-left: 0.5em;
+	margin-top: 0.5em;
 }
