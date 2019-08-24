@@ -12,6 +12,7 @@ app.use(express.urlencoded());
 app.use(express.static(path.join(__dirname, 'scripts')));
 app.set('view engine', 'ejs');
 
+app.use(express.static('public'));
 
 // Get Requests
 app.get("/", (req, res) => {

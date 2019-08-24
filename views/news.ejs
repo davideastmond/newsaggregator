@@ -7,7 +7,7 @@
 	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-	
+	<link rel="stylesheet" href="../styles/news-articles.css" crossorigin="anonymous">
 	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 	
 	<title>News Results</title>
@@ -19,7 +19,7 @@
     <p class="lead"> Here are your results</p>
     <% articles.forEach((article) => { %>
       <div class="media">
-        <img src=<%= article.urlToImage %> class="align-self-center mr-3" style= "width: 200px; height: 140px;">
+        <img src=<%= article.urlToImage %> class="align-self-center mr-3">
         <div class="media-body">
           <h5 class="mt-0"><%= article.title %></h5>
           <p> <%= article.description %></p>
