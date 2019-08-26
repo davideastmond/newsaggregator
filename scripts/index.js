@@ -1,6 +1,8 @@
 $(document).ready(()=> {
   // Bind the datepicker to the text input
-  $("#date").datepicker();
+	$("#date").datepicker();
+	
+
 });
 
 document.getElementById("news-query-form").onsubmit = (e) => {
