@@ -17,7 +17,7 @@ app.use(express.static('public'));
 
 // Get Requests
 app.get("/", (req, res) => {
-	res.render('home.ejs');
+  res.render('home.ejs');
 });
 
 app.get("/news", (req, res) => {
@@ -28,27 +28,27 @@ app.get("/news", (req, res) => {
     // Create an API URI based on received info, query the URI, get a response, and send that data to render in news.ejs view
   axios.get(url).then((response) => {
     res.render('news.ejs', { articles: response.data.articles, searchQuery: reqQuery, requestDate: reqDate, count: response.data.articles.length });
-	})
-	.catch((error) => {
-		res.status(400).send({ error: error });
-	});
+  })
+  .catch((error) => {
+    res.status(400).send({ error: error });
+  });
 });
 
 app.get("/headlines", (req, res)=> {
-	// Grab the date
-	const dateGrab = moment().format("MM/DD/YYYY");
-	let url;
-	if (req.query.country) {
-		url = `https://newsapi.org/v2/top-headlines?country=${req.query.country}&apiKey=${process.env.PERSONAL_API_KEY}`; 
-	} else {
-		// Default is United States news
-		url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=${process.env.PERSONAL_API_KEY}`;
-	}
+  // Grab the date
+  const dateGrab = moment().format("MM/DD/YYYY");
+  let url;
+  if (req.query.country) {
+    url = `https://newsapi.org/v2/top-headlines?country=${req.query.country}&apiKey=${process.env.PERSONAL_API_KEY}`; 
+  } else {
+    // Default is United States news
+    url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=${process.env.PERSONAL_API_KEY}`;
+  }
 
-	axios.get(url).then((response) => {
-		res.render('headlines.ejs', { articles: response.data.articles, count: response.data.articles.length, country: req.query.country || "us" });
-	});
-	
+  axios.get(url).then((response) => {
+    res.render('headlines.ejs', { articles: response.data.articles, count: response.data.articles.length, country: req.query.country || "us" });
+  });
+  
 });
 
 app.listen(PORT, () => {

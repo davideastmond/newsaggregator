@@ -9,16 +9,23 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <link rel="stylesheet" href="../styles/news-articles.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-  
+  <script src="moment.js"></script>
+  <script src="headlines.js" async></script>
   <title>News Results</title>
 
 </head>
 <body>
+    <head>
+        <% include ./partials/_login_header %>
+      </head>
   <div class="jumbotron">
-    <h1>News Results</h1>
+    <div id="news-header">
+      <a href="/headlines"><p class="lead">Headlines</p></a>
+    </div>
+    <h1>News Search Results</h1>
     <p class="lead"> Here are your results for '<%= searchQuery %>'</p>
     <p class="lead"> Total Results: <%= count %> items  </p>
-    <input type="text" placeholder=<%= searchQuery %>> <button type="button" class="btn btn-primary" disabled="true">Search Again</button>
+    <input type="text" id="qSearchBox" placeholder=<%= searchQuery %>> <button type="button" class="btn btn-primary" id="news-results-click-box">Search Again</button>
     <div id="articles-master-container">
       <br>
       <% articles.forEach((article) => { %>

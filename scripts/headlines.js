@@ -1,15 +1,45 @@
 $("#headlines-submit-new-search").on('click', (e) => {
-	const $searchQueryElement = $('#search-box').val();
+	doHTTPRequest();
+});
 
-	if ($searchQueryElement.trim() === '') {
-		return;
+$("#news-results-click-box").on("click", (e) => {
+	doHTTPRequest();
+});
+
+$("#search-box").on("keypress", (e) => {
+	if (e.which === 13) {
+		doHTTPRequest();
+	}
+});
+
+$("#qSearchBox").on("keypress", (e) => {
+	if (e.which === 13) {
+		// Submit the query
+		doHTTPRequest();
+	}
+});
+
+function doHTTPRequest() {
+	const $searchQueryElement = $('#search-box').val();
+	const $qSearchBox = $("#qSearchBox").val();
+	let mSearch;
+	if ($searchQueryElement) {
+		if ($searchQueryElement.trim() === '') {
+			return;
+		} else {
+			mSearch = $searchQueryElement.trim();
+		}
+	} else if ($qSearchBox) {
+		if ($qSearchBox.trim() === '') {
+			return;
+		}
+		mSearch = $qSearchBox.trim();
 	}
 
 	const xhr = new XMLHttpRequest();
   const queryDate = moment().format("MM/DD/YYYY");
-  let params = `date=${queryDate}&newsQuery=${$searchQueryElement}`;
+  let params = `date=${queryDate}&newsQuery=${mSearch}`;
   
-
   xhr.open("GET", "/news" + "?" + params, true);
   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
   xhr.responseType = "document";
@@ -23,4 +53,4 @@ $("#headlines-submit-new-search").on('click', (e) => {
   };
   // Send the request
   xhr.send(null);
-});
+}

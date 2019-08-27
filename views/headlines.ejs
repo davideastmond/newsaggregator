@@ -9,17 +9,23 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <link rel="stylesheet" href="../styles/news-articles.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-	<script src="moment.js"></script>
-	<script src="headlines.js" async></script>
+  <script src="moment.js"></script>
+  <script src="headlines.js" async></script>
   <title>News Results</title>
 
 </head>
 <body>
+  <head>
+    <% include ./partials/_login_header %>
+  </head>
   <div class="jumbotron">
-    <h1>News Results</h1>
+    <div id="news-header">
+      <a href="/headlines"><p class="lead">Headlines</p></a>
+    </div>
+    <h1>Headlines Results</h1>
     <p class="lead"> The latest headlines. </p>
-		<p class="lead"> Total Results: <%= count %> items  </p>
-		<label for="search-box"> Enter keywords:</label>
+    <p class="lead"> Total Results: <%= count %> items  </p>
+    <label for="search-box"> Enter keywords:</label>
     <input type="text" id="search-box" name="search-box" placeholder="top headlines for <%= country %>"> <button type="button" class="btn btn-primary" id="headlines-submit-new-search">Search Again</button>
     <div id="articles-master-container">
       <br>
@@ -30,8 +36,8 @@
             <h5 class="mt-0"><%= article.title %></h5>
             <p> <%= article.description %></p>
             <footer>
-						<p> <a href=<%= article.url %>> <%= article.source.name %> </a></p>
-						<p class="label-published-at-date h6"> Published:  </p>
+            <p> <a href=<%= article.url %>> <%= article.source.name %> </a></p>
+            <p class="label-published-at-date h6"> Published:  </p>
             </footer>
           </div>
           
@@ -39,10 +45,10 @@
       <% }); %>
     </div>
   </div>
-	<script>
-		const pubDate = moment().format("MM/DD/YYYY");
-		$(".label-published-at-date").text(`Published: ${pubDate}`);
-		
-	</script>
+  <script>
+    const pubDate = moment().format("MM/DD/YYYY");
+    $(".label-published-at-date").text(`Published: ${pubDate}`);
+    
+  </script>
 </body>
 </html>

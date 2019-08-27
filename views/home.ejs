@@ -1,43 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-	
-	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-	<script src="index.js" async></script>
-	<title>Aggregator</title>
-	
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+  <script src="index.js" async></script>
+  <title>Aggregator</title>
+  
 </head>
 <body>
-	<div class="jumbotron">
-		<h1>Aggregator welcome!</h1>
-		<p class="lead"> Select your topic. Get your news.</p>
-	</div>
+  <head>
+    <% include ./partials/_login_header %>
+  </head>
+  <div class="jumbotron">
+    <h1>Aggregator welcome!</h1>
+    <p class="lead"> Select your topic. Get your news.</p>
+  </div>
 
 <form id="news-query-form">
-	<div class="form-group">
-		<label for="date"> News Date </label>
-		<input class="form-control" type="text" id="date" name="date" required>
-	</div>
+  <div class="form-group">
+    <label for="date"> News Date </label>
+    <input class="form-control" type="text" id="date" name="date" required>
+  </div>
 
-	<div class="form-group">
-			<label for="news-topic">Topic</label>
-			<input class="form-control" type="text" id="news-topic" name="news-topic" required>
-	</div>
-	<div class="form-group">
-			
-			<button class="btn btn-primary" id="submit-button">Submit</button>
-	</div>
-	</form>
+  <div class="form-group">
+      <label for="news-topic">Topic</label>
+      <input class="form-control" type="text" id="news-topic" name="news-topic" required>
+  </div>
+  <div class="form-group">
+      
+      <button class="btn btn-primary" id="submit-button">Submit</button>
+  </div>
+  </form>
 
-	<div>
-		<p class="lead"> Or go to today's top <a href="/headlines?country=us">headlines </a></p>
-	</div>
+  <div>
+    <p class="lead"> Or go to today's top <a href="/headlines?country=us">headlines </a></p>
+  </div>
 <script>
 
 </script>
