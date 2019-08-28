@@ -4,10 +4,12 @@
 
 App that will allow user to enter a date and a topic. The app will query a news API on the backend and then return a list of articles and links to the user.
 
-### Future Implementations
+### Future Features
 
-- Database (for users, logins and saved topics)
+- Database implementation
 - User log-ins
+- saved topics
+- cookies
 
 ### Requirements
 
