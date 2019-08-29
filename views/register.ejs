@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="register.js" async></script>
+  <link rel="stylesheet" href="../styles/registration-page.css">
+  <title>Registeration</title>
+</head>
+<body>
+  <div id="registration-box">
+    <div class='jumbotron'>
+      <p class="h3">Enter your details</p>
+    </div>
+    <form method="POST" id="registration-form">
+      <div class="form-group">
+        <label for="email_address">E-mail Address:</label>
+        <input type="email" class="form-control" id="email_address" aria-describedby="emailHelp" name="emailAddr" placeholder="Enter email" required>
+      </div>
+      <div class="form-group">
+        <label for="pwd1"> Desired Password </label>
+        <input type="password" class="form-control" id="pwd1" name="passwordOne" placeholder="password" required>
+      </div>
+      <div class="form-group">
+        <label for="pwd2"> Confirm Password </label>
+        <input type="password" class="form-control" id="pwd2" name="passwordTwo" placeholder="confirm password" required>
+      </div>
+      <div class="form-group">
+        <button id="submit-form">Submit</button>
+      </div>
+    </form>
+    <div id="validation-error-space">
+      <p class="lead" id="validation-error">Error:</p>
+    </div>
+    <div id="registration-cancel-div">
+      <a href="/"><p class="lead"> Cancel </p></a>
+    </div>
+  </div>
+  
+</body>
+</html>

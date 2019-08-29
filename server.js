@@ -51,8 +51,20 @@ app.get("/headlines", (req, res)=> {
   
 });
 
+// Shows login form
 app.get("/login", (req, res) => {
   res.render('login.ejs');
+});
+
+// Shows registration page
+app.get("/register", (req, res) => {
+  res.render('register.ejs');
+});
+
+// Receiving sign-up data.
+app.post("/register", (req, res) => {
+
+  console.log(req.body.emailAddr, req.body.passwordOne, req.body.passwordTwo);
 });
 
 app.listen(PORT, () => {
