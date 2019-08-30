@@ -20,6 +20,7 @@ App that will allow user to enter a date and a topic. The app will query a news 
 - Clone or fork the project.
 - Run `npm i` to install all required packages
 - Obtain your own api key from [!NewsAPI](https://newsapi.org/)
+- Download or use moment.js CDN for client side
 - Run the server using `npm start`
 
 ### Dependencies
@@ -30,6 +31,7 @@ App that will allow user to enter a date and a topic. The app will query a news 
 - Bootstrap
 - dotenv
 - axios
+- moment.js
 
 ### Getting Started
 

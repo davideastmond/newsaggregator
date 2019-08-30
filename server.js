@@ -7,6 +7,8 @@ const PORT = 6565;
 const axios = require('axios');
 const moment = require('moment');
 
+const dbFunctions = require("./db");
+
 // Middle-ware
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.urlencoded());
@@ -64,7 +66,8 @@ app.get("/register", (req, res) => {
 // Receiving sign-up data.
 app.post("/register", (req, res) => {
 
-  // console.log(req.body.emailAddr, req.body.passwordOne, req.body.passwordTwo);
+	// console.log(req.body.emailAddr, req.body.passwordOne, req.body.passwordTwo);
+	dbFunctions.createTableExample();
   res.status(200).send({ success: 'form data rec ok' });
 });
 
