@@ -11,9 +11,9 @@ const moment = require('moment');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.urlencoded());
 app.use(express.static(path.join(__dirname, 'scripts')));
+app.use(express.static('public'));
 app.set('view engine', 'ejs');
 
-app.use(express.static('public'));
 
 // Get Requests
 app.get("/", (req, res) => {
@@ -24,7 +24,7 @@ app.get("/news", (req, res) => {
   // Obtain the query parameters to be used for a API fetch request
   const reqDate = req.query.date;
   const reqQuery = req.query.newsQuery;
-  const url = `https://newsapi.org/v2/everything?q=${reqQuery}&from=${reqDate}&sortBy=publishedAt&apiKey=${process.env.PERSONAL_API_KEY}`;
+  const url = `https://newsapi.org/v2/everything?q=${reqQuery}&from=${reqDate}&sortBy=publishedAt&apiKey=${process.env.PERSONAL_API_KEY}&pageSize=100`;
     // Create an API URI based on received info, query the URI, get a response, and send that data to render in news.ejs view
   axios.get(url).then((response) => {
     res.render('news.ejs', { articles: response.data.articles, searchQuery: reqQuery, requestDate: reqDate, count: response.data.articles.length });
@@ -39,10 +39,10 @@ app.get("/headlines", (req, res)=> {
   const dateGrab = moment().format("MM/DD/YYYY");
   let url;
   if (req.query.country) {
-    url = `https://newsapi.org/v2/top-headlines?country=${req.query.country}&apiKey=${process.env.PERSONAL_API_KEY}`; 
+    url = `https://newsapi.org/v2/top-headlines?country=${req.query.country}&apiKey=${process.env.PERSONAL_API_KEY}&pageSize=100`; 
   } else {
     // Default is United States news
-    url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=${process.env.PERSONAL_API_KEY}`;
+    url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=${process.env.PERSONAL_API_KEY}&pageSize=100`;
   }
 
   axios.get(url).then((response) => {
@@ -64,7 +64,8 @@ app.get("/register", (req, res) => {
 // Receiving sign-up data.
 app.post("/register", (req, res) => {
 
-  console.log(req.body.emailAddr, req.body.passwordOne, req.body.passwordTwo);
+  // console.log(req.body.emailAddr, req.body.passwordOne, req.body.passwordTwo);
+  res.status(200).send({ success: 'form data rec ok' });
 });
 
 app.listen(PORT, () => {

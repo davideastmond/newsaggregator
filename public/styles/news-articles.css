@@ -5,3 +5,20 @@
 	margin-left: 0.5em;
 	margin-top: 0.5em;
 }
+
+.div-strip {
+	background-color: #d6dddd;
+	border-style: solid;
+	border-width: 2px;
+	border-color: black;
+	box-shadow: 5px 5px darkblue;
+	border-radius: 6px;
+}
+
+.login-user-on-the-right {
+	float: right;
+}
+
+.jumbo-tron-margin-top {
+	margin-top: 2%;
+}
