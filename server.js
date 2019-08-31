@@ -6,8 +6,11 @@ const bodyParser = require('body-parser');
 const PORT = 6565;
 const axios = require('axios');
 const moment = require('moment');
+const bcrypt = require('bcrypt');
 
 const dbFunctions = require("./db");
+
+const saltRounds = 10;
 
 // Middle-ware
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -65,9 +68,28 @@ app.get("/register", (req, res) => {
 
 // Receiving sign-up data.
 app.post("/register", (req, res) => {
-
+  
   // console.log(req.body.emailAddr, req.body.passwordOne, req.body.passwordTwo);
-  res.status(200).send({ success: 'form data rec ok' });
+  // Create an object to insert into the db
+
+  bcrypt.hash(req.body.passwordOne, saltRounds).then((hashedPassword) => {
+    const user =  {
+      email: req.body.emailAddr,
+      password: hashedPassword,
+      is_registered: true
+    };
+    dbFunctions.registerUser({user: user}).then((result) => {
+      console.log("User entered into database");
+     // Set a cookie to the user
+    })
+    .catch((err) => {
+      res.status(400).send({ error: `E-mail ${user.email} already exists in the database.` });
+      console.log(err.detail);
+    });
+  });
+  
+  
+  
 });
 
 app.listen(PORT, () => {

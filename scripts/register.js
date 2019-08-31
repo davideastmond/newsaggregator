@@ -26,16 +26,19 @@ document.getElementById("registration-form").onsubmit = (e) => {
 
   // Validation has passed...send an ajax request to the server. Check if e-mail exists
   const serializedData = $("#registration-form").serialize();
-  console.log($(this));
-  console.log(serializedData);
+  $("#validation-error-space").css('display', 'none');
   $.ajax({
     type: "POST",
     url: "/register",
     data: serializedData,
     success: (data) => {
-      // Do something with 
-      console.log(data);
-    }
+      // Do something with re
+     
+		},
+		error: (err) => {
+			console.log("ajax error", err.responseJSON || "Error registering account.");
+			$("#validation-error-space").text(err.responseJSON.error || "Error registering account.").css('display', 'block').css('color', 'red');
+		}
   });
 };
 
