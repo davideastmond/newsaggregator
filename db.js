@@ -1,15 +1,15 @@
 require('dotenv').config();
-const dbConnectString = {
+exports.dbConnectString =  {
   client: 'pg',
   connection: {
     host: process.env.DB_HOST,
-        user: process.env.DB_USER,
-        password: process.env.DB_USER_PASSWORD,
-        database: process.env.DB_NAME
+    user: process.env.DB_USER,
+    password: process.env.DB_USER_PASSWORD,
+    database: process.env.DB_NAME
   }
 };
 
-const knex = require('knex')(dbConnectString);
+const knex = require('knex')(exports.dbConnectString);
 module.exports = {
   createTableExample: () => {
     knex.schema.createTable('cars', (table) => {
