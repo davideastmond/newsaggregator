@@ -1,42 +1,42 @@
 $("#headlines-submit-new-search").on('click', (e) => {
-	doHTTPRequest();
+  doHTTPRequest();
 });
 
 $("#news-results-click-box").on("click", (e) => {
-	doHTTPRequest();
+  doHTTPRequest();
 });
 
 $("#search-box").on("keypress", (e) => {
-	if (e.which === 13) {
-		doHTTPRequest();
-	}
+  if (e.which === 13) {
+    doHTTPRequest();
+  }
 });
 
 $("#qSearchBox").on("keypress", (e) => {
-	if (e.which === 13) {
-		// Submit the query
-		doHTTPRequest();
-	}
+  if (e.which === 13) {
+    // Submit the query
+    doHTTPRequest();
+  }
 });
 
 function doHTTPRequest() {
-	const $searchQueryElement = $('#search-box').val();
-	const $qSearchBox = $("#qSearchBox").val();
-	let mSearch;
-	if ($searchQueryElement) {
-		if ($searchQueryElement.trim() === '') {
-			return;
-		} else {
-			mSearch = $searchQueryElement.trim();
-		}
-	} else if ($qSearchBox) {
-		if ($qSearchBox.trim() === '') {
-			return;
-		}
-		mSearch = $qSearchBox.trim();
-	}
+  const $searchQueryElement = $('#search-box').val();
+  const $qSearchBox = $("#qSearchBox").val();
+  let mSearch;
+  if ($searchQueryElement) {
+    if ($searchQueryElement.trim() === '') {
+      return;
+    } else {
+      mSearch = $searchQueryElement.trim();
+    }
+  } else if ($qSearchBox) {
+    if ($qSearchBox.trim() === '') {
+      return;
+    }
+    mSearch = $qSearchBox.trim();
+  }
 
-	const xhr = new XMLHttpRequest();
+  const xhr = new XMLHttpRequest();
   const queryDate = moment().format("MM/DD/YYYY");
   let params = `date=${queryDate}&newsQuery=${mSearch}`;
   

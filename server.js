@@ -66,8 +66,7 @@ app.get("/register", (req, res) => {
 // Receiving sign-up data.
 app.post("/register", (req, res) => {
 
-	// console.log(req.body.emailAddr, req.body.passwordOne, req.body.passwordTwo);
-	dbFunctions.createTableExample();
+  // console.log(req.body.emailAddr, req.body.passwordOne, req.body.passwordTwo);
   res.status(200).send({ success: 'form data rec ok' });
 });
 
