@@ -29,5 +29,9 @@ document.getElementById("news-query-form").onsubmit = (e) => {
   };
   // Send the request
   xhr.send(null);
-  
 };
+
+// Handle logging out
+$("header-top-nav-logout-link".on('click', (e) => {
+	alert("clicked the log out link!");
+}));

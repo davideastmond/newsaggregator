@@ -13,10 +13,16 @@
 	border-color: black;
 	box-shadow: 5px 5px darkblue;
 	border-radius: 6px;
+	display:flex;
+	justify-content: space-between;
 }
 
-.login-user-on-the-right {
-	float: right;
+#login-user-on-the-right {
+
+}
+
+#header-top-nav-logout-link {
+	margin-right: 5%;
 }
 
 .jumbo-tron-margin-top {

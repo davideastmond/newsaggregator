@@ -32,12 +32,13 @@ document.getElementById("registration-form").onsubmit = (e) => {
     url: "/register",
     data: serializedData,
     success: (data) => {
-      // Do something with re
-     
+      // Do something with response
+			window.location = "/topics";
 		},
 		error: (err) => {
-			console.log("ajax error", err.responseJSON || "Error registering account.");
-			$("#validation-error-space").text(err.responseJSON.error || "Error registering account.").css('display', 'block').css('color', 'red');
+			if (err) {
+				$("#validation-error-space").text(err.responseJSON.error || "Error registering account.").css('display', 'block').css('color', 'red');
+			}
 		}
   });
 };

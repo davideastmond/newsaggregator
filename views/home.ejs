@@ -18,7 +18,8 @@
 </head>
 <body>
   <head>
-    <% include ./partials/_login_header %>
+		
+    <%- include('./partials/_login_header', { logged_in: logged_in }); %>
 	</head>
 	<div id="home-page-master-div-enclosure">
     <div class="jumbotron">

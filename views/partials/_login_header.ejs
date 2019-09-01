@@ -1,11 +1,17 @@
 <head>
 	<link rel="stylesheet" href="../styles/news-articles.css">
 	<script src="https://kit.fontawesome.com/9566ef13c4.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="logout.js" async></script>
 </head>
 <header>
   <nav class="nav div-strip">
-      <a class="nav-link" href="/login">Login</a>
+      <a class="nav-link" href="/login">Log In</a>
 			<a class="nav-link" href="/register">Register</a>
-			<a class="nav-link login-user-on-the-right" href="profile"><i class="fas fa-user"></i></a>
+			<% if (logged_in) { %>
+				<a class="nav-link" id="header-top-nav-logout-link">Log Out</a>
+			<% } %>
+			
+			<a class="nav-link" href="profile"><i class="fas fa-user"></i></a>
   </nav>
 </header>

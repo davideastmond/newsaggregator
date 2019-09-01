@@ -6,6 +6,7 @@ exports.up = function(knex) {
 		table.string('password');
 		table.boolean('is_registered').defaultTo(true);
 		table.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
+		table.timestamp('last_login').defaultTo(knex.fn.now());
 	})
 	.then(()=> {
 		console.log("users table created");
