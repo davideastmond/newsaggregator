@@ -2,7 +2,8 @@
 
 ### About
 
-App that will allow user to enter a date and a topic. The app will query a news API on the backend and then return a list of articles and links to the user.
+- Using date and topics. The app will query a news API on the backend and then return a list of articles and links to the user.
+- Currently coding to allow for logins and authentication and custom topics.
 
 ### Future Features
 
@@ -13,7 +14,7 @@ App that will allow user to enter a date and a topic. The app will query a news 
 
 ### Requirements
 
-- This app uses [!NewsAPI](https://newsapi.org/) to grab news articles. You'll need to obtain your own API key for their service.
+- This app uses [!NewsAPI](https://newsapi.org/) to grab news articles. You'll need to obtain your own API key for their service. Once obtained, include the key in your `.env` file
 
 ### How to Use
 
@@ -21,18 +22,33 @@ App that will allow user to enter a date and a topic. The app will query a news 
 - Run `npm i` to install all required packages
 - Obtain your own api key from [!NewsAPI](https://newsapi.org/)
 - Download or use moment.js CDN for client side
+
+- Download the latest version of PostgreSQL
+- Run the latest migration using `knex migrate:latest`
 - Run the server using `npm start`
 
 ### Dependencies
 
-- Node.js
-- Express.js
+- node.js
+- express.js
 - body-parser
-- Bootstrap
+- bootstrap
+- bcrypt
 - dotenv
 - axios
 - moment.js
+- cookie-session
+- cookie-parser
 
-### Getting Started
+#### Database stack
 
-Coming soon.
+- postgresql
+- knex.js
+
+#### Migrations
+
+- coming soon
+
+#### ERDs
+
+- coming soon

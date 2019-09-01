@@ -24,7 +24,7 @@ document.getElementById("registration-form").onsubmit = (e) => {
     return;
   }	
 
-  // Validation has passed...send an ajax request to the server. Check if e-mail exists
+  // Validation has passed. Send an ajax request to the server with registration info.
   const serializedData = $("#registration-form").serialize();
   $("#validation-error-space").css('display', 'none');
   $.ajax({
