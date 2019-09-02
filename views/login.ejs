@@ -29,7 +29,15 @@
       <div id="login-button-div">
           <button type="submit" class="btn btn-primary">Log in</button> <a id="sign-up-link" href="register">Sign up</a>
       </div>
-    </form>
+		</form>
+		<div>
+			<!-- This is for error messages -->
+			<% if (message) { %>
+				<p class="lead" id="login-error-message"><%= message %> </p>
+			<% } else { %>
+				<p class="lead" id="login-error-message"></p>
+			<% } %>
+		</div>
   </div>
 </body>
 </html>

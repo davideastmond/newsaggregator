@@ -71,7 +71,7 @@ app.get("/headlines", (req, res)=> {
 
 // Shows login form
 app.get("/login", (req, res) => {
-  res.render('login.ejs');
+  res.render('login.ejs', { message: null });
 });
 
 // Shows registration page
@@ -93,46 +93,52 @@ app.get('/topics', (req, res) => {
 app.post("/register", (req, res) => {
   
   // console.log(req.body.emailAddr, req.body.passwordOne, req.body.passwordTwo);
-  // Create an object to insert into the db
+  // Has the password, then create an object to insert into the db
 
   bcrypt.hash(req.body.passwordOne, saltRounds).then((hashedPassword) => {
-    const user =  {
+    // Create a user object for insertion into the pg db
+    const user = {
       email: req.body.emailAddr,
       password: hashedPassword,
-      is_registered: true
+      is_registered: true,
     };
-    dbFunctions.registerUser({user: user}).then((result) => {
-      console.log("User entered into database");
+
+    // Call function to insert a new user into the user table in the DB
+    dbFunctions.registerUser({ user: user }).then((result) => {
+      console.log("User entered into database", user);
      // Set a cookie to the user
      req.session.session_id = req.body.emailAddr; // Cookie set
      res.redirect('/topics');
     })
     .catch((err) => {
       res.status(400).send({ error: `E-mail ${user.email} already exists in the database.` });
-      console.log(err.detail);
     });
   });
 });
 
 app.post("/login", (req, res) => {
   // Login the user
-  const verificationObject = { email: req.body.email, password: req.body.password };
+  const timeStamp = new Date();
+  const verificationObject = { email: req.body.email, password: req.body.password, last_login: timeStamp};
   dbFunctions.verifyLogin(verificationObject).then((result)=> {
     if (result.success) {
       // Set a cookie
       req.session.session_id = req.body.email;
       res.status(200).send({ status: 'ok'});
     } else {
-      res.status(401).send({ error: 'unable to authenticate login' });
+      //res.status(401).send({ error: 'unable to authenticate login' });
+      
+      res.render('login.ejs', { message: "Invalid username / password" });
     }
   }).catch((err) => {
-    res.status(401).send({ error: err.response });
+    
+    res.render('login.ejs', { message: "Invalid username / password" });
   });
 });
 
 
 // TODO: this should be a post request
-app.get("/logout", (req, res) => {
+app.post("/logout", (req, res) => {
   req.session.session_id = null;
   res.render("home.ejs", { logged_in: false });
 });

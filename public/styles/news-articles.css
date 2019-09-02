@@ -17,8 +17,8 @@
 	justify-content: space-between;
 }
 
-#login-user-on-the-right {
-
+#header-top-nav-logout-link:hover {
+	cursor: pointer;
 }
 
 #header-top-nav-logout-link {

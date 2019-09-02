@@ -20,3 +20,7 @@
 #login-button-div {
 	padding-top: 15%;
 }
+
+#login-error-message {
+	color: red;
+}

@@ -15,7 +15,13 @@ module.exports = {
         
         bcrypt.compare(loginData.password, rows[0].password, (err, res) => {
           if (res) {
-            resolve({ email: loginData.email, success: true, response: `ok` });
+            
+            // If the login is successful, we need to timestamp in the database.
+            knex('user').where({ email: loginData.email }).update({ last_login: loginData.last_login }).then(()=> {
+              console.log("Updated in database log?");
+              resolve({ email: loginData.email, success: true, response: `ok` });
+            });
+            
           } else {
             reject({ email: loginData.email, success: false, response: `Invalid username and/or password `});
           }
