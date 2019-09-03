@@ -13,6 +13,7 @@ exports.up = function(knex) {
 		knex.schema.createTable('topic', (table) => {
 			table.increments('id').primary();
 			table.string('name').unique().notNullable();
+			table.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
 		}),
 		knex.schema.createTable('user_topic', (table) => {
 			table.increments('id').primary();

@@ -1,3 +1,5 @@
+const bcrypt = require('bcrypt');
+require('dotenv').config();
 
 module.exports = {
   doMultipleQueries: function(queryString) {
@@ -5,8 +7,12 @@ module.exports = {
     If the user has provided a comma-separated query, extract it and make it into an array
     */
 
-    const urls = queryString.join(',').map((element)=> {
-      
-    });
+    throw Error("Not implemented.");
+    
+    
+  },
+  
+  hashPassword: function(rawPassword) {
+    return bcrypt.hashSync(rawPassword, 10);
   }
 };

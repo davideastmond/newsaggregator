@@ -12,7 +12,6 @@ const cookieSession = require('cookie-session');
 
 const dbFunctions = require("./db");
 
-const saltRounds = 10;
 const cookieKeys = [process.env.COOKIE_KEYS];
 // Middle-ware
 app.use(cookieParser());
@@ -96,7 +95,7 @@ app.post("/register", (req, res) => {
   // console.log(req.body.emailAddr, req.body.passwordOne, req.body.passwordTwo);
   // Has the password, then create an object to insert into the db
 
-  bcrypt.hash(req.body.passwordOne, saltRounds).then((hashedPassword) => {
+  bcrypt.hash(req.body.passwordOne, process.env.SALT_ROUNDS).then((hashedPassword) => {
     // Create a user object for insertion into the pg db
     const user = {
       email: req.body.emailAddr,
