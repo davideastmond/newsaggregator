@@ -18,7 +18,8 @@ const cookieKeys = [process.env.COOKIE_KEYS];
 app.use(cookieParser());
 app.use(cookieSession({
   name: process.env.COOKIE_SESSION,
-  keys: cookieKeys
+	keys: cookieKeys,
+	maxAge: 600000 // Ten minutes
 }));
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -81,7 +82,7 @@ app.get("/register", (req, res) => {
 
 app.get('/topics', (req, res) => {
   if (req.session.session_id) {
-    // render the page
+    // render the page - will have to hit the database and get the user's topics
     console.log(req.session.session_id);
     res.render('topics.ejs', { email: req.session.session_id });
   } else {
@@ -124,7 +125,9 @@ app.post("/login", (req, res) => {
     if (result.success) {
       // Set a cookie
       req.session.session_id = req.body.email;
-      res.status(200).send({ status: 'ok'});
+			res.status(200).send({ status: 'ok'});
+			
+			// They should be forwarded to their landing page
     } else {
       //res.status(401).send({ error: 'unable to authenticate login' });
       
