@@ -5,6 +5,7 @@ exports.up = function(knex) {
 		table.string('email').unique().notNullable();
 		table.string('password');
 		table.boolean('is_registered').defaultTo(true);
+		table.boolean('has_chosen_topics').defaultTo(true);
 		table.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
 		table.timestamp('last_login').defaultTo(knex.fn.now());
 	})

@@ -18,8 +18,8 @@ module.exports = {
             
             // If the login is successful, we need to timestamp in the database.
             knex('user').where({ email: loginData.email }).update({ last_login: loginData.last_login }).then(()=> {
-              console.log("Updated in database log?");
-              resolve({ email: loginData.email, success: true, response: `ok` });
+              
+              resolve({ email: loginData.email, success: true, response: `ok`, has_chosen_topics: rows[0].has_chosen_topics });
             });
             
           } else {

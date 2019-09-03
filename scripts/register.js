@@ -14,7 +14,7 @@ document.getElementById("registration-form").onsubmit = (e) => {
   }
   // Password must be at least 8 characters
   if (!passwordSecurityValid(passwordText1)) {
-    $("#validation-error").text('Password should be 8 characters, contain upper and lower case characters, a special character and a number.').css("display", "block");
+    $("#validation-error").text('Password should be minimum 8 characters, contain upper and lower case characters, a special character and a number.').css("display", "block");
     return;
   }
 
@@ -68,7 +68,7 @@ function passwordSecurityValid(pwd) {
   // { captialLetters: true or false }
   // { specialCharacters: true or false }
   // { numberRequired: true or false }
-  let regEx = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{8,10}$/;
+  let regEx = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{8,}$/;
   return regEx.test(pwd);
 }
 
