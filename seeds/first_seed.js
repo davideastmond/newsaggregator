@@ -12,7 +12,7 @@ const functionHelpers = require('../helper');
 //       ]);
 //     });
 // };
-console.log("Hash test", functionHelpers.hashPassword('Password$4'));
+console.log("", functionHelpers.hashPassword('Password$4'));
 
 exports.seed = function(knex) {
   // Delete ALL Existing entries from each table

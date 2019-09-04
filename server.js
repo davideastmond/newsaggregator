@@ -9,6 +9,7 @@ const moment = require('moment');
 const bcrypt = require('bcrypt');
 const cookieParser = require('cookie-parser');
 const cookieSession = require('cookie-session');
+const helperFunctions = require('./helper');
 
 const dbFunctions = require("./db");
 
@@ -30,7 +31,7 @@ app.set('view engine', 'ejs');
 
 // Get Requests
 app.get("/", (req, res) => {
-  console.log("IP", req.connection.remoteAddress, "connected @", moment().format("YYYY/MM/DD h:mm:ss a"));
+  
   if (req.session.session_id) {
     res.render('home.ejs', { logged_in: true, uId: req.session.session_id });
   } else {
@@ -45,7 +46,7 @@ app.get("/news", (req, res) => {
   const url = `https://newsapi.org/v2/everything?q=${reqQuery}&from=${reqDate}&sortBy=publishedAt&apiKey=${process.env.PERSONAL_API_KEY}&pageSize=20`;
     // Create an API URI based on received info, query the URI, get a response, and send that data to render in news.ejs view
   axios.get(url).then((response) => {
-    res.render('news.ejs', { articles: response.data.articles, searchQuery: reqQuery, requestDate: reqDate, count: response.data.articles.length, logged_in: req.session.session_id || false });
+    res.render('news.ejs', { articles: response.data.articles, searchQuery: reqQuery,  uId: req.session.session_id, requestDate: reqDate, count: response.data.articles.length, logged_in: req.session.session_id || false });
   })
   .catch((error) => {
     res.status(400).send({ error: error });
@@ -64,14 +65,19 @@ app.get("/headlines", (req, res)=> {
   }
 
   axios.get(url).then((response) => {
-    res.render('headlines.ejs', { articles: response.data.articles, count: response.data.articles.length, country: req.query.country || "us", logged_in: req.session.session_id || false });
+    res.render('headlines.ejs', { articles: response.data.articles, uId: req.session.session_id, count: response.data.articles.length, country: req.query.country || "us", logged_in: req.session.session_id || false });
   });
   
 });
 
 // Shows login form
 app.get("/login", (req, res) => {
-  res.render('login.ejs', { message: null });
+	if (!req.session.session_id) {
+		res.render('login.ejs', { message: null });
+	} else {
+		// They should be sent to dashboard
+		res.status(200).send({response: 'send to dashboard '});
+	}
 });
 
 // Shows registration page
@@ -79,14 +85,20 @@ app.get("/register", (req, res) => {
   res.render('register.ejs');
 });
 
-app.get('/topics', (req, res) => {
+app.get('/user/:id/feed', (req, res) => {
   if (req.session.session_id) {
-    // render the page - will have to hit the database and get the user's topics
-    console.log(req.session.session_id);
-    res.render('topics.ejs', { email: req.session.session_id });
+    // render the page - will have to hit the database and get the user's topic feed
+		console.log("redirect user and topic!", req.session.session_id);
+		
+		// This won't be topics.ejcs - but instead a call to the api and live result. 
+		res.response(200).send ({ email: req.session.session_id, data: 'send to an actual news listing feed, based on the user topics' });
   } else {
     res.redirect("/");
   }
+});
+
+app.get('/user/:id/topics', (req, res) => {
+	res.status(200).send({ response: `user topics route for ${req.params.id}`});
 });
 
 // Receiving sign-up data.
@@ -94,26 +106,39 @@ app.post("/register", (req, res) => {
   
   // console.log(req.body.emailAddr, req.body.passwordOne, req.body.passwordTwo);
   // Has the password, then create an object to insert into the db
+	if (req.session.session_id) {
+		res.status(400).send({ response: 'user should log out first before registering'});
+		return;
+	}
 
-  bcrypt.hash(req.body.passwordOne, process.env.SALT_ROUNDS).then((hashedPassword) => {
-    // Create a user object for insertion into the pg db
-    const user = {
-      email: req.body.emailAddr,
+	helperFunctions.hashPasswordAsync(req.body.passwordOne)
+	.then((hashedPassword) => {
+		const user = {
+			email: req.body.emailAddr,
       password: hashedPassword,
       is_registered: true,
-    };
+		};
 
-    // Call function to insert a new user into the user table in the DB
-    dbFunctions.registerUser({ user: user }).then((result) => {
+		if (!helperFunctions.passwordMeetsSecurityRequirements(req.body.passwordOne)) {
+			res.status(400).send({ error: 'password requirements are not met '});
+			return;
+		}
+		
+		// Call function to insert a new user into the user table in the DB
+    dbFunctions.registerUser({ user: user }).then(() => {
       console.log("User entered into database", user);
      // Set a cookie to the user
-     req.session.session_id = req.body.emailAddr; // Cookie set
-     res.redirect('/topics');
+		 req.session.session_id = req.body.emailAddr; 
+		 
+		 // Re-direct to page where we can set a user's topics (GET Request))
+		
+     res.status(200).json({ response: `/user/${req.session.session_id}/topics` });
     })
-    .catch((err) => {
-      res.status(400).send({ error: `E-mail ${user.email} already exists in the database.` });
+    .catch((pError) => {
+			console.log(pError.code);
+      res.status(400).send({ responseJSON: pError.error || "Generic error message register user" });
     });
-  });
+	});
 });
 
 app.post("/login", (req, res) => {
@@ -124,9 +149,11 @@ app.post("/login", (req, res) => {
     if (result.success) {
       // Set a cookie
       req.session.session_id = req.body.email;
-			res.status(200).send({ status: 'ok'});
+			//res.status(200).send({ status: 'ok'});
 			
-			// They should be forwarded to their landing page
+			// They should be forwarded to their landing page - which user users/:id/feed
+			res.redirect(`/user/${req.session.session_id}/feed`);
+			
     } else {
       //res.status(401).send({ error: 'unable to authenticate login' });
       

@@ -11,8 +11,16 @@ module.exports = {
     
     
   },
-  
+	
+	passwordMeetsSecurityRequirements: (rawPassword) => {
+		const regEx = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{8,}$/;
+  	return regEx.test(rawPassword);
+	},
+
   hashPassword: function(rawPassword) {
-    return bcrypt.hashSync(rawPassword, 10);
+    return bcrypt.hashSync(rawPassword, parseInt(process.env.SALT_ROUNDS));
+  },
+  hashPasswordAsync: function(rawPassword) {
+    return bcrypt.hash(rawPassword, parseInt(process.env.SALT_ROUNDS));
   }
 };
