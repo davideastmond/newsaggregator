@@ -19,7 +19,7 @@ app.use(cookieParser());
 app.use(cookieSession({
   name: process.env.COOKIE_SESSION,
   keys: cookieKeys,
-  maxAge: 6000 // 60 seconds
+  maxAge: 300000 // 5 minutes
 }));
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -167,15 +167,8 @@ app.post("/login", (req, res) => {
     if (result.success) {
       // Set a cookie
       req.session.session_id = req.body.email;
-      //res.status(200).send({ status: 'ok'});
-      
-      // As a test, let's get their topics
-      dbFunctions.getUserTopics({ email: req.session.session_id }).then((n_result) => {
-        console.log("Topic data base hit: ", n_result);
-      });
       // They should be forwarded to their landing page - which user users/:id/feed
       res.redirect(`/user/${req.session.session_id}/feed`);
-      
     } else {
       //res.status(401).send({ error: 'unable to authenticate login' });
       

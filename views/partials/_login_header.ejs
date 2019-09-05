@@ -15,9 +15,14 @@
 			<% } %>
 			
 			<% if (uId) { %>
-				<a class="nav-link" href="profile"><i class="fas fa-user"></i> <%= uId %></a>
+				<div class="dropdown"><i class="fas fa-user dropbtn"></i> <%= uId %>
+					<div class="dropdown-content">
+						<a href="profile">My Profile</a>
+						<a href="/user/<%= uId %>/topics">My Topics</a>
+					</div>
+				</div>
 			<% } else { %>
-				<a class="nav-link" href="profile"><i class="fas fa-user"></i></a>
+				
 			<% } %>
   </nav>
 </header>
