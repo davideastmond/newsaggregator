@@ -25,7 +25,7 @@ app.use(cookieSession({
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.urlencoded());
 app.use(express.static(path.join(__dirname, 'scripts'))); 
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
 
 
@@ -105,8 +105,7 @@ app.get('/user/:id/topics', (req, res) => {
     */
     if (req.session.session_id === req.params.id) {
       dbFunctions.getUserTopics({ email: req.session.session_id }).then((result) => {
-        console.log(result);
-        res.render('topics.ejs', { email: req.params.id, topics: result });
+        res.render('topics.ejs', { email: req.params.id, topics: result, logged_in: true, uId: req.session.session_id });
       });
     } else {
       res.redirect('/');

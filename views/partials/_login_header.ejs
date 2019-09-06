@@ -8,19 +8,23 @@
 </head>
 <header>
   <nav class="nav div-strip">
-      <a class="nav-link" href="/login">Log In</a>
-			<a class="nav-link" href="/register">Register</a>
-			<% if (logged_in) { %>
-				<a class="nav-link" id="header-top-nav-logout-link">Log Out</a>
+			<% if (!uId) { %>
+				<a class="nav-link" href="/login">Log In</a>
 			<% } %>
 			
+			<a class="nav-link" href="/register">Register</a>
 			<% if (uId) { %>
+				<a class="nav-link" id="header-top-nav-logout-link">Log Out</a>
 				<div class="dropdown"><i class="fas fa-user dropbtn"></i> <%= uId %>
 					<div class="dropdown-content">
 						<a href="profile">My Profile</a>
 						<a href="/user/<%= uId %>/topics">My Topics</a>
 					</div>
 				</div>
+			<% } %>
+			
+			<% if (uId) { %>
+				
 			<% } else { %>
 				
 			<% } %>

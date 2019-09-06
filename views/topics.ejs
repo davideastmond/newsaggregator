@@ -1,27 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-	<title>Select Topics</title>
+  <link rel="stylesheet" href="/../styles/home.css">
+  <link rel="stylesheet" href="/../styles/news-articles.css">
+  <title>My Topics</title>
 </head>
 <body>
-	<header>
-		<div>
-			<a class="lead"> <%= email %> </a>
-		</div>
-	</header>
-	<div class="jumbotron">
-		<p class="h2"> Select your topics </p>
-	</div>
-	<div id="select-topics-popular-topics-div">
-		
-		<div id='selected-topics-list'>
-			<!-- Enclosure for check boxes that include popular topics ---->
-		</div>
-	</div>
+  <head>
+      <%- include('./partials/_login_header', { logged_in: logged_in, uId: uId }); %>
+  </head>
+  <div class="jumbotron">
+    <p class="h2"> My current topics:  </p>
+  </div>
+  <div id="select-topics-popular-topics-div">
+    
+    <div id='selected-topics-list'>
+      <!-- Enclosure for check boxes that include popular topics ---->
+      <ul class="list-group"></ul>
+        <% topics.forEach((topic) => { %>
+          <li class="list-group-item button-to-right"><%= topic %> <a class='x-delete-topic-from-list' >&times</a></li>
+        <% }) %>
+      </ul>
+    </div>
+  </div>
 </body>
 </html>
