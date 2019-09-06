@@ -26,6 +26,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.urlencoded());
 app.use(express.static(path.join(__dirname, 'scripts'))); 
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use('/user/:id/topics', express.static(path.join(__dirname, 'scripts')));
+app.use('/user/:id/topics', express.static(path.join(__dirname, 'public')));
+
 app.set('view engine', 'ejs');
 
 

@@ -8,6 +8,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <link rel="stylesheet" href="/../styles/home.css">
   <link rel="stylesheet" href="/../styles/news-articles.css">
+  <script src="topics.js"></script>
   <title>My Topics</title>
 </head>
 <body>
@@ -21,11 +22,21 @@
     
     <div id='selected-topics-list'>
       <!-- Enclosure for check boxes that include popular topics ---->
-      <ul class="list-group"></ul>
-        <% topics.forEach((topic) => { %>
-          <li class="list-group-item button-to-right"><%= topic %> <a class='x-delete-topic-from-list' >&times</a></li>
-        <% }) %>
-      </ul>
+      <% if (topics.length > 0) { %>
+        <ul class="list-group" id="ul-topics">
+          <% topics.forEach((topic, index) => { %>
+            <li class="list-group-item button-to-right"><%= topic %> <span class="badge delete-button badge-danger" id=<%= index %>>&times</span></li>
+          <% }) %>
+        </ul>
+      <% } else { %>
+        <p class="lead" id="label-no-topics-found">No topics found. </p>
+      <% } %>
+    </div>
+    <div>
+      <a class="lead">New topic</a>
+      <span>
+        <input type="text" id="topic-to-add"> <button type="button" class="btn btn-primary" id="add-topic-button">Add</button>
+      </span>
     </div>
   </div>
 </body>
