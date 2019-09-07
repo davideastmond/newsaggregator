@@ -40,6 +40,10 @@ module.exports = {
         resolve(result);
       });
     });
+  },
+
+  updateTopicListForUser: (email_data) => {
+
   }
 };
 

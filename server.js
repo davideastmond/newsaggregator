@@ -120,7 +120,17 @@ app.get('/user/:id/topics', (req, res) => {
 });
 
 app.post('/user/:id/topics/update', (req, res) => {
-  res.status(400).json({ response: 'not implemented' });
+  if (req.session.session_id) {
+    //console.log("Got a req body response", req.body["newTopics[]"]);
+
+    // We have an array of new topics for the user. We need to hit the database. Reference by email
+    dbFunctions.updateTopicListForUser(req.session.session_id);
+  } else {
+    res.redirect("/");
+  }
+  
+
+  res.status(200).send({status: 'ok'});
 });
 // Receiving sign-up data.
 app.post("/register", (req, res) => {
