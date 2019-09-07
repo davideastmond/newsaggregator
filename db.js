@@ -30,24 +30,16 @@ module.exports = {
   },
 
   getUserTopics: (userData) => {
-    // Assuming we have user email
+    // This is going to send an array of {email: name:} objects
     return new Promise((resolve, reject) => {
-      knex('user').select('id').where('email', userData.email).then((first_rows) => {
-        const user_id = first_rows[0].id; // A user ID
-        knex('user_topic').select('topic_id').where('user_id', user_id).then((second_rows) => {
-          
-          // We have all of the topic_ids for the specified user - all we have to do is get the names. So
-          // we will map each topic_id and return a proper name 
-          const finalObj = second_rows.map((element) => {
-            return getTopicNameByID(element.topic_id);
-          });
-
-          const res = Promise.all(finalObj);
-          resolve(res);
-        });
+      knex.select('email', 'name').from('user as U')
+      .innerJoin('user_topic as UT', 'U.id', 'UT.user_id')
+      .innerJoin('topic as T', 'UT.topic_id', 'T.id')
+      .where('U.email', userData.email)
+      .then((result) => {
+        resolve(result);
       });
     });
-    
   }
 };
 
