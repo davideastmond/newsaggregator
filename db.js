@@ -16,7 +16,7 @@ module.exports = {
           if (res) {
             // If the login is successful, we need to timestamp in the database.
             knex('user').where({ email: loginData.email }).update({ last_login: loginData.last_login }).then(() => {
-              resolve({ email: loginData.email, success: true, response: `ok`, has_chosen_topics: rows[0].has_chosen_topics });
+              resolve({ email: loginData.email, success: true, response: `ok`, has_chosen_topics: rows[0].has_chosen_topics, db_id: rows[0].id });
             });
             
           } else {
@@ -47,17 +47,21 @@ module.exports = {
       // First we need  to check if the topics already exist in the DB. If not, add it.
       // We need to retrieve the user id from the email_Data
       // We should hit the user_topic table, delete all entries where the user_id and user.id match, then we need to replace the data
-      
-
+    
       // Grab all of the topics by name
       knex.select('id', 'name').from('topic')
       .then((first_result) => {
-       
-        // Check if name exists. This result is an array of objects with a key 'name'
-			
+
+        // Create a list of topics that need to be inserted into the database
 				const insertList = createListOfTopicsToBeInsertedIntoDB(first_result, inputData.topicArray);
-				console.log("Line 59 insertList", insertList);
-        //console.log(insertList);
+				if (insertList && insertList.length >= 1) {
+					// We have things to insert
+					insertNewTopicsIntoDB(insertList).then((resulting) => {
+						console.log("Topics were inserted!");
+
+						// After this is done, we need to delete all the user_topics for user id
+					});
+				}
         resolve(first_result);
       });
     });
@@ -72,9 +76,25 @@ function createListOfTopicsToBeInsertedIntoDB(listFromDB, topicsToLookUp) {
     let foundElement = !listFromDB.find((el) => {
       return el.name === topicElement;
     });
-    console.log("Line 75 Found element", topicElement, foundElement);
+    console.log("Line 75 Element is not in database", topicElement, foundElement);
     if (foundElement) finalList.push(topicElement);
   });
 
   return finalList;
+}
+
+function insertNewTopicsIntoDB(topicListArray) {
+	
+	return new Promise((resolve, reject) => {
+		const batch = topicListArray.map((info) => {
+			return insertTopic(info);
+		});
+
+		res = Promise.all(batch);
+		resolve(res);
+	});
+}
+
+function insertTopic(string_topic) {
+	return knex('topic').insert({ name: string_topic});
 }

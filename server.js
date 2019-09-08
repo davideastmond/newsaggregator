@@ -92,8 +92,6 @@ app.get("/register", (req, res) => {
 app.get('/user/:id/feed', (req, res) => {
   if (req.session.session_id) {
     // render the page - will have to hit the database and get the user's topic feed
-    console.log("redirect user and topic!", req.session.session_id);
-    
     // This won't be topics.ejcs - but instead a call to the api and live result. 
     res.status(200).send({ email: req.session.session_id, data: 'send to an actual news listing feed, based on the user topics' });
   } else {
@@ -121,19 +119,24 @@ app.get('/user/:id/topics', (req, res) => {
 
 app.post('/user/:id/topics/update', (req, res) => {
   if (req.session.session_id) {
-    // This gets an array of topics
-		const updateData = { email: req.session.session_id, topicArray: JSON.parse(req.body.topics) };
+		// This gets an array of topics
+		
+		const updateData = { email: req.session.session_id, database_id: req.session.database_id, topicArray: JSON.parse(req.body.topics) };
 	
     // We have an array of new topics for the user. We need to hit the database. Reference by email
     dbFunctions.updateTopicListForUser(updateData).then((result) => {
-      //console.log(result);
-    });
+			//console.log(result);
+			res.status(200).json({ status: 'successfully added' });
+		})
+		.catch((error) => {
+		
+			res.status(500).json({status: 'unable to update the database'});
+		});
+		
   } else {
     res.redirect("/");
   }
   
-
-  res.status(200).send({status: 'ok'});
 });
 // Receiving sign-up data.
 app.post("/register", (req, res) => {
@@ -160,7 +163,6 @@ app.post("/register", (req, res) => {
     
     // Call function to insert a new user into the user table in the DB
     dbFunctions.registerUser({ user: user }).then(() => {
-      console.log("User entered into database", user);
     // Set a cookie to the user
     req.session.session_id = req.body.emailAddr; 
     
@@ -182,7 +184,8 @@ app.post("/login", (req, res) => {
   dbFunctions.verifyLogin(verificationObject).then((result)=> {
     if (result.success) {
       // Set a cookie
-      req.session.session_id = req.body.email;
+			req.session.session_id = req.body.email;
+			req.session.database_id = result.db_id;
       // They should be forwarded to their landing page - which user users/:id/feed
       res.redirect(`/user/${req.session.session_id}/feed`);
     } else {

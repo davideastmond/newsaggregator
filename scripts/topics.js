@@ -45,7 +45,7 @@ function makeIndividualTopicListItem(itemName, i_index) {
     throw error("itemName must be of type string");
   }
   
-  const $listItem = $("<li>").addClass("list-group-item button-to-right").attr('data-caption', itemName).text(itemName);
+  const $listItem = $("<li>").addClass("list-group-item button-to-right").attr('data-caption', itemName.toLowerCase()).text(itemName.toLowerCase());
   const $closeIcon = $("<span>").addClass("badge delete-button badge-danger").text("×").attr('id', i_index).click(processDeleteTopic_Click);
   
   $listItem.append($closeIcon);
@@ -89,7 +89,7 @@ function getTopicListFromDOM () {
 
 function processAddTopic_Click (e) {
   // Adds topics to the list and then summons a function
-  const targetTopic = $("#topic-to-add").val();
+  const targetTopic = $("#topic-to-add").val().toLowerCase().trim();
   // Get the current state
   const currentList = getTopicListFromDOM();
   if (!currentList.includes(targetTopic)) {
@@ -109,7 +109,19 @@ function saveTopicDataToServer () {
 		url: "/user/user/topics/update",
 		datatype: 'json',
     data: myData,
-    success: $("#save-topic-button").attr('disabled', false),
-    fail: null,
+    success: function(response) {
+			respondToSuccess(response);
+		},
+    error: function(errorResponse) {
+			console.log(errorResponse);
+		}
   });
+}
+
+function respondToSuccess (data) {
+	// re-enables button and logs response
+	$("#save-topic-button").attr('disabled', false); 
+	console.log(data.status);
+
+	// Redirect to user feed
 }
