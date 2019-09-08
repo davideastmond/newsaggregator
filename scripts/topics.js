@@ -1,9 +1,11 @@
 // This module handles the topics list and sending data re: the list to the server
 
 $(document).ready(function() {
-    // Delete button clicked
+		// Delete button clicked
+		
     $(".delete-button").click((e) => {
-      processDeleteTopic_Click(e);
+			processDeleteTopic_Click(e);
+			
     });
 
     // Add topic button clicked
@@ -19,6 +21,7 @@ $(document).ready(function() {
 });
 
 function rebuildTopicList(iTopics) {
+
   // This method is going to reconstruct the list of topics. 
   // Input is an array of strings, (each a topic)
 
@@ -32,7 +35,8 @@ function rebuildTopicList(iTopics) {
   iTopics.forEach((elementTopic, index) => {
     let $topicElement = makeIndividualTopicListItem(elementTopic, index);
     $("#ul-topics").append($topicElement);
-  });
+	});
+	console.log("DOM elements after rebuild", getTopicListFromDOM());
 }
 
 function makeIndividualTopicListItem(itemName, i_index) {
@@ -64,7 +68,7 @@ function processDeleteTopic_Click (e) {
     return element != targetTopic;
   });
   
-
+	
   // Send the new (filtered array) for re-building in the DOM
   rebuildTopicList(arrOfTopics);
 }
@@ -79,6 +83,7 @@ function getTopicListFromDOM () {
     arrOfTopics.push(topicsList[0].children[i].dataset.caption);
   }
 
+	
   return arrOfTopics;
 }
 
@@ -95,13 +100,15 @@ function processAddTopic_Click (e) {
 
 function saveTopicDataToServer () {
   // This sends an ajax HTTP request to server, update database
-  const listFromDOM = getTopicListFromDOM();
-  let myData = { newTopic: listFromDOM };
+	const listFromDOM = getTopicListFromDOM();
+	console.log(listFromDOM);
+  let myData = { topics: JSON.stringify(listFromDOM) };
   $("#save-topic-button").attr('disabled', true);
   $.ajax({
     type: 'POST',
-    url: "/user/user/topics/update",
-    data: { newTopics: listFromDOM } ,
+		url: "/user/user/topics/update",
+		datatype: 'json',
+    data: myData,
     success: $("#save-topic-button").attr('disabled', false),
     fail: null,
   });

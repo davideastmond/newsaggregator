@@ -19,7 +19,7 @@ app.use(cookieParser());
 app.use(cookieSession({
   name: process.env.COOKIE_SESSION,
   keys: cookieKeys,
-  maxAge: 300000 // 5 minutes
+  maxAge: 600000 // 5 minutes
 }));
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -121,10 +121,13 @@ app.get('/user/:id/topics', (req, res) => {
 
 app.post('/user/:id/topics/update', (req, res) => {
   if (req.session.session_id) {
-    //console.log("Got a req body response", req.body["newTopics[]"]);
-
+    // This gets an array of topics
+		const updateData = { email: req.session.session_id, topicArray: JSON.parse(req.body.topics) };
+	
     // We have an array of new topics for the user. We need to hit the database. Reference by email
-    dbFunctions.updateTopicListForUser(req.session.session_id);
+    dbFunctions.updateTopicListForUser(updateData).then((result) => {
+      //console.log(result);
+    });
   } else {
     res.redirect("/");
   }

@@ -42,19 +42,39 @@ module.exports = {
     });
   },
 
-  updateTopicListForUser: (email_data) => {
+  updateTopicListForUser: (inputData) => {
+    return new Promise((resolve, reject) => {
+      // First we need  to check if the topics already exist in the DB. If not, add it.
+      // We need to retrieve the user id from the email_Data
+      // We should hit the user_topic table, delete all entries where the user_id and user.id match, then we need to replace the data
+      
 
+      // Grab all of the topics by name
+      knex.select('id', 'name').from('topic')
+      .then((first_result) => {
+       
+        // Check if name exists. This result is an array of objects with a key 'name'
+			
+				const insertList = createListOfTopicsToBeInsertedIntoDB(first_result, inputData.topicArray);
+				console.log("Line 59 insertList", insertList);
+        //console.log(insertList);
+        resolve(first_result);
+      });
+    });
   }
 };
 
-// Helper function that translates topic_id to an actual topic name.
-// We basically hit the DB and get a topic.name from a topic_id / topic.id. 
-// and return a string
-function getTopicNameByID(inputI_id) {
-  return new Promise((resolve)=> {
-    knex('topic').select('name').where('id', inputI_id).then((result) => {
-      resolve(result[0].name);
+function createListOfTopicsToBeInsertedIntoDB(listFromDB, topicsToLookUp) {
+  // This will return two objects
+  let finalList = [];
+	console.log(listFromDB);
+  topicsToLookUp.forEach((topicElement) => {
+    let foundElement = !listFromDB.find((el) => {
+      return el.name === topicElement;
     });
+    console.log("Line 75 Found element", topicElement, foundElement);
+    if (foundElement) finalList.push(topicElement);
   });
-  
+
+  return finalList;
 }
