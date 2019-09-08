@@ -57,9 +57,15 @@ module.exports = {
 				if (insertList && insertList.length >= 1) {
 					// We have things to insert
 					insertNewTopicsIntoDB(insertList).then((resulting) => {
-						console.log("Topics were inserted!");
-
-						// After this is done, we need to delete all the user_topics for user id
+						update_user_topic_table(inputData).then((resulting_again)=> {
+							// Send some kind of response
+							console.log("62-- resulting again after insertList", resulting_again);
+						});
+					});
+				} else {
+					update_user_topic_table(inputData).then((resulting_again)=> {
+						// Send some kind of response
+						console.log("62-- resulting again", resulting_again);
 					});
 				}
         resolve(first_result);
@@ -76,7 +82,6 @@ function createListOfTopicsToBeInsertedIntoDB(listFromDB, topicsToLookUp) {
     let foundElement = !listFromDB.find((el) => {
       return el.name === topicElement;
     });
-    console.log("Line 75 Element is not in database", topicElement, foundElement);
     if (foundElement) finalList.push(topicElement);
   });
 
@@ -90,11 +95,43 @@ function insertNewTopicsIntoDB(topicListArray) {
 			return insertTopic(info);
 		});
 
-		res = Promise.all(batch);
-		resolve(res);
+		resolve(Promise.all(batch));
 	});
 }
 
 function insertTopic(string_topic) {
-	return knex('topic').insert({ name: string_topic});
+	return knex('topic')
+	.returning(['id', 'name'])
+	.insert({ name: string_topic});
+}
+
+function update_user_topic_table(user_data) {
+	return new Promise((resolve, reject) => {
+		console.log("Line 104 Update user table hit");
+		// Refresh and get a current state of the topics database. Then we delete all of the entries for the matching user_id in the user_topic table
+		// and then re-add a refresh collection of topics for the user
+		knex.select().table('topic').then((topics_from_db) => {
+			knex('user_topic').del().where('user_id', user_data.database_id).returning(['user_id', 'topic_id'])
+			.then(() => {
+				// We've deleted all the user_topic ids
+
+				const insert_query = user_data.topicArray.map((el) => {
+					const fnd = topics_from_db.find((qElement) => {
+						return qElement.name === el;
+					});
+					return insertUser_Topic({user_id: user_data.database_id, topic_id: fnd.id });
+				});
+
+				// once the map is done, do a Promise.all for the mass insert
+				resolve(Promise.all(insert_query));
+			});
+		});
+	});
+
+}
+
+function insertUser_Topic(iData) {
+	return knex('user_topic')
+	.returning(['user_id', 'topic_id'])
+	.insert({ user_id: iData.user_id, topic_id: iData.topic_id });
 }
