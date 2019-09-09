@@ -2,15 +2,28 @@
 
 ### About
 
-- Using date and topics. The app will query a news API on the backend and then return a list of articles and links to the user.
-- Currently coding to allow for logins and authentication and custom topics.
+- This is a full-stack news aggregator web app.
 
-### Future Features
+### Features
 
-- Database implementation
-- User log-ins
-- saved topics
-- cookies
+- #### User accounts and log ins: 
+	- users can create accounts
+	- users can log in and out of the system. 
+	- cookies are used to keep track of login state
+	- relational data base used to keep track of user accounts
+	- password hashing
+- #### User custom news feed:
+	- users can add/remove news topic subscriptions.
+	- users can view their custom feed which is populated by news articles *(in progress)*
+- #### Headlines
+	- Any user (regardless if they have an account) can view top headlines
+- #### Custom ad hoc topic searches
+	- User can search for news articles by date and by topic
+
+### Future Feature ideas
+
+- Saving news articles?
+- ad hoc custom searches with multiple search topics
 
 ### Requirements
 
@@ -26,6 +39,7 @@
 
 - Download the latest version of PostgreSQL
 - Run the latest migration using `knex migrate:latest`
+- Optional: seed the db using `knex seed:run`
 - Run the server using `npm start`
 
 ### Dependencies
@@ -41,35 +55,32 @@
 - cookie-session
 - cookie-parser
 
-#### .ENV file
+### .ENV file
 
-You'll need .ENV file with these parameters
+- Rename the sample_env file to a .env, and fill out the parameters
+- `PERSONAL_API_KEY=` visit newsAPI.org and register for a key. Place it here
 
+#### Database information
+- `DB_HOST=` 
+- `DB_USER=`
+- `DB_USER_PASSWORD=`
+- `DB_NAME=`
+- `DB_CONNECTIONSTRING=`
 
-`PERSONAL_API_KEY= ` visit newsAPI.org and register for a key. Place it here
+#### Cookie Info
+- `COOKIE_SESSION=`
+- `COOKIE_KEYS=`
+- `COOKIE_TIME_OUT=`
 
-Database information
-`DB_HOST=` 
-`DB_USER=`
-`DB_USER_PASSWORD=`
-`DB_NAME=`
-`DB_CONNECTIONSTRING=`
-
-This is for cookies
-`COOKIE_SESSION=`
-`COOKIE_KEYS=`
-`COOKIE_TIME_OUT=`
-
-
-#### Database stack
+### Database stack
 
 - postgresql
 - knex.js
 
-#### Migrations
+### Migrations / Seeds
 
 - coming soon
 
-#### ERDs
+### Entity Relationship Diagrams
 
 - coming soon
