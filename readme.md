@@ -6,24 +6,25 @@
 
 ### Features
 
-- #### User accounts and log ins: 
+- #### User accounts and log-ins: 
 	- users can create accounts
-	- users can log in and out of the system. 
-	- cookies are used to keep track of login state
-	- relational data base used to keep track of user accounts
-	- password hashing
+	- users can log-in and out of the system. 
+	- cookies are used to keep track of log-in state
+	- relational database used to keep track of user accounts
+	- password hashing and validation
 - #### User custom news feed:
 	- users can add/remove news topic subscriptions.
 	- users can view their custom feed which is populated by news articles *(in progress)*
+	- relational database used to keep track of topics and topics associated with a user's subscription
 - #### Headlines
-	- Any user (regardless if they have an account) can view top headlines
+	- Any user (regardless if they have an account) can view the latest headlines
 - #### Custom ad hoc topic searches
-	- User can search for news articles by date and by a topic
+	- User can search for news articles by date and by topic
 
 ### Future Feature ideas
 
 - Saving news articles
-- Saving articles to *favourites*
+- Saving articles to *favorites*
 - ad hoc custom searches with multiple search topics
 - "read later" list
 
@@ -40,6 +41,7 @@
 - Create a .ENV file in the app folder (more below)
 
 - Download the latest version of PostgreSQL
+- Initialize a knex profile using `[coming soon]`
 - Run the latest migration using `knex migrate:latest`
 - Optional: seed the db using `knex seed:run`
 - Run the server using `npm start`

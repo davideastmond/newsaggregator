@@ -57,7 +57,13 @@ exports.seed = function(knex) {
 
           knex('user_topic').insert({ id: 13, user_id: 3, topic_id: 9 })
         ]);
-      });
+			})
+			.then(() => {
+				return Promise.all([
+					knex.raw('ALTER SEQUENCE topic_id_seq RESTART WITH 11;'),
+					knex.raw('ALTER SEQUENCE user_topic_id_seq RESTART WITH 14;')
+				]);
+			});
     });
   });
 };
