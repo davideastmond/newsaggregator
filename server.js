@@ -59,7 +59,7 @@ app.get("/news", (req, res) => {
 
 app.get("/headlines", (req, res)=> {
   // Grab the date
-  const dateGrab = moment().format("MM/DD/YYYY");
+  
   let url;
   if (req.query.country) {
     url = `https://newsapi.org/v2/top-headlines?country=${req.query.country}&apiKey=${process.env.PERSONAL_API_KEY}&pageSize=20`; 
@@ -92,10 +92,22 @@ app.get("/register", (req, res) => {
 app.get('/user/:id/feed', (req, res) => {
   if (req.session.session_id) {
     // render the page - will have to hit the database and get the user's topic feed
-    // This won't be topics.ejcs - but instead a call to the api and live result. 
-    res.status(200).send({ email: req.session.session_id, data: 'send to an actual news listing feed, based on the user topics' });
+		// This won't be topics.ejcs - but instead a call to the api and live result. 
+		
+		dbFunctions.getUserTopics({ email: req.session.session_id }).then((resultingData) => {
+			//console.log("98 resulting data", resultingData);
+			helperFunctions.doTopicsAxiosFetchRequest({ userTopics: resultingData, db_id: req.session.database_id }).then((fetchResults) => {
+				// Once we get our results, we need to render the page for the user
+
+				const dataArticles = helperFunctions.compileAPIFetchData(fetchResults);
+				
+				//console.log("FETCH RESULTS", fetchResults[0].data.articles);
+				res.status(200).json({ email: req.session.session_id, data: 'send to an actual news listing feed, based on the user topics', data_articles: dataArticles });
+			});
+		});
+    
   } else {
-    res.redirect("/");
+    res.redirect("/login");
   }
 });
 
@@ -110,10 +122,10 @@ app.get('/user/:id/topics', (req, res) => {
         res.render('topics.ejs', { email: req.params.id, topics: result, logged_in: true, uId: req.session.session_id });
       });
     } else {
-      res.redirect('/');
+      res.redirect('/login');
     }
   } else {
-    res.redirect('/');
+    res.redirect('/login');
   }
 });
 

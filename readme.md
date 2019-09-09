@@ -22,6 +22,7 @@
 - Run `npm i` to install all required packages
 - Obtain your own api key from [!NewsAPI](https://newsapi.org/)
 - Download or use moment.js CDN for client side
+- Create a .ENV file in the app folder (more below)
 
 - Download the latest version of PostgreSQL
 - Run the latest migration using `knex migrate:latest`
@@ -39,6 +40,26 @@
 - moment.js
 - cookie-session
 - cookie-parser
+
+#### .ENV file
+
+You'll need .ENV file with these parameters
+
+
+`PERSONAL_API_KEY= ` visit newsAPI.org and register for a key. Place it here
+
+Database information
+`DB_HOST=` 
+`DB_USER=`
+`DB_USER_PASSWORD=`
+`DB_NAME=`
+`DB_CONNECTIONSTRING=`
+
+This is for cookies
+`COOKIE_SESSION=`
+`COOKIE_KEYS=`
+`COOKIE_TIME_OUT=`
+
 
 #### Database stack
 

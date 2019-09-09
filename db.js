@@ -30,7 +30,7 @@ module.exports = {
   },
 
   getUserTopics: (userData) => {
-    // This is going to send an array of {email: name:} objects
+    // Get all topics a user is subscribed to
     return new Promise((resolve, reject) => {
       knex.select('email', 'name').from('user as U')
       .innerJoin('user_topic as UT', 'U.id', 'UT.user_id')
@@ -46,12 +46,11 @@ module.exports = {
     return new Promise((resolve, reject) => {
       // First we need  to check if the topics already exist in the DB. If not, add it.
       // We need to retrieve the user id from the email_Data
-      // We should hit the user_topic table, delete all entries where the user_id and user.id match, then we need to replace the data
+      // We should hit the user_topic table, delete all entries where the user_id and user.id match, then we need to replace the data with updated info for the user's topics
     
       // Grab all of the topics by name
       knex.select('id', 'name').from('topic')
       .then((first_result) => {
-
         // Create a list of topics that need to be inserted into the database
 				const insertList = createListOfTopicsToBeInsertedIntoDB(first_result, inputData.topicArray);
 				if (insertList && insertList.length >= 1) {
