@@ -30,6 +30,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/user/:id/topics', express.static(path.join(__dirname, 'scripts')));
 app.use('/user/:id/topics', express.static(path.join(__dirname, 'public')));
 
+app.use('/user/:id/feed', express.static(path.join(__dirname, 'scripts')));
+app.use('/user/:id/feed', express.static(path.join(__dirname, 'public')));
+
 app.set('view engine', 'ejs');
 
 
@@ -102,7 +105,8 @@ app.get('/user/:id/feed', (req, res) => {
 				const dataArticles = helperFunctions.compileAPIFetchData(fetchResults);
 				
 				//console.log("FETCH RESULTS", fetchResults[0].data.articles);
-				res.status(200).json({ email: req.session.session_id, data: 'send to an actual news listing feed, based on the user topics', data_articles: dataArticles });
+				res.render('feed.ejs', { uId: req.session.session_id, data: resultingData, arrayCount: dataArticles.length, data_articles: dataArticles.flat() } );
+				//res.status(200).json({ email: req.session.session_id, data: resultingData, arrayCount: dataArticles.length, data_articles: dataArticles.flat() });
 			});
 		});
     
@@ -113,7 +117,8 @@ app.get('/user/:id/feed', (req, res) => {
 
 app.get('/user/:id/topics', (req, res) => {
   if (req.session.session_id) {
-    /* 
+		/* 
+		This is the topics configuration page.
     This route needs to hit the database and pull all of the topics associated with the user
     We plug the results into the ejs view variable for display.
     */
@@ -131,7 +136,7 @@ app.get('/user/:id/topics', (req, res) => {
 
 app.post('/user/:id/topics/update', (req, res) => {
   if (req.session.session_id) {
-		// This gets an array of topics
+		// This route is responsible for updating the DB with the changes to a user's topics subscription.
 		
 		const updateData = { email: req.session.session_id, database_id: req.session.database_id, topicArray: JSON.parse(req.body.topics) };
 	
@@ -220,4 +225,12 @@ app.post("/logout", (req, res) => {
 
 app.listen(PORT, () => {
   console.log("Listening on port", PORT);
+});
+
+Object.defineProperty(Array.prototype, 'flat', {
+	value: function(depth = 1) {
+		return this.reduce(function (flat, toFlatten) {
+			return flat.concat((Array.isArray(toFlatten) && (depth>1)) ? toFlatten.flat(depth-1) : toFlatten);
+		}, []);
+	}
 });

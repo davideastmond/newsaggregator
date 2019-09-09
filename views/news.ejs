@@ -21,11 +21,13 @@
   <div class="jumbotron jumbo-tron-margin-top">
     <div id="news-header">
       <a href="/headlines"><p class="lead">Headlines</p></a>
-    </div>
-    <h1>News Search Results</h1>
-    <p class="lead"> Here are your results for '<%= searchQuery %>'</p>
-    <p class="lead"> Total Results: <%= count %> items  </p>
-    <input type="text" id="qSearchBox" placeholder=<%= searchQuery %>> <button type="button" class="btn btn-primary" id="news-results-click-box">Search Again</button>
+		</div>
+		<div>
+			<h1>News Search Results</h1>
+			<p class="lead"> Here are your results for '<%= searchQuery %>'</p>
+			<p class="lead"> Total Results: <%= count %> items  </p>
+			<input type="text" id="qSearchBox" placeholder=<%= searchQuery %>> <button type="button" class="btn btn-primary" id="news-results-click-box">Search Again</button>
+		</div>
     <div id="articles-master-container">
       <br>
       <% articles.forEach((article) => { %>

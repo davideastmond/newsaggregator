@@ -3,14 +3,10 @@ const axios = require('axios');
 const moment = require('moment');
 require('dotenv').config();
 
+// This module consists of helper functions concerning password validation and doing fetch requests to the API,
+// collating data etc
 module.exports = {
-  doMultipleQueries: function(queryString) {
-    /* 
-    If the user has provided a comma-separated query, extract it and make it into an array
-    */
-    throw Error("Not implemented.");
-  },
-	
+  	
 	passwordMeetsSecurityRequirements: (rawPassword) => {
 		const regEx = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{8,}$/;
   	return regEx.test(rawPassword);
@@ -52,11 +48,11 @@ module.exports = {
 	}
 };
 
-function axiosFetchFromApiSingleTopic(str_topic) {
+function axiosFetchFromApiSingleTopic(str_topic, num_articles=10) {
 	// Returns the result from a single API request to the newsApi website
 	const grabDate = moment().format("MM/DD/YYYY");
 
 	// Here is where we can determine how many articles to fetch based on the amount of topics
-	const url = `https://newsapi.org/v2/everything?q=${str_topic}&from=${grabDate}&sortBy=publishedAt&apiKey=${process.env.PERSONAL_API_KEY}&pageSize=20`;
+	const url = `https://newsapi.org/v2/everything?q=${str_topic}&from=${grabDate}&sortBy=publishedAt&apiKey=${process.env.PERSONAL_API_KEY}&pageSize=${num_articles}`;
 	return axios.get(url);
 }
