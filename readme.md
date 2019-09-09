@@ -18,12 +18,14 @@
 - #### Headlines
 	- Any user (regardless if they have an account) can view top headlines
 - #### Custom ad hoc topic searches
-	- User can search for news articles by date and by topic
+	- User can search for news articles by date and by a topic
 
 ### Future Feature ideas
 
-- Saving news articles?
+- Saving news articles
+- Saving articles to *favourites*
 - ad hoc custom searches with multiple search topics
+- "read later" list
 
 ### Requirements
 

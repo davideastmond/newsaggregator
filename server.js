@@ -134,6 +134,18 @@ app.get('/user/:id/topics', (req, res) => {
   }
 });
 
+app.get('/user/:id/profile', (req, res) => {
+	/* 
+	This route will display the user's profile page. It will allow the user to change their password
+	*/
+
+	res.send(200).json({ status: 'ok', message: 'to be implemented'});
+});
+
+app.post('user/:id/profile/update', (req, res) => {
+	res.send(200).json({ status: 'ok', message: 'to be implemented'});
+});
+
 app.post('/user/:id/topics/update', (req, res) => {
   if (req.session.session_id) {
 		// This route is responsible for updating the DB with the changes to a user's topics subscription.
