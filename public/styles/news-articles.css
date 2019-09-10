@@ -78,3 +78,42 @@
 .error-message {
 	color: red;
 }
+.mobile {
+	display: none;
+}
+
+@media only screen and (max-width: 700px) {
+	.mobile {
+		display: inline;
+	}
+
+	.article-thumbnail {
+		width: 64px;
+		height: 64px;
+	}
+
+	.article-description-blurb-justify {
+		text-align: justify;
+		text-justify: inter-character;
+	}
+	.dropdown {
+		display: none;
+	}
+}
+
+@media only screen and (max-width: 700px) and (orientation: landscape) {
+	.mobile {
+		display: inline;
+	}
+
+	.article-thumbnail {
+		width: 160px;
+		height: 128px;
+	}
+
+	.article-description-blurb-justify {
+		text-align: justify;
+		text-justify: inter-character;
+	}
+
+}

@@ -25,29 +25,35 @@
 			<a href="/headlines"><p class="lead">Headlines</p></a>
 			<a href="/"><p class="lead">Home</p></a>
 		</div>
-    <h1>Headlines Results</h1>
-    <p class="lead"> The latest headlines. </p>
-    <p class="lead"> Total Results: <%= count %> items  </p>
-    <label for="search-box"> Enter keywords:</label>
-    <input type="text" id="search-box" name="search-box" placeholder="top headlines for <%= country %>"> <button type="button" class="btn btn-primary" id="headlines-submit-new-search">Search Again</button>
-    <div id="articles-master-container">
-      <br>
-      <% articles.forEach((article) => { %>
-        <div class="media">
-          <a href=<%= article.url %>><img class="align-self-center mr-3 article-thumbnail" src= <%= article.urlToImage %> ></a>
-          <div class="media-body">
-            <h5 class="mt-0"><%= article.title %></h5>
-            <p> <%= article.description %></p>
-            <footer>
-            <p> <a href=<%= article.url %>> <%= article.source.name %> </a></p>
-            <p class="label-published-at-date h6"> Published:  </p>
-            </footer>
-          </div>
-          
-        </div>
-      <% }); %>
-    </div>
-  </div>
+	</div>
+	<div id="div-headlines-header">
+		<p class="h1"> The latest headlines. </p>
+		<p class="lead"> Total Results: <%= count %> items  </p>
+		<div>
+			<label for="search-box"> Enter keywords:</label>
+		</div>
+		<div>
+			<input type="text" id="search-box" name="search-box" placeholder="top headlines for <%= country %>"> <button type="button" class="btn btn-primary" id="headlines-submit-new-search">Search Again</button>
+		</div>
+	</div>
+	<div id="articles-master-container">
+		<br>
+		<% articles.forEach((article) => { %>
+			<div class="media">
+				<a href=<%= article.url %>><img class="align-self-center mr-3 article-thumbnail" src= <%= article.urlToImage %> ></a>
+				<div class="media-body">
+					<h5 class="mt-0"><%= article.title %></h5>
+					<p class="article-description-blurb-justify"> <%= article.description %></p>
+					<footer>
+					<p> <a href=<%= article.url %>> <%= article.source.name %> </a></p>
+					<p class="label-published-at-date h6"> Published:  </p>
+					</footer>
+				</div>
+				
+			</div>
+		<% }); %>
+	</div>
+  
   <script>
     const pubDate = moment().format("MM/DD/YYYY");
     $(".label-published-at-date").text(`Published: ${pubDate}`);
