@@ -158,8 +158,7 @@ app.post('/user/:id/topics/update', (req, res) => {
 	
     // We have an array of new topics for the user. We need to hit the database. Reference by email
     dbFunctions.updateTopicListForUser(updateData).then((result) => {
-			//console.log(result);
-			res.status(200).json({ status: 'successfully added' });
+			res.redirect(`/users/${req.session.session_idd}/feed`);
 		})
 		.catch((error) => {
 		

@@ -12,6 +12,8 @@
 	- cookies are used to keep track of log-in state
 	- relational database used to keep track of user accounts
 	- password hashing and validation
+		#### User Profile
+		- Users can change their password *(in progress)*
 - #### User custom news feed:
 	- users can add/remove news topic subscriptions.
 	- users can view their custom feed which is populated by news articles *(in progress)*
