@@ -138,8 +138,11 @@ app.get('/user/:id/profile', (req, res) => {
 	/* 
 	This route will display the user's profile page. It will allow the user to change their password
 	*/
-
-	res.send(200).json({ status: 'ok', message: 'to be implemented'});
+	if (req.session.session_id) {
+		res.send(200).json({ status: 'ok', message: 'to be implemented'});
+	} else {
+		res.redirect('/login');
+	}
 });
 
 app.post('user/:id/profile/update', (req, res) => {
@@ -182,7 +185,7 @@ app.post("/register", (req, res) => {
     const user = {
       email: req.body.emailAddr,
       password: hashedPassword,
-      is_registered: true,
+      is_registered: true,	
     };
 
     if (!helperFunctions.passwordMeetsSecurityRequirements(req.body.passwordOne)) {
@@ -192,17 +195,14 @@ app.post("/register", (req, res) => {
     
     // Call function to insert a new user into the user table in the DB
     dbFunctions.registerUser({ user: user }).then(() => {
-    // Set a cookie to the user
-    req.session.session_id = req.body.emailAddr; 
-    
-    // Re-direct to page where we can set a user's topics (GET Request))
-    
-    res.status(200).json({ response: `/user/${req.session.session_id}/topics` });
-    })
-    .catch((pError) => {
-      console.log(pError.code);
-      res.status(400).send({ responseJSON: pError.error || "Generic error message register user" });
+			// Set a cookie to the user
+			req.session.session_id = req.body.emailAddr; 
+			
+			// Re-direct to page where we can set a user's topics (GET Request))
+			
+			res.status(200).json({ response: `/user/${req.session.session_id}/topics` });
     });
+    
   });
 });
 
@@ -218,8 +218,6 @@ app.post("/login", (req, res) => {
       // They should be forwarded to their landing page - which user users/:id/feed
       res.redirect(`/user/${req.session.session_id}/feed`);
     } else {
-      //res.status(401).send({ error: 'unable to authenticate login' });
-      
       res.render('login.ejs', { message: "Invalid username / password" });
     }
   }).catch((err) => {
@@ -242,7 +240,7 @@ app.listen(PORT, () => {
 Object.defineProperty(Array.prototype, 'flat', {
 	value: function(depth = 1) {
 		return this.reduce(function (flat, toFlatten) {
-			return flat.concat((Array.isArray(toFlatten) && (depth>1)) ? toFlatten.flat(depth-1) : toFlatten);
+			return flat.concat((Array.isArray(toFlatten) && (depth > 1)) ? toFlatten.flat(depth - 1) : toFlatten);
 		}, []);
 	}
 });
