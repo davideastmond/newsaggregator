@@ -2,7 +2,7 @@
 
 ### About
 
-- This is a full-stack news aggregator web app.
+- This is a full-stack news aggregator web app using JavaScript, HTML, CSS, jQuery, node and express.
 
 ### Features
 
@@ -29,10 +29,11 @@
 - Saving articles to *favorites*
 - ad hoc custom searches with multiple search topics
 - "read later" list
+- testing of routes
 
 ### Requirements
 
-- This app uses [!NewsAPI](https://newsapi.org/) to grab news articles. You'll need to obtain your own API key for their service. Once obtained, include the key in your `.env` file
+- This app uses ![NewsAPI](https://newsapi.org/) to grab news articles. You'll need to obtain your own API key for their service. Once obtained, include the key in your `.env` file
 
 ### How to Use
 
