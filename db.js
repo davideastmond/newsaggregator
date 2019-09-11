@@ -1,10 +1,12 @@
 dbConnectString = require('./knexfile');
 const knex = require('knex')(dbConnectString.development);
 const bcrypt = require('bcrypt');
+const helperFunctions = require('./helper');
 
 // These are going to be our database functions
 module.exports = {
   registerUser: (registrationData) => {
+		// TODO: To be re-factored
     return knex('user')
     .returning('id')
     .insert(registrationData.user);
@@ -72,7 +74,35 @@ module.exports = {
         resolve(first_result);
       });
     });
-  }
+	},
+	updateUserPassword: (newData) => {
+		return new Promise((resolve, reject) => {
+			// First we make sure the password meets security requirements
+			if (!helperFunctions.passwordMeetsSecurityRequirements(newData.rawPassword)) {
+				// Reject, as it doesn't meet requirements
+				reject({ error: 'Password does not meet security requirements'});
+				return;
+			}
+			
+			// if the password has cleared requirements, hash it.
+			helperFunctions.hashPasswordAsync(newData.rawPassword)
+			.then((hashedPassword) => {
+				// Now we have the hashed password. Update the database
+				knex('user').where({ email: newData.forUser })
+				.update({password: hashedPassword})
+				.returning(['id', 'email', 'password'])
+				.then((result) => {
+					resolve({ returning: result, message: 'ok'});
+					return;
+				})
+				.catch((error) => {
+					reject({ error: error, message: 'unable to update password in database'});
+				});
+			});
+
+		});
+		
+	}
 };
 
 function createListOfTopicsToBeInsertedIntoDB(listFromDB, topicsToLookUp) {

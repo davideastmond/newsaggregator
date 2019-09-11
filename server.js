@@ -146,9 +146,20 @@ app.get('/user/:id/profile', (req, res) => {
   }
 });
 
-app.post('user/:id/profile/update', (req, res) => {
+app.post('/user/:id/profile/update', (req, res) => {
+	// This route handles password changes
+
   if (req.session.session_id) {
-    res.send(200).json({ status: 'ok', message: 'to be implemented'});
+		// Database request. This essentially updates the user's password
+		dbFunctions.updateUserPassword({ forUser: req.session.session_id, rawPassword: req.body.pwdone })
+		.then((result) => {
+			console.log("Update user password resulting data, ", result);
+			// Send a good response
+			res.status(200).json({ status: 'ok', newURL: "#"}); // 
+		})
+		.catch((error) => {
+			res.status(400).json( { error: error, message: 'Unable to update the password '});
+		});
   } else {
     res.redirect('/login');
   }
@@ -182,8 +193,12 @@ app.post("/register", (req, res) => {
   if (req.session.session_id) {
     res.status(400).send({ response: 'user should log out first before registering'});
     return;
-  }
-
+	}
+	if (!helperFunctions.passwordMeetsSecurityRequirements(req.body.passwordOne)) {
+		res.status(400).send({ error: 'password requirements are not met '});
+		return;
+	}
+	// TODO: This needs to be re-factored (separated out)
   helperFunctions.hashPasswordAsync(req.body.passwordOne)
   .then((hashedPassword) => {
     const user = {
@@ -192,20 +207,14 @@ app.post("/register", (req, res) => {
       is_registered: true,	
     };
 
-    if (!helperFunctions.passwordMeetsSecurityRequirements(req.body.passwordOne)) {
-      res.status(400).send({ error: 'password requirements are not met '});
-      return;
-    }
+    
     
     // Call function to insert a new user into the user table in the DB
     dbFunctions.registerUser({ user: user }).then((data) => {
       // Set a cookie to the user
       req.session.session_id = req.body.emailAddr; 
-			
-			console.log("204 what data", data);
 			req.session.database_id = data[0];
       // Re-direct to page where we can set a user's topics (GET Request))
-      
       res.status(200).json({ response: `/user/${req.session.session_id}/topics` });
     });
     
