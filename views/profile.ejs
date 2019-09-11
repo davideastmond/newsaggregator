@@ -23,7 +23,7 @@
   </div>
   <div id="div-profile-edit-password">
     <h4>Change Password</h4>
-    <form id="profile-update-password-change-form">
+    <form id="profile-update-password-change-form" method="POST" action="/user/user/profile/update" >
       <div class="form-group">
         <label for="change-password-box-one">New Password:</label>
         <input type="password" class="form-control" name= "pwdone" id="change-password-box-one" placeholder="Password">
@@ -32,10 +32,12 @@
         <label for="change-password-box-two">New Password:</label>
         <input type="password" class="form-control" name= "pwdtwo" id="change-password-box-two" placeholder="Confirm New Password">
       </div>
+      <div class="form-group">
+        <button type="submit" class="form-control btn btn-primary">Update</button>
+      </div>
     </form>
   </div>
   <div id="div-edit-topics">
-      <h4>Update Your topics</h4>
-    <a class="lead" href="/user/user/topics">Topics</a>
+	   <a class="lead" href="/user/user/topics">Change your topics</a>
   </div>
 </body>

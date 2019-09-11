@@ -1,0 +1,10 @@
+
+#div-profile-edit-password {
+	width: 50%;
+}
+
+@media only screen and (width: 700px) {
+	#div-profile-edit-password {
+		width: 100%;
+	}
+}

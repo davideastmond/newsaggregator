@@ -47,7 +47,8 @@ exports.seed = function(knex) {
       .then(() => {
         return Promise.all([
           knex.raw('ALTER SEQUENCE topic_id_seq RESTART WITH 11;'),
-          knex.raw('ALTER SEQUENCE user_topic_id_seq RESTART WITH 14;')
+					knex.raw('ALTER SEQUENCE user_topic_id_seq RESTART WITH 14;'),
+					knex.raw('ALTER SEQUENCE user_id_seq RESTART WITH 4;')
         ]);
       });
     });

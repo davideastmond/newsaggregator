@@ -98,20 +98,20 @@ app.get("/register", (req, res) => {
 app.get('/user/:id/feed', (req, res) => {
   if (req.session.session_id) {
     // render the page - will have to hit the database and get the user's topic feed
-		// This won't be topics.ejcs - but instead a call to the api and live result. 
-		
-		dbFunctions.getUserTopics({ email: req.session.session_id }).then((resultingData) => {
-			//console.log("98 resulting data", resultingData);
-			helperFunctions.doTopicsAxiosFetchRequest({ userTopics: resultingData, db_id: req.session.database_id }).then((fetchResults) => {
-				// Once we get our results, we need to render the page for the user
+    // This won't be topics.ejcs - but instead a call to the api and live result. 
+    
+    dbFunctions.getUserTopics({ email: req.session.session_id }).then((resultingData) => {
+      //console.log("98 resulting data", resultingData);
+      helperFunctions.doTopicsAxiosFetchRequest({ userTopics: resultingData, db_id: req.session.database_id }).then((fetchResults) => {
+        // Once we get our results, we need to render the page for the user
 
-				const dataArticles = helperFunctions.compileAPIFetchData(fetchResults);
-				
-				//console.log("FETCH RESULTS", fetchResults[0].data.articles);
-				res.render('feed.ejs', { uId: req.session.session_id, data: resultingData, arrayCount: dataArticles.length, data_articles: dataArticles.flat() } );
-				//res.status(200).json({ email: req.session.session_id, data: resultingData, arrayCount: dataArticles.length, data_articles: dataArticles.flat() });
-			});
-		});
+        const dataArticles = helperFunctions.compileAPIFetchData(fetchResults);
+        
+        //console.log("FETCH RESULTS", fetchResults[0].data.articles);
+        res.render('feed.ejs', { uId: req.session.session_id, data: resultingData, arrayCount: dataArticles.length, data_articles: dataArticles.flat() } );
+        //res.status(200).json({ email: req.session.session_id, data: resultingData, arrayCount: dataArticles.length, data_articles: dataArticles.flat() });
+      });
+    });
     
   } else {
     res.redirect("/login");
@@ -120,15 +120,15 @@ app.get('/user/:id/feed', (req, res) => {
 
 app.get('/user/:id/topics', (req, res) => {
   if (req.session.session_id) {
-		/* 
-		This is the topics configuration page.
+    /* 
+    This is the topics configuration page.
     This route needs to hit the database and pull all of the topics associated with the user
     We plug the results into the ejs view variable for display.
     */
-   
-		dbFunctions.getUserTopics({ email: req.session.session_id }).then((result) => {
-			res.render('topics.ejs', { email: req.params.id, topics: result, logged_in: true, uId: req.session.session_id });
-		});
+  
+    dbFunctions.getUserTopics({ email: req.session.session_id }).then((result) => {
+      res.render('topics.ejs', { email: req.params.id, topics: result, logged_in: true, uId: req.session.session_id });
+    });
     
   } else {
     res.redirect('/login');
@@ -136,35 +136,39 @@ app.get('/user/:id/topics', (req, res) => {
 });
 
 app.get('/user/:id/profile', (req, res) => {
-	/* 
-	This route will display the user's profile page. It will allow the user to change their password
-	*/
-	if (req.session.session_id) {
-		res.render('profile.ejs', { uId: req.session.session_id });
-	} else {
-		res.redirect('/login');
-	}
+  /* 
+  This route will display the user's profile page. It will allow the user to change their password
+  */
+  if (req.session.session_id) {
+    res.render('profile.ejs', { uId: req.session.session_id });
+  } else {
+    res.redirect('/login');
+  }
 });
 
 app.post('user/:id/profile/update', (req, res) => {
-	res.send(200).json({ status: 'ok', message: 'to be implemented'});
+  if (req.session.session_id) {
+    res.send(200).json({ status: 'ok', message: 'to be implemented'});
+  } else {
+    res.redirect('/login');
+  }
 });
 
 app.post('/user/:id/topics/update', (req, res) => {
   if (req.session.session_id) {
-		// This route is responsible for updating the DB with the changes to a user's topics subscription.
-		
-		const updateData = { email: req.session.session_id, database_id: req.session.database_id, topicArray: JSON.parse(req.body.topics) };
-	
+    // This route is responsible for updating the DB with the changes to a user's topics subscription.
+    const updateData = { email: req.session.session_id, database_id: req.session.database_id, topicArray: JSON.parse(req.body.topics) };
+  
     // We have an array of new topics for the user. We need to hit the database. Reference by email
     dbFunctions.updateTopicListForUser(updateData).then((result) => {
-			res.redirect(`/users/${req.session.session_idd}/feed`);
-		})
-		.catch((error) => {
-		
-			res.status(500).json({status: 'unable to update the database'});
-		});
-		
+			console.log("164 - update topics to database");
+      res.status(200).json({response: 'ok'});
+    })
+    .catch((error) => {
+    
+      res.status(500).json({status: 'unable to update the database'});
+    });
+    
   } else {
     res.redirect("/");
   }
@@ -194,13 +198,15 @@ app.post("/register", (req, res) => {
     }
     
     // Call function to insert a new user into the user table in the DB
-    dbFunctions.registerUser({ user: user }).then(() => {
-			// Set a cookie to the user
-			req.session.session_id = req.body.emailAddr; 
+    dbFunctions.registerUser({ user: user }).then((data) => {
+      // Set a cookie to the user
+      req.session.session_id = req.body.emailAddr; 
 			
-			// Re-direct to page where we can set a user's topics (GET Request))
-			
-			res.status(200).json({ response: `/user/${req.session.session_id}/topics` });
+			console.log("204 what data", data);
+			req.session.database_id = data[0];
+      // Re-direct to page where we can set a user's topics (GET Request))
+      
+      res.status(200).json({ response: `/user/${req.session.session_id}/topics` });
     });
     
   });
@@ -213,8 +219,8 @@ app.post("/login", (req, res) => {
   dbFunctions.verifyLogin(verificationObject).then((result)=> {
     if (result.success) {
       // Set a cookie
-			req.session.session_id = req.body.email;
-			req.session.database_id = result.db_id;
+      req.session.session_id = req.body.email;
+      req.session.database_id = result.db_id;
       // They should be forwarded to their landing page - which user users/:id/feed
       res.redirect(`/user/${req.session.session_id}/feed`);
     } else {
@@ -238,9 +244,9 @@ app.listen(PORT, () => {
 });
 
 Object.defineProperty(Array.prototype, 'flat', {
-	value: function(depth = 1) {
-		return this.reduce(function (flat, toFlatten) {
-			return flat.concat((Array.isArray(toFlatten) && (depth > 1)) ? toFlatten.flat(depth - 1) : toFlatten);
-		}, []);
-	}
+  value: function(depth = 1) {
+    return this.reduce(function (flat, toFlatten) {
+      return flat.concat((Array.isArray(toFlatten) && (depth > 1)) ? toFlatten.flat(depth - 1) : toFlatten);
+    }, []);
+  }
 });

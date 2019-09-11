@@ -5,7 +5,9 @@ const bcrypt = require('bcrypt');
 // These are going to be our database functions
 module.exports = {
   registerUser: (registrationData) => {
-    return knex('user').insert(registrationData.user);
+    return knex('user')
+    .returning('id')
+    .insert(registrationData.user);
   },
   
   verifyLogin: (loginData) => {
@@ -106,7 +108,7 @@ function insertTopic(string_topic) {
 
 function update_user_topic_table(user_data) {
   return new Promise((resolve, reject) => {
-    console.log("Line 104 Update user table hit");
+    console.log("Line 109 Update user table hit");
     // Refresh and get a current state of the topics database. Then we delete all of the entries for the matching user_id in the user_topic table
     // and then re-add a refresh collection of topics for the user
     knex.select().table('topic').then((topics_from_db) => {

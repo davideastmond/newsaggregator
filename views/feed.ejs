@@ -28,13 +28,13 @@
     <% if (data_articles.length > 0) { %>
       <!-- Render the list, else, return a statement that says, 'no articles found-->
       <% data_articles.forEach((article) => { %>
-        <div class="media">
+        <div class="media padded-media">
           <img class="align-self-center mr-3 article-thumbnail" src= <%= article.urlToImage %>>
           <div class="media-body">
             <h5 class="mt-0"><%= article.title %></h5>
             <p> <%= article.description %></p>
             <footer>
-              <p> <a href=<%= article.url %>> <%= article.source.name %> </a></p>
+              <p> <a href=<%= article.url %> target="_blank"> <%= article.source.name %> </a></p>
             </footer>
           </div>
         </div>

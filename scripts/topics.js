@@ -122,6 +122,6 @@ function respondToSuccess (data) {
 	// re-enables button and logs response
 	$("#save-topic-button").attr('disabled', false); 
 	console.log(data.status);
-
+	window.location = "/user/user/feed";
 	// Redirect to user feed
 }
