@@ -34,6 +34,7 @@
 
 ### What it looks like
 
+![Log in screen](https://github.com/davideastmond/newsaggregator/blob/master/docs/news_agg_login_01.png)
 
 
 ### Requirements
