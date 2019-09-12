@@ -36,7 +36,12 @@ function rebuildTopicList(iTopics) {
     let $topicElement = makeIndividualTopicListItem(elementTopic, index);
     $("#ul-topics").append($topicElement);
 	});
-	console.log("DOM elements after rebuild", getTopicListFromDOM());
+	
+	if (iTopics.length > 0) {
+		$("#label-no-topics-found").css('display', 'none');
+	} else {
+		$("#label-no-topics-found").css('display', 'block');
+	}
 }
 
 function makeIndividualTopicListItem(itemName, i_index) {

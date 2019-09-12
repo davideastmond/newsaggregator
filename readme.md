@@ -2,28 +2,27 @@
 
 ### About
 
-- This is a full-stack news aggregator web app using JavaScript, HTML, CSS, jQuery, node, express and postgreSQL
+- This is a full-stack news aggregator web app using JavaScript, HTML, CSS, jQuery, node, express and postgreSQL.
 
 ### Features
 
 - #### User accounts and log-ins: 
-  - users can create accounts
+  - users can create accounts.
   - users can log-in and out of the system. 
-  - cookies are used to keep track of a user's log-in state
-  - relational database used to keep track of user accounts
-  - password hashing and validation
+  - cookies are used to keep track of a user's log-in state.
+  - relational database used to keep track of user accounts.
+  - password hashing and validation.
     #### User Profile
     - Users can change their password *(in progress)*
 - #### User custom news feed:
   - users can add/remove news topic subscriptions.
-  - users can view their custom feed which is populated by news articles *(in progress)*
-  - relational database used to keep track of topics and topics associated with a user's subscription
+  - users can view their custom news feed based on their chosen topics.
+  - relational database used to keep track of topics and topics associated with a user's subscription.
 - #### Headlines
-  - Any user (regardless of account) can view the latest headlines
+  - Any user (regardless if signed in) can view the latest headlines.
 - #### Custom ad hoc topic searches
-  - User can search for news articles by date and by topic
+  - Any user (regardless if signed in) can search for news articles by date and by topic.
 - #### UI Responsive
-  - *in progress*
 
 ### Future Feature ideas
 
@@ -32,6 +31,10 @@
 - ad hoc custom searches with multiple search topics
 - "read later" list
 - testing of routes
+
+### What it looks like
+
+
 
 ### Requirements
 
@@ -45,8 +48,8 @@
 - Download or use moment.js CDN for client side
 - Create a .ENV file in the app folder (more below)
 
-- Download the latest version of PostgreSQL
-- Initialize a knex profile using `[coming soon]`
+- Download and install the latest version of PostgreSQL
+- Initialize a knex file using `[coming soon]`
 - Run the latest migration using `knex migrate:latest`
 - Optional: seed the db using `knex seed:run`
 - Run the server using `npm start`
@@ -55,16 +58,17 @@
 
 ### Dependencies
 
-- node.js
-- express.js
+- axios
+- bcrypt
 - body-parser
 - bootstrap
-- bcrypt
-- dotenv
-- axios
-- moment.js
-- cookie-session
 - cookie-parser
+- cookie-session
+- dotenv
+- express.js
+- knex.js
+- moment.js
+- node.js
 
 ### .ENV file
 
