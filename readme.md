@@ -8,7 +8,7 @@
 
 - #### User accounts and log-ins: 
   - users can create accounts.
-  - users can log-in and out of the system. 
+  - users can log in and out of the system. 
   - cookies are used to keep track of a user's log-in state.
   - relational database used to keep track of user accounts.
   - password hashing and validation.
