@@ -35,14 +35,10 @@
 			success: function(responseData) {
 				window.location = responseData.response;
 			},
-      	
-      done: (zdata) => {
-        console.log("zdata", zdata);
-      },
       error: (err) => {
         console.log("Line 40 ERROR", err);
         if (err) {
-          $("#validation-error-space").text(err.responseJSON || "Error registering account.").css('display', 'block').css('color', 'red');
+          $("#validation-error-space").text(err.error.message || "Error registering account.").css('display', 'block').css('color', 'red');
         }
       }
     });

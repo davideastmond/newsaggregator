@@ -1,6 +1,7 @@
 
-#div-profile-edit-password {
+#div-profile-edit-password, #div-edit-topics {
 	width: 50%;
+	margin-left: 1.5em;
 }
 
 @media only screen and (width: 700px) {

@@ -187,38 +187,26 @@ app.post('/user/:id/topics/update', (req, res) => {
 });
 // Receiving sign-up data.
 app.post("/register", (req, res) => {
-  
-  // console.log(req.body.emailAddr, req.body.passwordOne, req.body.passwordTwo);
-  // Has the password, then create an object to insert into the db
+	
+	// If there is a current session, user must log out
   if (req.session.session_id) {
     res.status(400).send({ response: 'user should log out first before registering'});
     return;
 	}
-	if (!helperFunctions.passwordMeetsSecurityRequirements(req.body.passwordOne)) {
-		res.status(400).send({ error: 'password requirements are not met '});
-		return;
-	}
-	// TODO: This needs to be re-factored (separated out)
-  helperFunctions.hashPasswordAsync(req.body.passwordOne)
-  .then((hashedPassword) => {
-    const user = {
-      email: req.body.emailAddr,
-      password: hashedPassword,
-      is_registered: true,	
-    };
 
-    
-    
-    // Call function to insert a new user into the user table in the DB
-    dbFunctions.registerUser({ user: user }).then((data) => {
-      // Set a cookie to the user
-      req.session.session_id = req.body.emailAddr; 
-			req.session.database_id = data[0];
-      // Re-direct to page where we can set a user's topics (GET Request))
-      res.status(200).json({ response: `/user/${req.session.session_id}/topics` });
-    });
-    
-  });
+	dbFunctions.registerUser({ email: req.body.emailAddr, password: req.body.passwordOne, is_registered: true})
+	.then((result) => {
+		
+		// Assign the session_id / database_id
+		
+		req.session.session_id = result.response[0].email;
+		req.session.database_id = result.response[0].id;
+		res.status(200).json({ response: `/user/${req.session.session_id}/topics` });
+		return;
+	})
+	.catch((error) => {
+		res.status(400).send({ error: error.message, message: 'Error registering user'});
+	});
 });
 
 app.post("/login", (req, res) => {

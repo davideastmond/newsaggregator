@@ -6,10 +6,35 @@ const helperFunctions = require('./helper');
 // These are going to be our database functions
 module.exports = {
   registerUser: (registrationData) => {
+		// first check to see if password meets security requirements
+		return new Promise((resolve, reject) => {
+			if (!helperFunctions.passwordMeetsSecurityRequirements(registrationData.password)) {
+				reject({error: 'password does not meet security requirements'});
+				return;
+			}
+
+			// Next we'll hash the password
+			helperFunctions.hashPasswordAsync((registrationData.password))
+			.then((hashedPassword) => {
+				// Once password is hashed, insert everything into the databse
+				knex('user').insert({ email: registrationData.email, password: hashedPassword, is_registered: true, has_chosen_topics: false })
+				.returning(['id', 'email', 'is_registered', 'has_chosen_topics'])
+				.then((result) => {
+					resolve({ response: result, message: 'successful insertion into database' });
+					return;
+				})
+				.catch((error) => {
+					reject({message: error });
+					return;
+				})
+			});
+		});
+		
+
 		// TODO: To be re-factored
-    return knex('user')
-    .returning('id')
-    .insert(registrationData.user);
+    // return knex('user')
+    // .returning('id')
+    // .insert(registrationData.user);
   },
   
   verifyLogin: (loginData) => {
