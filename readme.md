@@ -13,7 +13,7 @@
   - relational database used to keep track of user accounts.
   - password hashing and validation.
     #### User Profile
-    - Users can change their password *(in progress)*
+    - Users can change their password
 - #### User custom news feed:
   - users can add/remove news topic subscriptions.
   - users can view their custom news feed based on their chosen topics.
@@ -41,13 +41,13 @@
 ![Update topics](https://github.com/davideastmond/newsaggregator/blob/master/docs/pick_topics_04.png)
 ### Requirements
 
-- This app uses ![NewsAPI](https://newsapi.org/) to grab news articles. You'll need to obtain your own API key for their service. Once obtained, include the key in your `.env` file
+- This app uses [!NewsAPI](https://newsapi.org/) to grab news articles. You'll need to obtain your own API key for their service. Once obtained, include the key in your `.env` file
 
 ### How to Use
 
 - Clone or fork the project.
 - Run `npm i` to install all required packages
-- Obtain your own api key from ![NewsAPI](https://newsapi.org/)
+- Obtain your own api key from [!NewsAPI](https://newsapi.org/)
 - Download or use moment.js CDN for client side
 - Create a .ENV file in the app folder (more below)
 
