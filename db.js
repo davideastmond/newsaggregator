@@ -8,13 +8,13 @@ module.exports = {
   registerUser: (registrationData) => {
 		// first check to see if password meets security requirements
 		return new Promise((resolve, reject) => {
-			if (!helperFunctions.passwordMeetsSecurityRequirements(registrationData.password)) {
+			if (!helperFunctions.passwordMeetsSecurityRequirements({ first: registrationData.first_password, second: registrationData.second_password })) {
 				reject({error: 'password does not meet security requirements'});
 				return;
 			}
 
 			// Next we'll hash the password
-			helperFunctions.hashPasswordAsync((registrationData.password))
+			helperFunctions.hashPasswordAsync((registrationData.first_password))
 			.then((hashedPassword) => {
 				// Once password is hashed, insert everything into the databse
 				knex('user').insert({ email: registrationData.email, password: hashedPassword, is_registered: true, has_chosen_topics: false })
@@ -26,15 +26,9 @@ module.exports = {
 				.catch((error) => {
 					reject({message: error });
 					return;
-				})
+				});
 			});
 		});
-		
-
-		// TODO: To be re-factored
-    // return knex('user')
-    // .returning('id')
-    // .insert(registrationData.user);
   },
   
   verifyLogin: (loginData) => {
@@ -103,14 +97,14 @@ module.exports = {
 	updateUserPassword: (newData) => {
 		return new Promise((resolve, reject) => {
 			// First we make sure the password meets security requirements
-			if (!helperFunctions.passwordMeetsSecurityRequirements(newData.rawPassword)) {
+			if (!helperFunctions.passwordMeetsSecurityRequirements({first: newData.first_password, second: newData.second_password })) {
 				// Reject, as it doesn't meet requirements
 				reject({ error: 'Password does not meet security requirements'});
 				return;
 			}
 			
 			// if the password has cleared requirements, hash it.
-			helperFunctions.hashPasswordAsync(newData.rawPassword)
+			helperFunctions.hashPasswordAsync(newData.first_password)
 			.then((hashedPassword) => {
 				// Now we have the hashed password. Update the database
 				knex('user').where({ email: newData.forUser })

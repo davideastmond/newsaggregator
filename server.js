@@ -98,18 +98,14 @@ app.get("/register", (req, res) => {
 app.get('/user/:id/feed', (req, res) => {
   if (req.session.session_id) {
     // render the page - will have to hit the database and get the user's topic feed
-    // This won't be topics.ejcs - but instead a call to the api and live result. 
+    // This won't be topics.ejs - but instead a call to the api and live result. 
     
     dbFunctions.getUserTopics({ email: req.session.session_id }).then((resultingData) => {
-      //console.log("98 resulting data", resultingData);
-      helperFunctions.doTopicsAxiosFetchRequest({ userTopics: resultingData, db_id: req.session.database_id }).then((fetchResults) => {
+      helperFunctions.doTopicsAxiosFetchRequest({ userTopics: resultingData, db_id: req.session.database_id })
+      .then((fetchResults) => {
         // Once we get our results, we need to render the page for the user
-
         const dataArticles = helperFunctions.compileAPIFetchData(fetchResults);
-        
-        //console.log("FETCH RESULTS", fetchResults[0].data.articles);
         res.render('feed.ejs', { uId: req.session.session_id, data: resultingData, arrayCount: dataArticles.length, data_articles: dataArticles.flat() } );
-        //res.status(200).json({ email: req.session.session_id, data: resultingData, arrayCount: dataArticles.length, data_articles: dataArticles.flat() });
       });
     });
     
@@ -147,19 +143,19 @@ app.get('/user/:id/profile', (req, res) => {
 });
 
 app.post('/user/:id/profile/update', (req, res) => {
-	// This route handles password changes
+  // This route handles password changes
 
   if (req.session.session_id) {
-		// Database request. This essentially updates the user's password
-		dbFunctions.updateUserPassword({ forUser: req.session.session_id, rawPassword: req.body.pwdone })
-		.then((result) => {
-			console.log("Update user password resulting data, ", result);
-			// Send a good response
-			res.status(200).json({ status: 'ok', newURL: "#"}); // 
-		})
-		.catch((error) => {
-			res.status(400).json( { error: error, message: 'Unable to update the password '});
-		});
+    // Database request. This essentially updates the user's password
+    dbFunctions.updateUserPassword({ forUser: req.session.session_id, first_password: req.body.pwdone, 
+    second_password: req.body.pwdtwo })
+    .then((result) => {
+      // Send a good response
+      res.status(200).json({ status: 'ok', newURL: "#"}); // 
+    })
+    .catch((error) => {
+      res.status(400).json( { error: error, message: 'Unable to update the password '});
+    });
   } else {
     res.redirect('/login');
   }
@@ -172,41 +168,39 @@ app.post('/user/:id/topics/update', (req, res) => {
   
     // We have an array of new topics for the user. We need to hit the database. Reference by email
     dbFunctions.updateTopicListForUser(updateData).then((result) => {
-			console.log("164 - update topics to database");
       res.status(200).json({response: 'ok'});
     })
     .catch((error) => {
-    
       res.status(500).json({status: 'unable to update the database'});
     });
-    
   } else {
     res.redirect("/");
   }
-  
 });
 // Receiving sign-up data.
 app.post("/register", (req, res) => {
-	
-	// If there is a current session, user must log out
+  
+  // If there is a current session, user must log out
   if (req.session.session_id) {
     res.status(400).send({ response: 'user should log out first before registering'});
     return;
-	}
+  }
 
-	dbFunctions.registerUser({ email: req.body.emailAddr, password: req.body.passwordOne, is_registered: true})
-	.then((result) => {
-		
-		// Assign the session_id / database_id
-		
-		req.session.session_id = result.response[0].email;
-		req.session.database_id = result.response[0].id;
-		res.status(200).json({ response: `/user/${req.session.session_id}/topics` });
-		return;
-	})
-	.catch((error) => {
-		res.status(400).send({ error: error.message, message: 'Error registering user'});
-	});
+
+  dbFunctions.registerUser({ email: req.body.emailAddr, first_password: req.body.passwordOne, 
+    second_password: req.body.passwordTwo,
+     is_registered: true})
+  .then((result) => {
+    
+    // Assign the session_id / database_id
+    req.session.session_id = result.response[0].email;
+    req.session.database_id = result.response[0].id;
+    res.status(200).json({ response: `/user/${req.session.session_id}/topics` });
+    return;
+  })
+  .catch((error) => {
+    res.status(400).send({ error: error.message, message: 'Error registering user'});
+  });
 });
 
 app.post("/login", (req, res) => {
@@ -229,8 +223,6 @@ app.post("/login", (req, res) => {
   });
 });
 
-
-// TODO: this should be a post request
 app.post("/logout", (req, res) => {
   req.session.session_id = null;
   res.render("home.ejs", { logged_in: false, uId: null });
