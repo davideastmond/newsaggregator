@@ -78,7 +78,7 @@ app.get("/headlines", (req, res)=> {
     res.render('headlines.ejs', { articles: response.data.articles, uId: req.session.session_id, count: response.data.articles.length, country: req.query.country || "us", logged_in: req.session.session_id || false });
 	})
 	.catch((error) => {
-		res.status(400).send({error: error});
+		res.status(400).send({error: error, message: "Unable to retrieve"});
 	});
   
 });
