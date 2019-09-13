@@ -54,15 +54,10 @@ module.exports = {
 
   getUserTopics: (userData) => {
     // Get all topics a user is subscribed to
-    return new Promise((resolve, reject) => {
-      knex.select('email', 'name').from('user as U')
+    return knex.select('email', 'name').from('user as U')
       .innerJoin('user_topic as UT', 'U.id', 'UT.user_id')
       .innerJoin('topic as T', 'UT.topic_id', 'T.id')
-      .where('U.email', userData.email)
-      .then((result) => {
-        resolve(result);
-      });
-    });
+      .where('U.email', userData.email);
   },
 
   updateTopicListForUser: (inputData) => {
@@ -81,7 +76,7 @@ module.exports = {
           insertNewTopicsIntoDB(insertList).then((resulting) => {
             update_user_topic_table(inputData).then((resulting_again)=> {
               // Send some kind of response
-              console.log("62-- resulting again after insertList", resulting_again);
+             
             });
           });
         } else {
@@ -127,7 +122,7 @@ module.exports = {
 function createListOfTopicsToBeInsertedIntoDB(listFromDB, topicsToLookUp) {
   // This will return two objects
   let finalList = [];
-  console.log(listFromDB);
+ 
   topicsToLookUp.forEach((topicElement) => {
     let foundElement = !listFromDB.find((el) => {
       return el.name === topicElement;
@@ -157,7 +152,7 @@ function insertTopic(string_topic) {
 
 function update_user_topic_table(user_data) {
   return new Promise((resolve, reject) => {
-    console.log("Line 109 Update user table hit");
+    
     // Refresh and get a current state of the topics database. Then we delete all of the entries for the matching user_id in the user_topic table
     // and then re-add a refresh collection of topics for the user
     knex.select().table('topic').then((topics_from_db) => {

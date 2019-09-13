@@ -22,7 +22,7 @@ document.getElementById("news-query-form").onsubmit = (e) => {
   xhr.onreadystatechange = () => {
     if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200 ) {
       // Load the page once we get a response
-      console.log("URL", xhr.responseURL);
+     
       window.location.href = xhr.responseURL;
      
     }

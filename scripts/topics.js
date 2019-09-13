@@ -1,47 +1,37 @@
 // This module handles the topics list and sending data re: the list to the server
 
 $(document).ready(function() {
-		// Delete button clicked
-		
     $(".delete-button").click((e) => {
-			processDeleteTopic_Click(e);
-			
+      processDeleteTopic_Click(e);
     });
 
-    // Add topic button clicked
     $("#add-topic-button").click((e) => {
       processAddTopic_Click(e);
     });
 
     // Save the new topics by means of a post request to server
     $("#save-topic-button").click((e) => {
-      // Ajax request like
       saveTopicDataToServer();
+    });
+    
+    $("#btn-clear-button").click((e) => {
+      clearTopicContainer();
     });
 });
 
 function rebuildTopicList(iTopics) {
-
-  // This method is going to reconstruct the list of topics. 
-  // Input is an array of strings, (each a topic)
-
-  // First we clear the container
-  const lb = $(".list-group-item").detach();
-
-  // Bind click events to the list group item (TODO: not sure if needed)
-  $(".list-group-item").bind('click', processDeleteTopic_Click);
-
+  clearTopicContainer();
   // Iterate through each topic and create an HTML element li with an embedded span (x close button)
   iTopics.forEach((elementTopic, index) => {
     let $topicElement = makeIndividualTopicListItem(elementTopic, index);
     $("#ul-topics").append($topicElement);
-	});
-	
-	if (iTopics.length > 0) {
-		$("#label-no-topics-found").css('display', 'none');
-	} else {
-		$("#label-no-topics-found").css('display', 'block');
-	}
+  });
+  
+  if (iTopics.length > 0) {
+    $("#label-no-topics-found").css('display', 'none');
+  } else {
+    $("#label-no-topics-found").css('display', 'block');
+  }
 }
 
 function makeIndividualTopicListItem(itemName, i_index) {
@@ -61,7 +51,7 @@ function makeIndividualTopicListItem(itemName, i_index) {
 // This handles when the delete x icon is clicked. Starts process of deleting the topic from the array and refreshing the DOM
 function processDeleteTopic_Click (e) {
   const etd = e.target.id;
- 
+
   // Get an array of the current topic lists from the DOM. We can later add or subtract from this list and re-render it in the DOM
   const currentList = getTopicListFromDOM();
   const topicsList = $("#ul-topics");
@@ -72,8 +62,7 @@ function processDeleteTopic_Click (e) {
   const arrOfTopics = currentList.filter((element) => {
     return element != targetTopic;
   });
-  
-	
+
   // Send the new (filtered array) for re-building in the DOM
   rebuildTopicList(arrOfTopics);
 }
@@ -87,8 +76,6 @@ function getTopicListFromDOM () {
   for (let i = 0; i < topicsList[0].children.length; i++) {
     arrOfTopics.push(topicsList[0].children[i].dataset.caption);
   }
-
-	
   return arrOfTopics;
 }
 
@@ -96,37 +83,55 @@ function processAddTopic_Click (e) {
   // Adds topics to the list and then summons a function
   const targetTopic = $("#topic-to-add").val().toLowerCase().trim();
   // Get the current state
+
+  // Disallow empty strings from being entered as topics
+  if (targetTopic === "") {
+    return;
+  }
   const currentList = getTopicListFromDOM();
   if (!currentList.includes(targetTopic)) {
     currentList.push(targetTopic);
+    $("#topic-to-add").val('');
   }
   rebuildTopicList(currentList);
 }
 
 function saveTopicDataToServer () {
   // This sends an ajax HTTP request to server, update database
-	const listFromDOM = getTopicListFromDOM();
-	console.log(listFromDOM);
+  const listFromDOM = getTopicListFromDOM();
+
   let myData = { topics: JSON.stringify(listFromDOM) };
   $("#save-topic-button").attr('disabled', true);
   $.ajax({
     type: 'POST',
-		url: "/user/user/topics/update",
-		datatype: 'json',
+    url: "/user/user/topics/update",
+    datatype: 'json',
     data: myData,
     success: function(response) {
-			respondToSuccess(response);
-		},
+      respondToSuccess(response);
+    },
     error: function(errorResponse) {
-			console.log(errorResponse);
-		}
+      respondToError(errorResponse);
+    }
   });
 }
 
 function respondToSuccess (data) {
-	// re-enables button and logs response
-	$("#save-topic-button").attr('disabled', false); 
-	console.log(data.status);
-	window.location = "/user/user/feed";
-	// Redirect to user feed
+  // re-enables button and logs response
+  $("#save-topic-button").attr('disabled', false); 
+
+  window.location = "/user/user/feed";
+  // Redirect to user feed
+}
+
+function respondToError (data) {
+  throw Error("Not implemented");
+}
+
+function clearTopicContainer () {
+  // First we clear the container
+  $(".list-group-item").detach();
+
+  // Bind click events to the list group item (TODO: not sure if needed)
+  $(".list-group-item").bind('click', processDeleteTopic_Click);
 }

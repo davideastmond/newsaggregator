@@ -26,7 +26,7 @@ exports.up = function(knex) {
     })
   ])
   .then(()=> {
-    console.log("Tables created.");
+   
   });
 };
 
@@ -38,7 +38,7 @@ exports.down = function(knex) {
     
   ])
   .then(()=> {
-    console.log("Tables dropped.");
+    
   });
   
 };

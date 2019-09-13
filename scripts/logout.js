@@ -1,7 +1,7 @@
 
 document.getElementById("header-top-nav-logout-link").onclick = (e) => {
 	// Send an ajax POST request to /logout to log the user out
-	console.log("Log out command hit");
+
 	$.ajax({
 		type: "POST",
 		url: "/logout",
@@ -16,7 +16,7 @@ document.getElementById("header-top-nav-logout-link").onclick = (e) => {
 };
 
 document.getElementById("header-top-nav-logout-link-menu-click").onclick = (e) => {
-	console.log("Log out menu command hit");
+
 	$.ajax({
 		type: "POST",
 		url: "/logout",

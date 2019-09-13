@@ -36,9 +36,9 @@
 				window.location = responseData.response;
 			},
       error: (err) => {
-        console.log("Line 40 ERROR", err);
+				console.log(err)
         if (err) {
-          $("#validation-error-space").text(err.error.message || "Error registering account.").css('display', 'block').css('color', 'red');
+          $("#validation-error-space").text(err.responseJSON.error.detail || "Error registering account.").css('display', 'block').css('color', 'red');
         }
       }
     });
