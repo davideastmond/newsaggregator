@@ -1,8 +1,6 @@
 $(document).ready(()=> {
   // Bind the datepicker to the text input
   $("#date").datepicker();
-  
-
 });
 
 document.getElementById("news-query-form").onsubmit = (e) => {
@@ -12,7 +10,7 @@ document.getElementById("news-query-form").onsubmit = (e) => {
   const newsQuery = document.getElementById("news-topic").value.trim();
   const queryDate = document.getElementById("date").value.trim();
   let params = `date=${queryDate}&newsQuery=${newsQuery}`;
-  
+  $("#login-submit-button").attr('disabled', true);
 
   xhr.open("GET", "/news" + "?" + params, true);
   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");

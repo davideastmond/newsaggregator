@@ -21,14 +21,17 @@ $(() => {
       return;
     }
 
+    // Disbale the submit button
+    $("#change-profile-submit-button").attr('disabled', 'true');
+
     // Submit a password change and refresh page
     const ajaxPromise = submitPasswordChange();
 
     ajaxPromise.done(()=> {
-      window.location = "/user/user/profile";
+      showSuccessMessage("Password updated successfully");
     })
     .fail((message) => {
-      showErrorMessage(message);
+      showErrorMessage(message.responseJSON.error);
     });
   });
 });
@@ -48,4 +51,8 @@ function submitPasswordChange() {
 
 function showErrorMessage(message) {
   $("#change-password-error-message").text(`${message}`).css('display', 'block').css('color', 'red');
+}
+
+function showSuccessMessage(message) {
+  $("#change-password-success-message").text(`${message}`).css('display', 'block').css('color', 'green');
 }

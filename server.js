@@ -77,10 +77,10 @@ app.get("/headlines", (req, res)=> {
 
   axios.get(url).then((response) => {
     res.render('headlines.ejs', { articles: response.data.articles, uId: req.session.session_id, count: response.data.articles.length, country: req.query.country || "us", logged_in: req.session.session_id || false });
-	})
-	.catch((error) => {
-		res.status(400).send({error: error, message: "Unable to retrieve"});
-	});
+  })
+  .catch((error) => {
+    res.status(400).send({error: error, message: "Unable to retrieve"});
+  });
   
 });
 
@@ -148,7 +148,7 @@ app.get('/user/:id/profile', (req, res) => {
 
 app.post('/user/:id/profile/update',[check('pwdone').trim().escape(), check('pwdtwo').trim().escape()], (req, res) => {
   // This route handles password changes
-	
+  
   if (req.session.session_id) {
     // Database request. This essentially updates the user's password
     dbFunctions.updateUserPassword({ forUser: req.session.session_id, first_password: req.body.pwdone, 
@@ -158,7 +158,7 @@ app.post('/user/:id/profile/update',[check('pwdone').trim().escape(), check('pwd
       res.status(200).json({ status: 'ok', newURL: "#"}); // 	
     })
     .catch((error) => {
-      res.status(400).json( { error: error, message: 'Unable to update the password '});
+      res.status(400).json( { error: error.error, message: 'Unable to update the password '});
     });
   } else {
     res.redirect('/login');
@@ -183,8 +183,8 @@ app.post('/user/:id/topics/update', (req, res) => {
 });
 // Receiving sign-up data.
 app.post("/register", [check('emailAddr').isEmail().trim().escape(), 
-	check('passwordOne').trim().escape(),
-	check('passwordTwo').trim().escape()], (req, res) => {
+  check('passwordOne').trim().escape(),
+  check('passwordTwo').trim().escape()], (req, res) => {
   
   // If there is a current session, user must log out
   if (req.session.session_id) {
@@ -195,7 +195,7 @@ app.post("/register", [check('emailAddr').isEmail().trim().escape(),
 
   dbFunctions.registerUser({ email: req.body.emailAddr, first_password: req.body.passwordOne, 
     second_password: req.body.passwordTwo,
-     is_registered: true})
+    is_registered: true})
   .then((result) => {
     
     // Assign the session_id / database_id

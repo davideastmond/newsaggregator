@@ -1,5 +1,5 @@
 
-#change-password-error-message {
+#change-password-error-message, #change-password-success-message {
 	display: none;
 }
 
@@ -7,6 +7,7 @@
 	width: 50%;
 	margin-left: 1.5em;
 }
+
 
 @media only screen and (max-width: 700px) {
 	#div-profile-edit-password {
