@@ -6,29 +6,29 @@ const helperFunctions = require('./helper');
 // These are going to be our database functions
 module.exports = {
   registerUser: (registrationData) => {
-		// first check to see if password meets security requirements
-		return new Promise((resolve, reject) => {
-			if (!helperFunctions.passwordMeetsSecurityRequirements({ first: registrationData.first_password, second: registrationData.second_password })) {
-				reject({error: 'password does not meet security requirements'});
-				return;
-			}
+    // first check to see if password meets security requirements
+    return new Promise((resolve, reject) => {
+      if (!helperFunctions.passwordMeetsSecurityRequirements({ first: registrationData.first_password, second: registrationData.second_password })) {
+        reject({error: 'password does not meet security requirements'});
+        return;
+      }
 
-			// Next we'll hash the password
-			helperFunctions.hashPasswordAsync((registrationData.first_password))
-			.then((hashedPassword) => {
-				// Once password is hashed, insert everything into the databse
-				knex('user').insert({ email: registrationData.email, password: hashedPassword, is_registered: true, has_chosen_topics: false })
-				.returning(['id', 'email', 'is_registered', 'has_chosen_topics'])
-				.then((result) => {
-					resolve({ response: result, message: 'successful insertion into database' });
-					return;
-				})
-				.catch((error) => {
-					reject({message: error });
-					return;
-				});
-			});
-		});
+      // Next we'll hash the password
+      helperFunctions.hashPasswordAsync((registrationData.first_password))
+      .then((hashedPassword) => {
+        // Once password is hashed, insert everything into the databse
+        knex('user').insert({ email: registrationData.email, password: hashedPassword, is_registered: true, has_chosen_topics: false })
+        .returning(['id', 'email', 'is_registered', 'has_chosen_topics'])
+        .then((result) => {
+          resolve({ response: result, message: 'successful insertion into database' });
+          return;
+        })
+        .catch((error) => {
+          reject({message: error });
+          return;
+        });
+      });
+    });
   },
   
   verifyLogin: (loginData) => {
@@ -74,55 +74,57 @@ module.exports = {
         if (insertList && insertList.length >= 1) {
           // We have things to insert
           insertNewTopicsIntoDB(insertList).then((resulting) => {
-            update_user_topic_table(inputData).then((resulting_again)=> {
-              // Send some kind of response
-             
-            });
+            update_user_topic_table(inputData).then();
           });
         } else {
-          update_user_topic_table(inputData).then((resulting_again)=> {
-            // Send some kind of response
-            
-          });
+          update_user_topic_table(inputData).then(); 
         }
-        resolve(first_result);
+        // hit the database and changed the has_chosen_topics value to true
+        knex('user')
+        .where({ id: inputData.database_id })
+        .update({ has_chosen_topics: true})
+        .returning(['id', 'email', 'has_chosen_topics'])
+        .then(() => {
+          resolve(first_result);
+        });
       });
     });
-	},
-	updateUserPassword: (newData) => {
-		return new Promise((resolve, reject) => {
-			// First we make sure the password meets security requirements
-			if (!helperFunctions.passwordMeetsSecurityRequirements({first: newData.first_password, second: newData.second_password })) {
-				// Reject, as it doesn't meet requirements
-				reject({ error: 'Password does not meet security requirements'});
-				return;
-			}
-			
-			// if the password has cleared requirements, hash it.
-			helperFunctions.hashPasswordAsync(newData.first_password)
-			.then((hashedPassword) => {
-				// Now we have the hashed password. Update the database
-				knex('user').where({ email: newData.forUser })
-				.update({password: hashedPassword})
-				.returning(['id', 'email', 'password'])
-				.then((result) => {
-					resolve({ returning: result, message: 'ok'});
-					return;
-				})
-				.catch((error) => {
-					reject({ error: error, message: 'unable to update password in database'});
-				});
-			});
+  },
+  
+  updateUserPassword: (newData) => {
+    return new Promise((resolve, reject) => {
+      // First we make sure the password meets security requirements
+      if (!helperFunctions.passwordMeetsSecurityRequirements({first: newData.first_password, second: newData.second_password })) {
+        // Reject, as it doesn't meet requirements
+        reject({ error: 'Password does not meet security requirements'});
+        return;
+      }
+      
+      // if the password has cleared requirements, hash it.
+      helperFunctions.hashPasswordAsync(newData.first_password)
+      .then((hashedPassword) => {
+        // Now we have the hashed password. Update the database
+        knex('user').where({ email: newData.forUser })
+        .update({ password: hashedPassword })
+        .returning(['id', 'email', 'password'])
+        .then((result) => {
+          resolve({ returning: result, message: 'ok'});
+          return;
+        })
+        .catch((error) => {
+          reject({ error: error, message: 'unable to update password in database'});
+        });
+      });
 
-		});
-		
-	}
+    });
+    
+  }
 };
 
 function createListOfTopicsToBeInsertedIntoDB(listFromDB, topicsToLookUp) {
   // This will return two objects
   let finalList = [];
- 
+
   topicsToLookUp.forEach((topicElement) => {
     let foundElement = !listFromDB.find((el) => {
       return el.name === topicElement;
