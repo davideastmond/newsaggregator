@@ -32,11 +32,11 @@
       url: "/register",
       data: serializedData,
       dataType: 'json',
-			success: function(responseData) {
-				window.location = responseData.response;
-			},
+      success: function(responseData) {
+        window.location = responseData.response;
+      },
       error: (err) => {
-				console.log(err)
+        console.log(err)
         if (err) {
           $("#validation-error-space").text(err.responseJSON.error.detail || "Error registering account.").css('display', 'block').css('color', 'red');
         }

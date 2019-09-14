@@ -1,7 +1,7 @@
 $(document).ready(()=> {
   // Bind the datepicker to the text input
-	$("#date").datepicker();
-	
+  $("#date").datepicker();
+  
 
 });
 
@@ -22,9 +22,9 @@ document.getElementById("news-query-form").onsubmit = (e) => {
   xhr.onreadystatechange = () => {
     if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200 ) {
       // Load the page once we get a response
-     
+    
       window.location.href = xhr.responseURL;
-     
+    
     }
   };
   // Send the request
@@ -33,5 +33,5 @@ document.getElementById("news-query-form").onsubmit = (e) => {
 
 // Handle logging out
 $("header-top-nav-logout-link").on('click', (e) => {
-	alert("clicked the log out link!");
+  alert("clicked the log out link!");
 });
