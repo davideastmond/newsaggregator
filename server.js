@@ -10,6 +10,7 @@ const bcrypt = require('bcrypt');
 const cookieParser = require('cookie-parser');
 const cookieSession = require('cookie-session');
 const helperFunctions = require('./helper');
+const { check, validationResult } = require('express-validator');
 
 const dbFunctions = require("./db");
 
@@ -145,16 +146,16 @@ app.get('/user/:id/profile', (req, res) => {
   }
 });
 
-app.post('/user/:id/profile/update', (req, res) => {
+app.post('/user/:id/profile/update',[check('pwdone').trim().escape(), check('pwdtwo').trim().escape()], (req, res) => {
   // This route handles password changes
-
+	
   if (req.session.session_id) {
     // Database request. This essentially updates the user's password
     dbFunctions.updateUserPassword({ forUser: req.session.session_id, first_password: req.body.pwdone, 
     second_password: req.body.pwdtwo })
     .then((result) => {
       // Send a good response
-      res.status(200).json({ status: 'ok', newURL: "#"}); // 
+      res.status(200).json({ status: 'ok', newURL: "#"}); // 	
     })
     .catch((error) => {
       res.status(400).json( { error: error, message: 'Unable to update the password '});
@@ -181,7 +182,9 @@ app.post('/user/:id/topics/update', (req, res) => {
   }
 });
 // Receiving sign-up data.
-app.post("/register", (req, res) => {
+app.post("/register", [check('emailAddr').isEmail().trim().escape(), 
+	check('passwordOne').trim().escape(),
+	check('passwordTwo').trim().escape()], (req, res) => {
   
   // If there is a current session, user must log out
   if (req.session.session_id) {
@@ -206,7 +209,7 @@ app.post("/register", (req, res) => {
   });
 });
 
-app.post("/login", (req, res) => {
+app.post("/login", [check('email').isEmail().trim().escape(), check('password').trim().escape()], (req, res) => {
   // Login the user
   const timeStamp = new Date();
   const verificationObject = { email: req.body.email, password: req.body.password, last_login: timeStamp};

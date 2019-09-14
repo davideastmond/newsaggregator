@@ -11,17 +11,17 @@
   - users can log in and out of the system. 
   - cookies are used to keep track of a user's log-in state.
   - relational database used to keep track of user accounts.
-  - password hashing and validation.
+  - password hashing and validation has been implemented.
     #### User Profile
     - Users can change their password
 - #### User custom news feed:
-  - users can add/remove news topic subscriptions.
-  - users can view their custom news feed based on their chosen topics.
+  - logged-in users can add/remove news topic subscriptions.
+  - logged-in users can view their custom news feed based on their chosen topics.
   - relational database used to keep track of topics and topics associated with a user's subscription.
 - #### Headlines
   - Any user (regardless if signed in) can view the latest headlines.
 - #### Custom ad hoc topic searches
-  - Any user (regardless if signed in) can search for news articles by date and by topic.
+  - Any user (regardless if signed in) can search ad hoc for news articles by date and by topic.
 - #### UI Responsive
 
 ### Future Feature ideas
@@ -69,6 +69,7 @@
 - cookie-session
 - dotenv
 - express.js
+- express-validator
 - knex.js
 - moment.js
 - node.js
