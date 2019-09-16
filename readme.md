@@ -2,7 +2,7 @@
 
 ### About
 
-- This is a full-stack news aggregator web app using JavaScript, HTML, CSS, jQuery, node, express and postgreSQL.
+- This is a full-stack news aggregator web app using JavaScript, HTML, CSS, jQuery, Node, Express and PostgreSQL.
 
 ### Features
 
