@@ -27,19 +27,15 @@
     // Validation has passed. Send an ajax request to the server with registration info.
     const serializedData = $("#registration-form").serialize();
     $("#validation-error-space").css('display', 'none');
-    $.ajax({
-      type: "POST",
-      url: "/register",
-      data: serializedData,
-      dataType: 'json',
-      success: function(responseData) {
-        window.location = responseData.response;
-      },
-      error: (err) => {
-        console.log(err)
-        if (err) {
-          $("#validation-error-space").text(err.responseJSON.error.detail || "Error registering account.").css('display', 'block').css('color', 'red');
-        }
+    const ajaxRegisterRequest = sendRegistrationRequest(serializedData);
+
+    ajaxRegisterRequest.done((responseData) => {
+      window.location = responseData.response;
+    });
+    
+    ajaxRegisterRequest.error((err) => {
+      if (err) {
+        $("#validation-error-space").text(err.responseJSON.error.detail || "Error registering account.").css('display', 'block').css('color', 'red');
       }
     });
   };
@@ -76,4 +72,14 @@
   function ValidateEmail(email) 
   {
     return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
+  }
+
+  function sendRegistrationRequest(serializedData) {
+    // Validation has passed. Send an ajax request to the server with registration info.
+    return $.ajax({
+      type: "POST",
+      url: "/register",
+      data: serializedData,
+      dataType: 'json'
+    });
   }
