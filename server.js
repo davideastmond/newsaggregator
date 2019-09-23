@@ -79,7 +79,7 @@ app.get("/headlines", (req, res)=> {
     res.render('headlines.ejs', { articles: response.data.articles, uId: req.session.session_id, count: response.data.articles.length, country: req.query.country || "us", logged_in: req.session.session_id || false });
   })
   .catch((error) => {
-    res.status(400).send({error: error, message: "Unable to retrieve"});
+    res.status(400).send({ error: error, message: "Unable to retrieve" });
   });
   
 });
@@ -90,7 +90,7 @@ app.get("/login", (req, res) => {
     res.render('login.ejs', { message: null });
   } else {
     // They should be sent to dashboard
-    res.status(200).send({response: 'send to dashboard '});
+    res.status(200).send({ response: 'send to dashboard ' });
   }
 });
 
@@ -137,7 +137,7 @@ app.get('/user/:id/topics', (req, res) => {
 
 app.get('/user/:id/profile', (req, res) => {
   /* 
-  This route will display the user's profile page. It will allow the user to change their password
+  This route will display the user's profile page. It will allow the user to change their password and add/delete news topics
   */
   if (req.session.session_id) {
     res.render('profile.ejs', { uId: req.session.session_id });
