@@ -1,4 +1,5 @@
 const functionHelpers = require('../helper');
+require('dotenv').config();
 exports.seed = function(knex) {
   // Delete ALL Existing entries from each table
   return Promise.all([
@@ -8,9 +9,9 @@ exports.seed = function(knex) {
   ])
   .then(()=> {
     return Promise.all([
-      knex('user').insert({ id: 1, email: 'email@email.com', password: functionHelpers.hashPassword('Password$4'), is_registered: true, has_chosen_topics: true }),
-      knex('user').insert({ id: 2, email: 'email1@email.com', password: functionHelpers.hashPassword('Password$4'), is_registered: true, has_chosen_topics: true }),
-      knex('user').insert({ id: 3, email: 'email2@email.com', password: functionHelpers.hashPassword('Password$4'), is_registered: true, has_chosen_topics: true })
+      knex('user').insert({ id: 1, email: 'email@email.com', password: functionHelpers.hashPassword(process.env.TEST_PASSWORD), is_registered: true, has_chosen_topics: true }),
+      knex('user').insert({ id: 2, email: 'email1@email.com', password: functionHelpers.hashPassword(process.env.TEST_PASSWORD), is_registered: true, has_chosen_topics: true }),
+      knex('user').insert({ id: 3, email: 'email2@email.com', password: functionHelpers.hashPassword(process.env.TEST_PASSWORD), is_registered: true, has_chosen_topics: true })
     ])
     .then(()=> {
       return Promise.all([

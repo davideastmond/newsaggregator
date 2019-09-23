@@ -181,6 +181,7 @@ app.post('/user/:id/topics/update', (req, res) => {
     res.redirect("/");
   }
 });
+
 // Receiving sign-up data.
 app.post("/register", [check('emailAddr').isEmail().trim().escape(), 
   check('passwordOne').trim().escape(),
