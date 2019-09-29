@@ -104,8 +104,8 @@ app.get('/user/:id/feed', (req, res) => {
     // render the page - will have to hit the database and get the user's topic feed
     // This won't be topics.ejs - but instead a call to the api and live result. 
     
-		dbFunctions.getUserTopics({ email: req.session.session_id })
-		.then((resultingData) => {
+    dbFunctions.getUserTopics({ email: req.session.session_id })
+    .then((resultingData) => {
       helperFunctions.doTopicsAxiosFetchRequest({ userTopics: resultingData, db_id: req.session.database_id })
       .then((fetchResults) => {
         // Once we get our results, we need to render the page for the user
@@ -127,8 +127,8 @@ app.get('/user/:id/topics', (req, res) => {
     We plug the results into the ejs view variable for display.
     */
   
-		dbFunctions.getUserTopics({ email: req.session.session_id })
-		.then((result) => {
+    dbFunctions.getUserTopics({ email: req.session.session_id })
+    .then((result) => {
       res.render('topics.ejs', { email: req.params.id, topics: result, logged_in: true, uId: req.session.session_id });
     });
     
@@ -216,8 +216,8 @@ app.post("/login", [check('email').isEmail().trim().escape(), check('password').
   // Login the user
   const timeStamp = new Date();
   const verificationObject = { email: req.body.email, password: req.body.password, last_login: timeStamp};
-	dbFunctions.verifyLogin(verificationObject)
-	.then((result)=> {
+  dbFunctions.verifyLogin(verificationObject)
+  .then((result)=> {
     if (result.success) {
       // Set a cookie
       req.session.session_id = req.body.email;
@@ -248,4 +248,5 @@ Object.defineProperty(Array.prototype, 'flat', {
       return flat.concat((Array.isArray(toFlatten) && (depth > 1)) ? toFlatten.flat(depth - 1) : toFlatten);
     }, []);
   }
+  
 });
