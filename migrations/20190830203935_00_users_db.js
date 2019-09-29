@@ -17,10 +17,8 @@ exports.up = function(knex) {
     }),
     knex.schema.createTable('user_topic', (table) => {
       table.increments('id').primary();
-      
       table.integer('user_id');
       table.integer('topic_id');
-
       table.foreign('user_id').references('user.id');
       table.foreign('topic_id').references('topic.id');
     })
@@ -32,10 +30,5 @@ exports.down = function(knex) {
     knex.schema.dropTable('user_topic'),
     knex.schema.dropTable('user'),
     knex.schema.dropTable('topic'),
-    
-  ])
-  .then(()=> {
-    
-  });
-  
+  ]);
 };
