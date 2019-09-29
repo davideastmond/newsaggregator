@@ -47,7 +47,6 @@ module.exports = {
       });
 
       Promise.all(axios_queries).then((resolved_data) => {
-        // We have a lot of promise data from api fetch requests. We need to sort it somehow.
         resolve(resolved_data);
       });
     });
