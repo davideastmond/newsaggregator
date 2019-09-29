@@ -24,10 +24,7 @@ exports.up = function(knex) {
       table.foreign('user_id').references('user.id');
       table.foreign('topic_id').references('topic.id');
     })
-  ])
-  .then(()=> {
-   
-  });
+  ]);
 };
 
 exports.down = function(knex) {

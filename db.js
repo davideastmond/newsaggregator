@@ -115,9 +115,7 @@ module.exports = {
           reject({ error: error, message: 'unable to update password in database'});
         });
       });
-
     });
-    
   }
 };
 
