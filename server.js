@@ -54,7 +54,7 @@ app.get("/news", (req, res) => {
   // Obtain the query parameters to be used for a API fetch request
   const reqDate = req.query.date;
   const reqQuery = req.query.newsQuery;
-  const url = `https://newsapi.org/v2/everything?q=${reqQuery}&from=${reqDate}&sortBy=publishedAt&apiKey=${process.env.PERSONAL_API_KEY}&pageSize=20`;
+  const url = `https://newsapi.org/v2/everything?sources=google-news&q=${reqQuery}&from=${reqDate}&sortBy=publishedAt&apiKey=${process.env.PERSONAL_API_KEY}&pageSize=20`;
     // Create an API URI based on received info, query the URI, get a response, and send that data to render in news.ejs view
   axios.get(url).then((response) => {
     res.render('news.ejs', { articles: response.data.articles, searchQuery: reqQuery,  uId: req.session.session_id, requestDate: reqDate, count: response.data.articles.length, logged_in: req.session.session_id || false });
@@ -69,10 +69,10 @@ app.get("/headlines", (req, res)=> {
   
   let url;
   if (req.query.country) {
-    url = `https://newsapi.org/v2/top-headlines?country=${req.query.country}&apiKey=${process.env.PERSONAL_API_KEY}&pageSize=20`; 
+    url = `https://newsapi.org/v2/top-headlines?sources=google-news&apiKey=${process.env.PERSONAL_API_KEY}&pageSize=20`; 
   } else {
     // Default is United States news
-    url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=${process.env.PERSONAL_API_KEY}&pageSize=20`;
+    url = `https://newsapi.org/v2/top-headlines?sources=google-news&apiKey=${process.env.PERSONAL_API_KEY}&pageSize=20`;
   }
 
   axios.get(url).then((response) => {

@@ -1,6 +1,7 @@
   document.getElementById("registration-form").onsubmit = (e) => {
     e.preventDefault();
-    
+		
+		$("#submit-form").attr('disabled', true);
     // Assign the form to variables
     const registrationEmail = document.getElementById("email_address").value;
     const passwordText1 = document.getElementById("pwd1").value;
