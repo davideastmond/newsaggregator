@@ -1,23 +1,26 @@
-$("#headlines-submit-new-search").on('click', (e) => {
-  doHTTPRequest();
+$(() => {
+	$("#headlines-submit-new-search").on('click', (e) => {
+		doHTTPRequest();
+	});
+	
+	$("#news-results-click-box").on("click", (e) => {
+		doHTTPRequest();
+	});
+	
+	$("#search-box").on("keypress", (e) => {
+		if (e.which === 13) {
+			doHTTPRequest();
+		}
+	});
+	
+	$("#qSearchBox").on("keypress", (e) => {
+		if (e.which === 13) {
+			// Submit the query
+			doHTTPRequest();
+		}
+	});
 });
 
-$("#news-results-click-box").on("click", (e) => {
-  doHTTPRequest();
-});
-
-$("#search-box").on("keypress", (e) => {
-  if (e.which === 13) {
-    doHTTPRequest();
-  }
-});
-
-$("#qSearchBox").on("keypress", (e) => {
-  if (e.which === 13) {
-    // Submit the query
-    doHTTPRequest();
-  }
-});
 
 function doHTTPRequest() {
   const $searchQueryElement = $('#search-box').val();

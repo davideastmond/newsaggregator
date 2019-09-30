@@ -54,9 +54,10 @@ app.get("/news", (req, res) => {
   // Obtain the query parameters to be used for a API fetch request
   const reqDate = req.query.date;
   const reqQuery = req.query.newsQuery;
-  const url = `https://newsapi.org/v2/everything?sources=google-news&q=${reqQuery}&from=${reqDate}&sortBy=publishedAt&apiKey=${process.env.PERSONAL_API_KEY}&pageSize=20`;
+  const url = `https://newsapi.org/v2/everything?q=${reqQuery}&from=${reqDate}&sortBy=publishedAt&apiKey=${process.env.PERSONAL_API_KEY}&pageSize=20`;
     // Create an API URI based on received info, query the URI, get a response, and send that data to render in news.ejs view
-  axios.get(url).then((response) => {
+  axios.get(url)
+  .then((response) => {
     res.render('news.ejs', { articles: response.data.articles, searchQuery: reqQuery,  uId: req.session.session_id, requestDate: reqDate, count: response.data.articles.length, logged_in: req.session.session_id || false });
   })
   .catch((error) => {
@@ -108,9 +109,9 @@ app.get('/user/:id/feed', (req, res) => {
     .then((resultingData) => {
       helperFunctions.doTopicsAxiosFetchRequest({ userTopics: resultingData, db_id: req.session.database_id })
       .then((fetchResults) => {
-				const listTopics = resultingData.map((resultElement) => {
-					return resultElement.name;
-				});
+        const listTopics = resultingData.map((resultElement) => {
+          return resultElement.name;
+        });
         // Once we get our results, we need to render the page for the user
         const dataArticles = helperFunctions.compileAPIFetchData(fetchResults);
         res.render('feed.ejs', { topics_list: listTopics, uId: req.session.session_id, data: resultingData, arrayCount: dataArticles.length, data_articles: dataArticles.flat() } );
@@ -176,7 +177,8 @@ app.post('/user/:id/topics/update', (req, res) => {
     const updateData = { email: req.session.session_id, database_id: req.session.database_id, topicArray: JSON.parse(req.body.topics) };
   
     // We have an array of new topics for the user. We need to hit the database. Reference by email
-    dbFunctions.updateTopicListForUser(updateData).then((result) => {
+    dbFunctions.updateTopicListForUser(updateData)
+    .then((result) => {
       res.status(200).json({response: 'ok'});
     })
     .catch((error) => {

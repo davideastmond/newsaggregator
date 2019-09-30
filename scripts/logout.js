@@ -1,12 +1,15 @@
 
-document.getElementById("header-top-nav-logout-link").onclick = (e) => {
-  // Send an ajax POST request to /logout to log the user out
-  doLogout();
-};
+$(() => {
+	$("#header-top-nav-logout-link").click((e) => {
+		// Send an ajax POST request to /logout to log the user out
+		doLogout();
+	});
+	
+	$("#header-top-nav-logout-link-menu-click").click((e) => {
+		doLogout();
+	});
+});
 
-document.getElementById("header-top-nav-logout-link-menu-click").onclick = (e) => {
-  doLogout();
-};
 
 const doLogout = ()=> {
 	$.ajax({
