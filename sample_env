@@ -9,5 +9,7 @@ DB_CONNECTIONSTRING=
 
 COOKIE_SESSION=
 COOKIE_KEYS=
-COOKIE_TIME_OUT=
-SALT_ROUNDS=
+COOKIE_TIME_OUT=[in milliseconds]
+SALT_ROUNDS=[10 is default]
+
+TEST_PASSWORD=[password used for seeding]
