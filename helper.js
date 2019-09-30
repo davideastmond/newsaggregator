@@ -66,7 +66,6 @@ module.exports = {
 function axiosFetchFromApiSingleTopic(str_topic, num_articles=10) {
   // Returns the result from a single API request to the newsApi website
   const grabDate = moment().format("MM/DD/YYYY");
-
   // TODO: Here is where we can determine how many articles to fetch based on the amount of topics
   const url = `https://newsapi.org/v2/everything?q=${str_topic}&from=${grabDate}&sortBy=publishedAt&apiKey=${process.env.PERSONAL_API_KEY}&pageSize=${num_articles}`;
   return axios.get(url);

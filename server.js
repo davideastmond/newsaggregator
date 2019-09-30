@@ -108,9 +108,12 @@ app.get('/user/:id/feed', (req, res) => {
     .then((resultingData) => {
       helperFunctions.doTopicsAxiosFetchRequest({ userTopics: resultingData, db_id: req.session.database_id })
       .then((fetchResults) => {
+				const listTopics = resultingData.map((resultElement) => {
+					return resultElement.name;
+				});
         // Once we get our results, we need to render the page for the user
         const dataArticles = helperFunctions.compileAPIFetchData(fetchResults);
-        res.render('feed.ejs', { uId: req.session.session_id, data: resultingData, arrayCount: dataArticles.length, data_articles: dataArticles.flat() } );
+        res.render('feed.ejs', { topics_list: listTopics, uId: req.session.session_id, data: resultingData, arrayCount: dataArticles.length, data_articles: dataArticles.flat() } );
       });
     });
     
