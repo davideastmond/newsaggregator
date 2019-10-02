@@ -8,10 +8,10 @@
   <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <link rel="stylesheet" href="../styles/news-articles.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-	
-	<script src="moment.js"></script>
-	
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+  
+  <script src="moment.js"></script>
+  
   <script src="headlines.js" async></script>
   <title>News Results</title>
 
@@ -22,37 +22,37 @@
   </head>
   <div class="jumbotron jumbo-tron-margin-top">
     <div id="news-header">
-			<a href="/headlines"><p class="lead">Headlines</p></a>
-			<a href="/"><p class="lead">Home</p></a>
-		</div>
-	</div>
-	<div id="div-headlines-header">
-		<p class="h2 space-left"> The latest headlines </p>
-		<p class="lead space-left"> Total Results: <%= count %> items  </p>
-		<div>
-			<label for="search-box" class="space-left"> Enter keywords:</label>
-		</div>
-		<div>
-			<input class="space-left" type="text" id="search-box" name="search-box" placeholder="top headlines for <%= country %>"> <button type="button" class="btn btn-primary" id="headlines-submit-new-search">Search Again</button>
-		</div>
-	</div>
-	<div id="articles-master-container">
-		<br>
-		<% articles.forEach((article) => { %>
-			<div class="media">
-				<a href=<%= article.url %>><img class="align-self-center mr-3 article-thumbnail" src= <%= article.urlToImage %> ></a>
-				<div class="media-body">
-					<h5 class="mt-0"><%= article.title %></h5>
-					<p class="article-description-blurb-justify"> <%= article.description %></p>
-					<footer>
-					<p> <a target="_blank" href=<%= article.url %>> <%= article.source.name %> </a></p>
-					<p class="label-published-at-date h6"> Published:  </p>
-					</footer>
-				</div>
-				
-			</div>
-		<% }); %>
-	</div>
+      <a href="/headlines"><p class="lead">Headlines</p></a>
+      <a href="/"><p class="lead">Home</p></a>
+    </div>
+  </div>
+  <div id="div-headlines-header">
+    <p class="h2 space-left"> The latest headlines </p>
+    <p class="lead space-left"> Total Results: <%= count %> items  </p>
+    <div>
+      <label for="search-box" class="space-left"> Enter keywords:</label>
+    </div>
+    <div>
+      <input class="space-left" type="text" id="search-box" name="search-box" placeholder="top headlines for <%= country %>"> <button type="button" class="btn btn-primary" id="headlines-submit-new-search">Search Again</button>
+    </div>
+  </div>
+  <div id="articles-master-container">
+    <br>
+    <% articles.forEach((article) => { %>
+      <div class="media">
+        <a href=<%= article.url %>><img class="align-self-center mr-3 article-thumbnail" src= <%= article.urlToImage %> ></a>
+        <div class="media-body">
+          <h5 class="mt-0"><%= article.title %></h5>
+          <p class="article-description-blurb-justify"> <%= article.description %></p>
+          <footer>
+          <p> <a target="_blank" href=<%= article.url %>> <%= article.source.name %> </a></p>
+          <p class="label-published-at-date h6"> Published:  </p>
+          </footer>
+        </div>
+        
+      </div>
+    <% }); %>
+  </div>
   
   <script>
     const pubDate = moment().format("MM/DD/YYYY");

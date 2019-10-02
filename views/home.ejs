@@ -12,16 +12,16 @@
 
   <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
   <script src="index.js" async></script>
- 
+
   <title>Aggregator</title>
   
 </head>
 <body>
   <head>
-		
+    
     <%- include('./partials/_login_header', { logged_in: logged_in, uId: uId }); %>
-	</head>
-	<div id="home-page-master-div-enclosure">
+  </head>
+  <div id="home-page-master-div-enclosure">
     <div class="jumbotron">
       <h1>News Aggregator</h1>
       <p class="lead"> Select your topic. Get your news. Or click headlines for the latest top stories.</p>
@@ -43,10 +43,10 @@
 
     <div>
       <p class="lead"> Check out latest top <a href="/headlines?country=us">headlines </a></p>
-		</div>
-		<div>
-			<p class="lead"> Or go to your <a href="/user/user/feed"> personalized feed</a></p>
-		</div>
+    </div>
+    <div>
+      <p class="lead"> Or go to your <a href="/user/user/feed"> personalized feed</a></p>
+    </div>
   </div>
 </body>
 </html>

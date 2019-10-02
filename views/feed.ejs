@@ -22,12 +22,12 @@
   <div class="jumbotron jumbo-tron-margin-top">
     <h1>Your Feed</h1>
     <a class="lead" href="/">Home</a>
-	</div>
-	<div id="div-topics-header">
-		<p class="font-italic">
-			Results from: <%= topics_list.join(', ') %>
-		</p>
-	</div>
+  </div>
+  <div id="div-topics-header">
+    <p class="font-italic">
+      Results from: <%= topics_list.join(', ') %>
+    </p>
+  </div>
   <div id="articles-master-container">
     <% if (data_articles.length > 0) { %>
       <!-- Render the list, else, return a statement that says, 'no articles found-->
