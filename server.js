@@ -204,12 +204,11 @@ app.post("/register", [check('emailAddr').isEmail().trim().escape(),
   dbFunctions.registerUser({ email: req.body.emailAddr, first_password: req.body.passwordOne, 
     second_password: req.body.passwordTwo,
     is_registered: true})
-  .then((result) => {
-    
-    // Assign the session_id / database_id
-    req.session.session_id = result.response[0].email;
-    req.session.database_id = result.response[0].id;
-    res.status(200).json({ response: `/user/${req.session.session_id}/topics` });
+    .then((result) => {
+      // Assign the session_id / database_id
+      req.session.session_id = result.response[0].email;
+      req.session.database_id = result.response[0].id;
+      res.status(200).json({ response: `/user/${req.session.session_id}/topics` });
     return;
   })
   .catch((error) => {
