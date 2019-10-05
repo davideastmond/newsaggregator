@@ -96,6 +96,10 @@
 .space-left {
 	margin-left: 0.5em;
 }
+
+.far:hover {
+	color: red;
+}
 @media only screen and (max-width: 700px) {
 	.mobile {
 		display: inline;
@@ -116,6 +120,10 @@
 
 	.media-body {
 		padding: 0.5em;
+	}
+
+	.far:hover {
+		color: red;
 	}
 }
 
@@ -138,6 +146,14 @@
 		text-justify: inter-character;
 	}
 
+	.footer-span {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.far:hover {
+		color: red;
+	}
 }
 
 #div-topics-header {
@@ -163,4 +179,8 @@
 		display: none;
 	}
 
+	.far:hover {
+		color: red;
+	}
+	
 }

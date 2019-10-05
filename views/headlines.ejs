@@ -45,8 +45,11 @@
           <h5 class="mt-0"><%= article.title %></h5>
           <p class="article-description-blurb-justify"> <%= article.description %></p>
           <footer>
-          <p> <a target="_blank" href=<%= article.url %>> <%= article.source.name %> </a></p>
-          <p class="label-published-at-date h6"> Published:  </p>
+          <span class="f">
+            <i class="far fa-heart"></i>
+            <p> <a target="_blank" href=<%= article.url %>> <%= article.source.name %> </a></p>
+            <p class="label-published-at-date h6"> Published:  </p>
+          </span>
           </footer>
         </div>
         

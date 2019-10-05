@@ -237,6 +237,12 @@ app.post("/login", [check('email').isEmail().trim().escape(), check('password').
   });
 });
 
+app.post("/user/:id/articles/update", (req, res) => {
+  // This handles
+  console.log(req.body.url); // URL TO update
+  //
+  res.status(200).json({response: "ok"});
+});
 app.post("/logout", (req, res) => {
   req.session.session_id = null;
   res.render("home.ejs", { logged_in: false, uId: null });
