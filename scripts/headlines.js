@@ -32,7 +32,7 @@ $(() => {
 
     const rawHTML = e.target.nextSibling.parentNode.children[1].innerHTML.split('"');
     // The url we want to save is index[3]
-    doUpdateFavorites(rawHTML[3]).then((result) => {
+    doUpdateFavoritesAjaxRequest(rawHTML[3]).then((result) => {
       
       console.log(result);
     });
@@ -40,7 +40,7 @@ $(() => {
   });
 });
 
-function doUpdateFavorites(url) {
+function doUpdateFavoritesAjaxRequest(url) {
   // This method is going to send an AJAX post request to the server to update the favorites
   return $.ajax({
     type: "POST",

@@ -25,9 +25,4 @@ $(document).ready(()=> {
     };
     xhr.send();
   });
-
-  // Handle logging out
-  $("header-top-nav-logout-link").click((e) => {
-    alert("clicked the log out link!");
-  });
 });

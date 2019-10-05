@@ -5,7 +5,9 @@ exports.seed = function(knex) {
   return Promise.all([
     knex('user_topic').del(),
     knex('user').del(),
-    knex('topic').del()
+    knex('topic').del(),
+    knex('article').del(),
+    knex('user_article').del()
   ])
   .then(()=> {
     return Promise.all([
@@ -45,11 +47,25 @@ exports.seed = function(knex) {
           knex('user_topic').insert({ id: 13, user_id: 3, topic_id: 9 })
         ]);
       })
+      .then (()=> {
+        return Promise.all([
+          knex('article').insert({ id: 1, url: 'https://www.cnn.com/2019/10/05/media/tucker-carlson-op-ed-ukraine-trump-impeachment/index.html'}),
+          knex('article').insert({ id: 2, url: 'https://www.cbsnews.com/news/trump-administration-to-deny-visas-to-immigrants-who-cant-prove-they-can-pay-for-health-care/'})
+        ]);
+      })
+      .then(()=> {
+        return Promise.all([
+          knex('user_article').insert({id: 1, user_id: 1, article_id: 1}),
+          knex('user_article').insert({id: 2, user_id: 1, article_id: 2})
+        ]);
+      })
       .then(() => {
         return Promise.all([
           knex.raw('ALTER SEQUENCE topic_id_seq RESTART WITH 11;'),
-					knex.raw('ALTER SEQUENCE user_topic_id_seq RESTART WITH 14;'),
-					knex.raw('ALTER SEQUENCE user_id_seq RESTART WITH 4;')
+          knex.raw('ALTER SEQUENCE user_topic_id_seq RESTART WITH 14;'),
+          knex.raw('ALTER SEQUENCE user_id_seq RESTART WITH 4;'),
+          knex.raw('ALTER SEQUENCE article_id_seq RESTART WITH 3;'),
+          knex.raw('ALTER SEQUENCE user_article_id_seq RESTART WITH 3;')
         ]);
       });
     });

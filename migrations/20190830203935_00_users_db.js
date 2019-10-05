@@ -28,6 +28,8 @@ exports.up = function(knex) {
 		}),
 		knex.schema.createTable('user_article', (table) => {
 			table.increments('id').primary();
+			table.integer('article_id');
+			table.integer('user_id');
 			table.foreign('article_id').references('article.id');
 			table.foreign('user_id').references('user.id');
 		})

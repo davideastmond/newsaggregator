@@ -31,6 +31,7 @@
 - ad hoc custom searches with multiple search topics
 - "read later" list
 - testing of routes
+- multiple language options
 
 ### What it looks like
 
