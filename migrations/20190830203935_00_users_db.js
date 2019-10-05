@@ -21,7 +21,16 @@ exports.up = function(knex) {
       table.integer('topic_id');
       table.foreign('user_id').references('user.id');
       table.foreign('topic_id').references('topic.id');
-    })
+		}),
+		knex.schema.createTable('article', (table) => {
+			table.increments('id').primary();
+			table.string('url');
+		}),
+		knex.schema.createTable('user_article', (table) => {
+			table.increments('id').primary();
+			table.foreign('article_id').references('article.id');
+			table.foreign('user_id').references('user.id');
+		})
   ]);
 };
 
@@ -29,6 +38,8 @@ exports.down = function(knex) {
   return Promise.all([
     knex.schema.dropTable('user_topic'),
     knex.schema.dropTable('user'),
-    knex.schema.dropTable('topic'),
+		knex.schema.dropTable('topic'),
+		knex.schema.dropTable('article'),
+		knex.schema.dropTable('user_article')
   ]);
 };
