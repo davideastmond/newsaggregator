@@ -116,6 +116,26 @@ module.exports = {
         });
       });
     });
+  },
+  
+  updateSavedArticlesForUser: (updateData) => {
+    /*
+      update data should contain:
+      database_id: int (the user's database_id)
+      url: string
+
+    */
+
+    // We should first check if the article is in the article table already. If so, grab the id
+    // then check the user_article table if it is associated with the user
+
+    // If it is not in the article table - add it, grab the id and then add it to the user_article table
+    return new Promise((resolve, reject) => {
+      knex('article').where({ url: updateData.url})
+      .then((rows) => {
+        console.log(rows);
+      });
+    });
   }
 };
 

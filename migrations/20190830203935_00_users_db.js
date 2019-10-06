@@ -24,7 +24,7 @@ exports.up = function(knex) {
 		}),
 		knex.schema.createTable('article', (table) => {
 			table.increments('id').primary();
-			table.string('url');
+			table.string('url').unique().notNullable();
 		}),
 		knex.schema.createTable('user_article', (table) => {
 			table.increments('id').primary();
@@ -39,9 +39,9 @@ exports.up = function(knex) {
 exports.down = function(knex) {
   return Promise.all([
     knex.schema.dropTable('user_topic'),
-    knex.schema.dropTable('user'),
 		knex.schema.dropTable('topic'),
+		knex.schema.dropTable('user_article'),
 		knex.schema.dropTable('article'),
-		knex.schema.dropTable('user_article')
+		knex.schema.dropTable('user'),
   ]);
 };

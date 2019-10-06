@@ -20,7 +20,7 @@ $(() => {
     }
   });
 
-  $('.fa-heart').click((e) => {
+  $('.fa-bookmark').click((e) => {
     // This code needs to be refactored. The status of the heart icon can only change after a successful response from the server
     e.target.classList.toggle('far');
     e.target.classList.toggle('fas');

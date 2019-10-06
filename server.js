@@ -67,7 +67,11 @@ app.get("/news", (req, res) => {
 
 app.get("/headlines", (req, res)=> {
   // Grab the date
-  
+	let loggedIn = false;
+	
+	if (req.session.session_id) {
+		loggedIn = true;
+	}
   let url;
   if (req.query.country) {
     url = `https://newsapi.org/v2/top-headlines?sources=google-news&apiKey=${process.env.PERSONAL_API_KEY}&pageSize=20&language=en`; 
@@ -77,7 +81,7 @@ app.get("/headlines", (req, res)=> {
   }
 
   axios.get(url).then((response) => {
-    res.render('headlines.ejs', { articles: response.data.articles, uId: req.session.session_id, count: response.data.articles.length, country: req.query.country || "us", logged_in: req.session.session_id || false });
+    res.render('headlines.ejs', { articles: response.data.articles, uId: req.session.session_id, loggedIn: loggedIn, count: response.data.articles.length, country: req.query.country || "us", logged_in: req.session.session_id || false });
   })
   .catch((error) => {
     res.status(400).send({ error: error, message: "Unable to retrieve" });
@@ -238,11 +242,17 @@ app.post("/login", [check('email').isEmail().trim().escape(), check('password').
 });
 
 app.post("/user/:id/articles/update", (req, res) => {
-  // This handles
-  console.log(req.body.url); // URL TO update
-  //
-  res.status(200).json({response: "ok"});
+  // This handles updating of saved/favourite articles
+
+  if (req.session.session_id) {
+    const urlInq = req.body.url; // URL TO update
+    //
+    res.status(200).json({response: "ok"});
+  } else {
+    res.redirect("/");
+  }
 });
+
 app.post("/logout", (req, res) => {
   req.session.session_id = null;
   res.render("home.ejs", { logged_in: false, uId: null });
