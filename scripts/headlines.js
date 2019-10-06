@@ -22,13 +22,21 @@ $(() => {
 
   $('.fa-bookmark').click((e) => {
     // This code needs to be refactored. The status of the heart icon can only change after a successful response from the server
-    e.target.classList.toggle('far');
-    e.target.classList.toggle('fas');
-    if (e.target.style.color === 'red') {
-      e.target.style.color = "";
-    } else {
-    e.target.style.color = 'red';
-    }
+   
+      if (e.target && e.target.disabled) {
+        return;
+      }
+    
+      e.target.disabled = true;
+      e.target.classList.toggle('far');
+      e.target.classList.toggle('fas');
+      if (e.target.style.color === 'red') {
+        e.target.style.color = "";
+      } else {
+        e.target.style.color = 'red';
+      }
+    
+   
     
     // Capture the articles headline text, the article url and the thumbnail ref
     const headlineText = e.target.parentNode.parentNode.parentNode.parentNode.children[1].children[0].innerHTML;

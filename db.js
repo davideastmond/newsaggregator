@@ -135,12 +135,13 @@ module.exports = {
       .then((rows) => {
         // If rows is zero, we need to insert a new entry, otherwise
         if (rows.length === 0) {
-          knex('article').insert({ url: updateData.url }).returning(['id']).then((rows1) => {
+          knex('article').insert({ url: updateData.url, headline: updateData.headline, image_src: updateData.thumbnail }).returning(['id']).then((rows1) => {
             const article_id = rows1[0].id;
-            
+
           });
         } else {
-
+          // Insert the record into the user_article table. First find the 
+          knex('user_article').insert()
         }
       });
     });

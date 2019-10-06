@@ -24,10 +24,12 @@
   - Any user (regardless if signed in) can search ad hoc for news articles by date and by topic.
 - #### UI Responsive
 
+- #### Saved Articles
+	- Feature in progress.
+
 ### Future Feature ideas
 
-- Saving news articles
-- Saving articles to *favorites*
+- Saving articles to *favorites* (feature in progress)
 - ad hoc custom searches with multiple search topics
 - "read later" list
 - testing of routes
