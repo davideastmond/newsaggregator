@@ -131,9 +131,17 @@ module.exports = {
 
     // If it is not in the article table - add it, grab the id and then add it to the user_article table
     return new Promise((resolve, reject) => {
-      knex('article').where({ url: updateData.url})
+      knex('article').where({ url: updateData.url}).returning(['id'])
       .then((rows) => {
-        console.log(rows);
+        // If rows is zero, we need to insert a new entry, otherwise
+        if (rows.length === 0) {
+          knex('article').insert({ url: updateData.url }).returning(['id']).then((rows1) => {
+            const article_id = rows1[0].id;
+            
+          });
+        } else {
+
+        }
       });
     });
   }

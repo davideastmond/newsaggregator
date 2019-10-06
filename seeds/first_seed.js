@@ -49,8 +49,13 @@ exports.seed = function(knex) {
       })
       .then (()=> {
         return Promise.all([
-          knex('article').insert({ id: 1, url: 'https://www.cnn.com/2019/10/05/media/tucker-carlson-op-ed-ukraine-trump-impeachment/index.html'}),
-          knex('article').insert({ id: 2, url: 'https://www.cbsnews.com/news/trump-administration-to-deny-visas-to-immigrants-who-cant-prove-they-can-pay-for-health-care/'})
+					knex('article').insert({ id: 1, 
+						url: 'https://www.cnn.com/2019/10/05/media/tucker-carlson-op-ed-ukraine-trump-impeachment/index.html', 
+						headline: "Tucker Carlson says Trump's Ukraine call was inappropriate: 'There's no way to spin this'", 
+						image_src: 'https://img.thedailybeast.com/image/upload/c_crop,d_placeholder_euli9k,h_360,w_640,x_0,y_0/dpr_2.0/c_limit,w_740/fl_lossy,q_auto/v1570372090/meet-press_9_gvkaez'}),
+					knex('article').insert({ id: 2, url: 'https://www.cbsnews.com/news/trump-administration-to-deny-visas-to-immigrants-who-cant-prove-they-can-pay-for-health-care/', 
+					headline: "Trump administration to deny visas to immigrants who can't prove they can pay for health care", 
+					image_src: 'https://cbsnews3.cbsistatic.com/hub/i/r/2019/08/12/07ba317f-a024-456f-a85c-3d79a0fed449/thumbnail/1280x720/4775949ae1dd8365c77e674b14a4618b/cbsn-fusion-public-charge-rule-cracks-down-on-government-benefits-for-legal-immigrants-thumbnail-1910310-640x360.jpg'})
         ]);
       })
       .then(()=> {

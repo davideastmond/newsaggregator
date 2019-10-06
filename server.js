@@ -245,8 +245,10 @@ app.post("/user/:id/articles/update", (req, res) => {
   // This handles updating of saved/favourite articles
 
   if (req.session.session_id) {
-    const urlInq = req.body.url; // URL TO update
-    //
+		const articleUpdatePackage = { database_id: req.session.database_id, url: req.body.url, headline: req.body.headlineText, thumbnail: req.body.imageSrc };
+		//
+		console.log(articleUpdatePackage);
+		//dbFunctions.updateSavedArticlesForUser(articleUpdatePackage);
     res.status(200).json({response: "ok"});
   } else {
     res.redirect("/");

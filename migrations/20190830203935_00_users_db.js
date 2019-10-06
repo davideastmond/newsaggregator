@@ -24,7 +24,9 @@ exports.up = function(knex) {
 		}),
 		knex.schema.createTable('article', (table) => {
 			table.increments('id').primary();
-			table.string('url').unique().notNullable();
+			table.string('url', 1000).unique().notNullable();
+			table.string('headline').notNullable();
+			table.string('image_src', 1000).notNullable();
 		}),
 		knex.schema.createTable('user_article', (table) => {
 			table.increments('id').primary();

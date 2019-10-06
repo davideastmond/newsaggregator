@@ -27,27 +27,33 @@ $(() => {
     if (e.target.style.color === 'red') {
       e.target.style.color = "";
     } else {
-     e.target.style.color = 'red';
+    e.target.style.color = 'red';
     }
-
-    const rawHTML = e.target.nextSibling.parentNode.children[1].innerHTML.split('"');
+    
+    // Capture the articles headline text, the article url and the thumbnail ref
+    const headlineText = e.target.parentNode.parentNode.parentNode.parentNode.children[1].children[0].innerHTML;
+    const articleURL = e.target.parentNode.parentNode.parentNode.parentNode.children[0].href;
+    const imageRef = e.target.parentNode.parentNode.parentNode.parentNode.children[0].children[0].currentSrc;
+    console.log(imageRef);
+    
+   
     // The url we want to save is index[3]
-    doUpdateFavoritesAjaxRequest(rawHTML[3]).then((result) => {
+    doUpdateFavoritesAjaxRequest({headlineText: headlineText, url: articleURL, imageSrc: imageRef}).then((result) => {
       
-      console.log(result);
+     console.log(result);
     });
     
   });
 });
 
-function doUpdateFavoritesAjaxRequest(url) {
+function doUpdateFavoritesAjaxRequest(articleInfo) {
   // This method is going to send an AJAX post request to the server to update the favorites
   return $.ajax({
     type: "POST",
     url: "/user/:id/articles/update",
-    data: { url: url}
+    data: articleInfo
   });
-}
+} 
 
 function doHTTPRequest() {
   const $searchQueryElement = $('#search-box').val();
