@@ -5,18 +5,25 @@ const helperFunctions = require('./helper');
 
 // These are going to be our database functions
 module.exports = {
+
+  /** Registers the user into the system. Ensures no duplicate accounts. Checks to see
+   * if the password meets security requirements. Hashes the password and creates a new record.
+   * @param {object} registrationData containing email and passwords for verification
+   * @param {string} registrationData.email Unique e-mail address
+   * @param {string} registrationData.first_password matching passwords
+   * @param {string} registrationData.second_password matching passwords
+   */
   registerUser: (registrationData) => {
-    // first check to see if password meets security requirements
+    // First check to see if password meets security requirements
     return new Promise((resolve, reject) => {
       if (!helperFunctions.passwordMeetsSecurityRequirements({ first: registrationData.first_password, second: registrationData.second_password })) {
         reject({error: 'password does not meet security requirements'});
         return;
       }
 
-      // Next we'll hash the password
       helperFunctions.hashPasswordAsync((registrationData.first_password))
       .then((hashedPassword) => {
-        // Once password is hashed, insert everything into the databse
+        // Once password is hashed, insert everything into the database
         knex('user').insert({ email: registrationData.email, password: hashedPassword, is_registered: true, has_chosen_topics: false })
         .returning(['id', 'email', 'is_registered', 'has_chosen_topics'])
         .then((result) => {
@@ -31,6 +38,9 @@ module.exports = {
     });
   },
   
+  /** Authenticates user
+   * @param {object} loginData containing the user login info - email and password.
+   */
   verifyLogin: (loginData) => {
     // Access the DB, verify user name, password and registration, return true or false
     return new Promise ((resolve, reject) => {
@@ -52,6 +62,10 @@ module.exports = {
     });
   },
 
+  /** Creates a join to find all the topics for a given user
+   * @param {object} userData Object containing the user's e-mail address
+   * @param {string} userData.email User's e-mail address
+   */
   getUserTopics: (userData) => {
     // Get all topics a user is subscribed to
     return knex.select('email', 'name').from('user as U')
@@ -60,6 +74,12 @@ module.exports = {
       .where('U.email', userData.email);
   },
 
+  /** Checks if the topics already exist in the DB. If not, add it. Refreshes the user_topic table and adds updated data
+   * @param {object} inputData
+   * @param {string} inputData.email User's e-mail address
+   * @param {number} inputData.database_id User's database id # (assigned at login)
+   * @param {[]} inputData.topicArray an array of strings containing each subscribed topic
+   */
   updateTopicListForUser: (inputData) => {
     return new Promise((resolve, reject) => {
       // First we need  to check if the topics already exist in the DB. If not, add it.
@@ -91,6 +111,12 @@ module.exports = {
     });
   },
   
+  /** Updates the user's password
+   * @param {object} newData containing two strings representing the plaintext password. Both strings much match.
+   * @param {string} newData.forUser E-mail address
+   * @param {string} newData.first_password matching password
+   * @param {string} newData.second_password matching password
+   */
   updateUserPassword: (newData) => {
     return new Promise((resolve, reject) => {
       // First we make sure the password meets security requirements
@@ -118,30 +144,35 @@ module.exports = {
     });
   },
   
+  /**
+   * @param {object} updateData An object consisting of the database_id:(int), url:(string), headline:(string) and image_src:(string)
+   * @param {number} updateData.database_id: User's db id
+   * @param {string} updateData.url URL of the article
+   * @param {string} updateData.headline Short headline text
+   * @param {string} updateData.thumbnail href to thumbnmail image
+   */
   updateSavedArticlesForUser: (updateData) => {
-    /*
-      update data should contain:
-      database_id: int (the user's database_id)
-      url: string
-
-    */
-
     // We should first check if the article is in the article table already. If so, grab the id
     // then check the user_article table if it is associated with the user
 
     // If it is not in the article table - add it, grab the id and then add it to the user_article table
     return new Promise((resolve, reject) => {
+      
       knex('article').where({ url: updateData.url}).returning(['id'])
       .then((rows) => {
         // If rows is zero, we need to insert a new entry, otherwise
         if (rows.length === 0) {
           knex('article').insert({ url: updateData.url, headline: updateData.headline, image_src: updateData.thumbnail }).returning(['id']).then((rows1) => {
-            const article_id = rows1[0].id;
-
+            
+            // Then insert it into the user_article database
           });
         } else {
           // Insert the record into the user_article table. First find the 
-          knex('user_article').insert()
+          knex('user_article').where({user_id: updateData.database_id, article_id: rows[0].id}).then((results) => {
+            if (results.length > 0) {
+
+            }
+          });
         }
       });
     });
@@ -173,6 +204,15 @@ function insertNewTopicsIntoDB(topicListArray) {
   });
 }
 
+/**
+ * Inserts object into the user_article table
+ * @param {object} userArticleData An object with two properties { user_id:(int), articleIid: (int) }
+ */
+function insertSavedArticleIntoUserArticleDB(userArticleData) {
+  return knex('user_article')
+  .returning(['id'])
+  insert(userArticleData);
+}
 function insertTopic(string_topic) {
   return knex('topic')
   .returning(['id', 'name'])
