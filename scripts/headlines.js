@@ -21,17 +21,29 @@ $(() => {
   });
 
   $('.fa-bookmark').click((e) => {
-    // This code needs to be refactored. The status of the heart icon can only change after a successful response from the server
+    // The status of the heart icon can only change after a successful response from the server
     if (e.target && e.target.disabled) {
+      // If the icon has been clicked and is solid red, abort
       return;
     }
-    // Capture the articles headline text, the article url and the thumbnail ref
+    // Capture the articles headline text, the article url and the thumbnail ref. I have to take into account
+    // If the events are being triggered by the feed.ejs or headlines.ejs as the DOM hierarchy is different for each
     const headlineText = e.target.parentNode.parentNode.parentNode.parentNode.children[1].children[0].innerHTML;
-    const articleURL = e.target.parentNode.parentNode.parentNode.parentNode.children[0].href;
-    const imageRef = e.target.parentNode.parentNode.parentNode.parentNode.children[0].children[0].currentSrc;
+    let articleURL = e.target.parentNode.parentNode.parentNode.parentNode.children[0].href;
+    let imageRef;
 
+    if (!e.target.parentNode.parentNode.parentNode.parentNode.children[0].children[0]) {
+      imageRef = e.target.parentNode.parentNode.parentNode.parentNode.children[0].currentSrc;
+    } else {
+      imageRef = e.target.parentNode.parentNode.parentNode.parentNode.children[0].children[0].currentSrc;
+    }
+    if (!articleURL) {
+      articleURL = e.target.parentNode.children[1].children[0].href;
+    }
+    
+    const favArticleData = { headlineText: headlineText, url: articleURL, imageSrc: imageRef };
     // The url we want to save is index[3]
-    doUpdateFavoritesAjaxRequest({headlineText: headlineText, url: articleURL, imageSrc: imageRef}).then((result) => {
+    doUpdateFavoritesAjaxRequest(favArticleData).then((result) => {
       makeBookMarkIconRed(e);
       console.log(result);
     });

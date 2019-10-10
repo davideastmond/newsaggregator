@@ -45,14 +45,14 @@
           <h5 class="mt-0"><%= article.title %></h5>
           <p class="article-description-blurb-justify"> <%= article.description %></p>
           <footer>
-          <span>
-						<!-- Only show bookmarks for those logged in -->
-						<% if (loggedIn) { %>
-							<i class="far fa-bookmark"></i>
-						<% } %>
-            <p> <a target="_blank" href=<%= article.url %>> <%= article.source.name %> </a></p>
-            <p class="label-published-at-date h6"> Published:  </p>
-          </span>
+						<span>
+							<!-- Only show bookmarks for those logged in -->
+							<% if (loggedIn) { %>
+								<i class="far fa-bookmark"></i>
+							<% } %>
+							<p> <a target="_blank" href=<%= article.url %>> <%= article.source.name %> </a></p>
+							<p class="label-published-at-date h6"> Published:  </p>
+						</span>
           </footer>
         </div>
         

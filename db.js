@@ -160,17 +160,24 @@ module.exports = {
       
       knex('article').where({ url: updateData.url}).returning(['id'])
       .then((rows) => {
-        // If rows is zero, we need to insert a new entry, otherwise
+        // If rows is zero, we need to insert a new entry, otherwise get the id of the existing article and add it to the user_article table
         if (rows.length === 0) {
           knex('article').insert({ url: updateData.url, headline: updateData.headline, image_src: updateData.thumbnail }).returning(['id']).then((rows1) => {
             
             // Then insert it into the user_article database
+            knex('user_article').insert({ article_id: rows1[0].id, user_id: updateData.database_id }).then(()=> {
+              resolve({ status: 'ok' });
+            });
           });
         } else {
           // Insert the record into the user_article table. First find the 
-          knex('user_article').where({user_id: updateData.database_id, article_id: rows[0].id}).then((results) => {
-            if (results.length > 0) {
-
+          knex('user_article').where({ user_id: updateData.database_id, article_id: rows[0].id }).then((results) => {
+            console.log("176: ", results);
+            if (results.length === 0) {
+              
+              knex('user_article').insert({ article_id: rows[0].id, user_id: updateData.database_id }).then(()=> {
+                resolve({ status: 'ok' });
+              });
             }
           });
         }

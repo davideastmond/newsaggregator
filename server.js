@@ -37,6 +37,8 @@ app.use('/user/:id/feed', express.static(path.join(__dirname, 'public')));
 app.use('/user/:id/profile', express.static(path.join(__dirname, 'scripts')));
 app.use('/user/:id/profile', express.static(path.join(__dirname, 'public')));
 
+app.use('/user/:id/bookmarks', express.static(path.join(__dirname, 'scripts')));
+app.use('/user/:id/bookmarks', express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
 
 
@@ -158,7 +160,8 @@ app.get('/user/:id/profile', (req, res) => {
 
 app.get('/user/:id/bookmarks', (req, res) => {
   if (req.session.session_id) {
-    // Do something
+    // First we need to access the DB and get all saved articles for the user
+    res.render('bookmarks.ejs', {uId: req.session.session_id});
   }
 });
 
@@ -252,10 +255,14 @@ app.post("/user/:id/bookmarks/update", (req, res) => {
 
   if (req.session.session_id) {
     const articleUpdatePackage = { database_id: req.session.database_id, url: req.body.url, headline: req.body.headlineText, thumbnail: req.body.imageSrc };
-    //
-    console.log(articleUpdatePackage);
-    dbFunctions.updateSavedArticlesForUser(articleUpdatePackage);
-    res.status(200).json({response: "ok"});
+    dbFunctions.updateSavedArticlesForUser(articleUpdatePackage).then((result) => {
+			if (result.status === 'ok') {
+				res.status(200).json({response: "ok"});
+			} else {
+				res.status(400).json({ status: 'error updating database'});
+			}
+		});
+   
   } else {
     res.redirect("/");
   }
