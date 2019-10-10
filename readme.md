@@ -31,7 +31,6 @@
 
 - Saving articles to *favorites* (feature in progress)
 - ad hoc custom searches with multiple search topics
-- "read later" list
 - testing of routes
 - multiple language options
 

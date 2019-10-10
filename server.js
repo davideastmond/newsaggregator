@@ -67,11 +67,11 @@ app.get("/news", (req, res) => {
 
 app.get("/headlines", (req, res)=> {
   // Grab the date
-	let loggedIn = false;
-	
-	if (req.session.session_id) {
-		loggedIn = true;
-	}
+  let loggedIn = false;
+  
+  if (req.session.session_id) {
+    loggedIn = true;
+  }
   let url;
   if (req.query.country) {
     url = `https://newsapi.org/v2/top-headlines?sources=google-news&apiKey=${process.env.PERSONAL_API_KEY}&pageSize=20&language=en`; 
@@ -153,6 +153,12 @@ app.get('/user/:id/profile', (req, res) => {
     res.render('profile.ejs', { uId: req.session.session_id });
   } else {
     res.redirect('/login');
+  }
+});
+
+app.get('/user/:id/bookmarks', (req, res) => {
+  if (req.session.session_id) {
+    // Do something
   }
 });
 
@@ -241,14 +247,14 @@ app.post("/login", [check('email').isEmail().trim().escape(), check('password').
   });
 });
 
-app.post("/user/:id/articles/update", (req, res) => {
+app.post("/user/:id/bookmarks/update", (req, res) => {
   // This handles updating of saved/favourite articles
 
   if (req.session.session_id) {
-		const articleUpdatePackage = { database_id: req.session.database_id, url: req.body.url, headline: req.body.headlineText, thumbnail: req.body.imageSrc };
-		//
-		console.log(articleUpdatePackage);
-		dbFunctions.updateSavedArticlesForUser(articleUpdatePackage);
+    const articleUpdatePackage = { database_id: req.session.database_id, url: req.body.url, headline: req.body.headlineText, thumbnail: req.body.imageSrc };
+    //
+    console.log(articleUpdatePackage);
+    dbFunctions.updateSavedArticlesForUser(articleUpdatePackage);
     res.status(200).json({response: "ok"});
   } else {
     res.redirect("/");
