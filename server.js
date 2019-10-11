@@ -213,7 +213,6 @@ app.post("/register", [check('emailAddr').isEmail().trim().escape(),
     return;
   }
 
-
   dbFunctions.registerUser({ email: req.body.emailAddr, first_password: req.body.passwordOne, 
     second_password: req.body.passwordTwo,
     is_registered: true})
@@ -256,13 +255,13 @@ app.post("/user/:id/bookmarks/update", (req, res) => {
   if (req.session.session_id) {
     const articleUpdatePackage = { database_id: req.session.database_id, url: req.body.url, headline: req.body.headlineText, thumbnail: req.body.imageSrc };
     dbFunctions.updateSavedArticlesForUser(articleUpdatePackage).then((result) => {
-			if (result.status === 'ok') {
-				res.status(200).json({response: "ok"});
-			} else {
-				res.status(400).json({ status: 'error updating database'});
-			}
-		});
-   
+      if (result.status === 'ok') {
+        res.status(200).json({response: "ok"});
+      } else {
+        res.status(400).json({ status: 'error updating database'});
+      }
+    });
+  
   } else {
     res.redirect("/");
   }

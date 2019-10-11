@@ -12,6 +12,7 @@ module.exports = {
    * @param {string} registrationData.email Unique e-mail address
    * @param {string} registrationData.first_password matching passwords
    * @param {string} registrationData.second_password matching passwords
+   * @returns {Promise} A Promise containing the status message
    */
   registerUser: (registrationData) => {
     // First check to see if password meets security requirements
@@ -40,6 +41,7 @@ module.exports = {
   
   /** Authenticates user
    * @param {object} loginData containing the user login info - email and password.
+   * @returns {Promise}
    */
   verifyLogin: (loginData) => {
     // Access the DB, verify user name, password and registration, return true or false
@@ -51,7 +53,6 @@ module.exports = {
             knex('user').where({ email: loginData.email }).update({ last_login: loginData.last_login }).then(() => {
               resolve({ email: loginData.email, success: true, response: `ok`, has_chosen_topics: rows[0].has_chosen_topics, db_id: rows[0].id });
             });
-            
           } else {
             reject({ email: loginData.email, success: false, response: `Invalid username and/or password `});
           }
@@ -65,6 +66,7 @@ module.exports = {
   /** Creates a join to find all the topics for a given user
    * @param {object} userData Object containing the user's e-mail address
    * @param {string} userData.email User's e-mail address
+   * @returns {Promise} Returns a promise with the results of the db query
    */
   getUserTopics: (userData) => {
     // Get all topics a user is subscribed to
@@ -74,6 +76,16 @@ module.exports = {
       .where('U.email', userData.email);
   },
 
+  /** Gets the bookmarks for a given user, performing join operations
+   * @param {object} userData
+   * @returns {Promise} Returns a promise with the results of the db query
+   */
+  getBookMarks: (userData) => {
+    // Get all saved bookedmarks for a specific user
+    return knex.select('email', 'url', 'headline', 'image').from('user as U')
+    .innerJoin('user_article as UA', 'U.id', 'UA.article_id')
+    
+  },
   /** Checks if the topics already exist in the DB. If not, add it. Refreshes the user_topic table and adds updated data
    * @param {object} inputData
    * @param {string} inputData.email User's e-mail address
