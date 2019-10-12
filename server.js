@@ -159,9 +159,19 @@ app.get('/user/:id/profile', (req, res) => {
 });
 
 app.get('/user/:id/bookmarks', (req, res) => {
+  
   if (req.session.session_id) {
     // First we need to access the DB and get all saved articles for the user
-    res.render('bookmarks.ejs', {uId: req.session.session_id});
+    dbFunctions.getBookmarks({ email: req.session.session_id }).then((response) => {
+     
+      res.render('bookmarks.ejs', { uId: req.session.session_id, data: response });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+    
+  } else {
+    res.redirect('/');
   }
 });
 

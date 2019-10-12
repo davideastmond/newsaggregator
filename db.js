@@ -77,14 +77,15 @@ module.exports = {
   },
 
   /** Gets the bookmarks for a given user, performing join operations
-   * @param {object} userData
+   * @param {object} userData @param {string} userData.email E-mail address
    * @returns {Promise} Returns a promise with the results of the db query
    */
-  getBookMarks: (userData) => {
+  getBookmarks: (userData) => {
     // Get all saved bookedmarks for a specific user
-    return knex.select('email', 'url', 'headline', 'image').from('user as U')
-    .innerJoin('user_article as UA', 'U.id', 'UA.article_id')
-    
+    return knex.select('email', 'url', 'headline', 'image_src').from('user as U')
+    .innerJoin('user_article as UA', 'U.id', 'UA.user_id')
+    .innerJoin('article as A', 'UA.article_id', 'A.id' )
+    .where('U.email', userData.email);
   },
   /** Checks if the topics already exist in the DB. If not, add it. Refreshes the user_topic table and adds updated data
    * @param {object} inputData
