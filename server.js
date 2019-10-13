@@ -167,7 +167,7 @@ app.get('/user/:id/bookmarks', (req, res) => {
       res.render('bookmarks.ejs', { uId: req.session.session_id, data: response });
     })
     .catch((err) => {
-      console.log(err);
+      res.response(400).json({ message: 'Server Error' });
     });
     
   } else {

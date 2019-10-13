@@ -36,10 +36,20 @@ $(() => {
   });
 });
 
+/**
+ * Return true if pwd1 === pwd2. Used for checking password security on the front end
+ * @param {string} pwd1 
+ * @param {string} pwd2 
+ * @returns {boolean}
+ */
 function ifPasswordsMatch(pwd1, pwd2) {
   return pwd1 === pwd2;
 }
 
+/**
+ * Allows user to submit a request to change their password
+ * @returns {Promise} A promise, the result of a POSt request to update user profile info
+ */
 function submitPasswordChange() {
   // Essentially makes an AJAX post request to the server and returns a promise
   return $.ajax({
@@ -49,6 +59,11 @@ function submitPasswordChange() {
   });
 }
 
+/**
+ * Displays an error message, formatted for the page
+ * @param {string} message 
+ *
+ */
 function showErrorMessage(message) {
   $("#change-password-error-message").text(`${message}`).css('display', 'block').css('color', 'red');
 }

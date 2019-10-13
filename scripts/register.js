@@ -1,7 +1,7 @@
   document.getElementById("registration-form").onsubmit = (e) => {
     e.preventDefault();
-		
-		$("#submit-form").attr('disabled', true);
+    
+    $("#submit-form").attr('disabled', true);
     // Assign the form to variables
     const registrationEmail = document.getElementById("email_address").value;
     const passwordText1 = document.getElementById("pwd1").value;
@@ -60,7 +60,10 @@
   function clearValidationErrorMessage () {
     $("#validation-error").text('').css("display", "none");
   }
-
+  /**
+   * 
+   * @param {string} pwd 
+   */
   function passwordSecurityValid(pwd) {
     // Enforcement principles should be a js object
     // { captialLetters: true or false }
@@ -70,11 +73,19 @@
     return regEx.test(pwd);
   }
 
+  /**
+   * 
+   * @param {string} email 
+   */
   function ValidateEmail(email) 
   {
     return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
   }
 
+    /**
+     * 
+     * @param {object} serializedData 
+     */
   function sendRegistrationRequest(serializedData) {
     // Validation has passed. Send an ajax request to the server with registration info.
     return $.ajax({

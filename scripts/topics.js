@@ -19,6 +19,10 @@ $(document).ready(function() {
     });
 });
 
+/**
+ * 
+ * @param {array} iTopics 
+ */
 function rebuildTopicList(iTopics) {
   clearTopicContainer();
   // Iterate through each topic and create an HTML element li with an embedded span (x close button)
@@ -34,6 +38,12 @@ function rebuildTopicList(iTopics) {
   }
 }
 
+/**
+ * 
+ * @param {string} itemName 
+ * @param {number} i_index 
+ * @returns {object} returns a jQuery listItem DOM object
+ */
 function makeIndividualTopicListItem(itemName, i_index) {
   // Item name is a string
   if (typeof(itemName) !== 'string') {
@@ -48,7 +58,11 @@ function makeIndividualTopicListItem(itemName, i_index) {
   return $listItem;
 }
 
-// This handles when the delete x icon is clicked. Starts process of deleting the topic from the array and refreshing the DOM
+
+/**
+ * This handles when the delete x icon is clicked. Starts process of deleting the topic from the array and refreshing the DOM
+ * @param {object} e 
+ */
 function processDeleteTopic_Click (e) {
   const etd = e.target.id;
 

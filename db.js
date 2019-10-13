@@ -82,11 +82,12 @@ module.exports = {
    */
   getBookmarks: (userData) => {
     // Get all saved bookedmarks for a specific user
-    return knex.select('email', 'url', 'headline', 'image_src').from('user as U')
+    return knex.select('email', 'url', 'headline', 'image_src', 'created_at').from('user as U')
     .innerJoin('user_article as UA', 'U.id', 'UA.user_id')
     .innerJoin('article as A', 'UA.article_id', 'A.id' )
     .where('U.email', userData.email);
   },
+  
   /** Checks if the topics already exist in the DB. If not, add it. Refreshes the user_topic table and adds updated data
    * @param {object} inputData
    * @param {string} inputData.email User's e-mail address
@@ -199,6 +200,12 @@ module.exports = {
   }
 };
 
+/**
+ * 
+ * @param {array} listFromDB 
+ * @param {array} topicsToLookUp
+ * @returns {array} A finalized list of topics to look up
+ */
 function createListOfTopicsToBeInsertedIntoDB(listFromDB, topicsToLookUp) {
   // This will return two objects
   let finalList = [];
@@ -213,6 +220,11 @@ function createListOfTopicsToBeInsertedIntoDB(listFromDB, topicsToLookUp) {
   return finalList;
 }
 
+/**
+ * 
+ * @param {*} topicListArray 
+ * @returns {Promise} A promise indicating the result from inserting new topics into the table
+ */
 function insertNewTopicsIntoDB(topicListArray) {
   
   return new Promise((resolve, reject) => {
@@ -225,25 +237,26 @@ function insertNewTopicsIntoDB(topicListArray) {
 }
 
 /**
- * Inserts object into the user_article table
- * @param {object} userArticleData An object with two properties { user_id:(int), articleIid: (int) }
+ * 
+ * @param {string} string_topic
+ * @returns {Promise}
  */
-function insertSavedArticleIntoUserArticleDB(userArticleData) {
-  return knex('user_article')
-  .returning(['id'])
-  insert(userArticleData);
-}
 function insertTopic(string_topic) {
   return knex('topic')
   .returning(['id', 'name'])
   .insert({ name: string_topic});
 }
 
+/**
+ * Refresh and get a current state of the topics database. Then  deletes all of the entries for the matching user_id in the user_topic table.
+ * It then re-adds a refresh collection of topics for the user.
+ * @param {object} user_data 
+ * @returns {Promise}
+ */
 function update_user_topic_table(user_data) {
   return new Promise((resolve, reject) => {
     
-    // Refresh and get a current state of the topics database. Then we delete all of the entries for the matching user_id in the user_topic table
-    // and then re-add a refresh collection of topics for the user
+    
     knex.select().table('topic').then((topics_from_db) => {
       knex('user_topic').del().where('user_id', user_data.database_id).returning(['user_id', 'topic_id'])
       .then(() => {
@@ -264,6 +277,11 @@ function update_user_topic_table(user_data) {
 
 }
 
+/**
+ * 
+ * @param {object} iData
+ * @returns {Promise}
+ */
 function insertUser_Topic(iData) {
   return knex('user_topic')
   .returning(['user_id', 'topic_id'])
