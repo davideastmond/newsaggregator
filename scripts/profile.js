@@ -1,7 +1,6 @@
 $(() => {
 
   $("#change-profile-submit-button").click((e) => {
-
     // Reset the error message
     $("#change-password-error-message").css('display', 'none');
     // The submit button was clicked. We must validate the passwords

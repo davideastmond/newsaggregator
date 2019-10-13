@@ -82,10 +82,10 @@ module.exports = {
    */
   getBookmarks: (userData) => {
     // Get all saved bookedmarks for a specific user
-    return knex.select('email', 'url', 'headline', 'image_src', 'created_at').from('user as U')
+    return knex.select('email', 'url', 'headline', 'image_src', 'A.created_at').from('user as U')
     .innerJoin('user_article as UA', 'U.id', 'UA.user_id')
     .innerJoin('article as A', 'UA.article_id', 'A.id' )
-    .where('U.email', userData.email);
+    .where('U.email', userData.email); 
   },
   
   /** Checks if the topics already exist in the DB. If not, add it. Refreshes the user_topic table and adds updated data
@@ -197,6 +197,29 @@ module.exports = {
         }
       });
     });
+  },
+  /**
+   * Deletes a bookmarked article from the user_article table
+   * @param {object} articleUserData an object containing the article url and the user's db ID
+   * @param {string} articleUserData.url_to_delete url of the article to delete
+   * @param {number} articleUserData.user_id Database id for the user deleting from their favorites
+   */
+  deleteBookmarkedArticle:(articleUserData) => {
+    return new Promise((resolve, reject) => {
+      getArticleIDByURL(articleUserData.url_to_delete).then((results1) => {
+        console.log("Found delete Results: ", results1);
+        if (results1.length > 0) {
+          // The result should be the article id
+          const targetArticleID = results1[0].id;
+          deleteUserArticleFavorite({ article_id: targetArticleID, user_id: articleUserData.user_id }).then(()=> {
+            resolve({ status: `article_ID: ${targetArticleID} for user ${articleUserData.user_id} deleted successfully`});
+          })
+          .catch((err) => {
+            reject({ error: 'unable to delete entry from the user_article table.'});
+          });
+        }
+      });
+    });
   }
 };
 
@@ -226,7 +249,6 @@ function createListOfTopicsToBeInsertedIntoDB(listFromDB, topicsToLookUp) {
  * @returns {Promise} A promise indicating the result from inserting new topics into the table
  */
 function insertNewTopicsIntoDB(topicListArray) {
-  
   return new Promise((resolve, reject) => {
     const batch = topicListArray.map((info) => {
       return insertTopic(info);
@@ -248,15 +270,13 @@ function insertTopic(string_topic) {
 }
 
 /**
- * Refresh and get a current state of the topics database. Then  deletes all of the entries for the matching user_id in the user_topic table.
+ * This function refreshes data and gets a current state of the topics database. Then deletes all of the entries for the matching user_id in the user_topic table.
  * It then re-adds a refresh collection of topics for the user.
  * @param {object} user_data 
  * @returns {Promise}
  */
 function update_user_topic_table(user_data) {
   return new Promise((resolve, reject) => {
-    
-    
     knex.select().table('topic').then((topics_from_db) => {
       knex('user_topic').del().where('user_id', user_data.database_id).returning(['user_id', 'topic_id'])
       .then(() => {
@@ -286,4 +306,24 @@ function insertUser_Topic(iData) {
   return knex('user_topic')
   .returning(['user_id', 'topic_id'])
   .insert({ user_id: iData.user_id, topic_id: iData.topic_id });
+}
+
+/**
+ * Search article database by URL and return the ID of the articles
+ * @param {string} url search the article database by url
+ */
+function getArticleIDByURL(search_url) {
+  return knex.select('id').from('article')
+    .where({ url: search_url});
+}
+
+/**
+ * Go into user_article DB and delete the particular record
+ * @param {object} delete_info 
+ * @param {number} delete_info.article_id;
+ * @param {number} delete_info.user_id
+ */
+function deleteUserArticleFavorite(delete_info) {
+  return knex('user_article').del()
+  .where({ article_id: delete_info.article_id, }).andWhere({user_id: delete_info.user_id});
 }

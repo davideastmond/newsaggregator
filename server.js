@@ -163,10 +163,11 @@ app.get('/user/:id/bookmarks', (req, res) => {
   if (req.session.session_id) {
     // First we need to access the DB and get all saved articles for the user
     dbFunctions.getBookmarks({ email: req.session.session_id }).then((response) => {
-     
+     console.log(response)
       res.render('bookmarks.ejs', { uId: req.session.session_id, data: response });
     })
     .catch((err) => {
+      console.log("Error 170", err);
       res.response(400).json({ message: 'Server Error' });
     });
     
@@ -274,6 +275,20 @@ app.post("/user/:id/bookmarks/update", (req, res) => {
   
   } else {
     res.redirect("/");
+  }
+});
+
+app.post('/user/:id/bookmarks/delete', (req, res) => {
+  // Deletes a bookmarked favorite
+	
+  if (req.session.session_id) {
+    const bookmarkObject = { user_id: req.session.database_id, url_to_delete: req.body.url };
+    dbFunctions.deleteBookmarkedArticle(bookmarkObject).then((result) => {
+      res.status(200).json({ response: 'ok'});
+    })
+    .catch((err) => {
+      res.status(400).json({ response: 'error' });
+    });
   }
 });
 
