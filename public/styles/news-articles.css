@@ -112,6 +112,10 @@
 .article-footer-margin-bottom:hover {
 	cursor: pointer;
 }
+
+#div-bookmarks-menu {
+	margin-left: 1em;
+}
 @media only screen and (max-width: 700px) {
 	.mobile {
 		display: inline;

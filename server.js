@@ -5,13 +5,12 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const PORT = 6565;
 const axios = require('axios');
-const moment = require('moment');
-const bcrypt = require('bcrypt');
 const cookieParser = require('cookie-parser');
 const cookieSession = require('cookie-session');
 const helperFunctions = require('./helper');
 const { check, validationResult } = require('express-validator');
-
+const cache = require('memory-cache');
+const cacheFunctions = require('./cache');
 const dbFunctions = require("./db");
 
 const cookieKeys = [process.env.COOKIE_KEYS];
@@ -58,9 +57,27 @@ app.get("/news", (req, res) => {
   const reqQuery = req.query.newsQuery;
   const url = `https://newsapi.org/v2/everything?q=${reqQuery}&from=${reqDate}&sortBy=publishedAt&apiKey=${process.env.PERSONAL_API_KEY}&pageSize=20&language=en`;
     // Create an API URI based on received info, query the URI, get a response, and send that data to render in news.ejs view
+  
+  let loggedInState = false;
+  let cacheData = [];
+  
+  if (req.session.session_id) {
+    loggedInState = true;
+    if (cache.get(req.session.session_id)) {
+      cacheData = cacheFunctions.strip(cache.get(req.session.session_id));
+    }
+  }
   axios.get(url)
   .then((response) => {
-    res.render('news.ejs', { articles: response.data.articles, searchQuery: reqQuery,  uId: req.session.session_id, requestDate: reqDate, count: response.data.articles.length, logged_in: req.session.session_id || false });
+    if (cacheData === [] && loggedInState) {
+      // hit the database
+      dbFunctions.getBookmarks({ email: req.session.session_id}).then((bookmarkResponses) => {
+        cacheData = cacheFunctions.strip(bookmarkResponses);
+        res.render('news.ejs', { loggedIn: loggedInState,  bookmarkCache: cacheData, articles: response.data.articles, searchQuery: reqQuery,  uId: req.session.session_id, requestDate: reqDate, count: response.data.articles.length, logged_in: req.session.session_id || false });
+      });
+    } else {
+      res.render('news.ejs', { loggedIn: loggedInState,  bookmarkCache: cacheData, articles: response.data.articles, searchQuery: reqQuery,  uId: req.session.session_id, requestDate: reqDate, count: response.data.articles.length, logged_in: req.session.session_id || false });
+    }
   })
   .catch((error) => {
     res.status(400).send({ error: error });
@@ -83,7 +100,8 @@ app.get("/headlines", (req, res)=> {
   }
 
   axios.get(url).then((response) => {
-    res.render('headlines.ejs', { articles: response.data.articles, uId: req.session.session_id, loggedIn: loggedIn, count: response.data.articles.length, country: req.query.country || "us", logged_in: req.session.session_id || false });
+    const strippedCache = cacheFunctions.strip(cache.get(req.session.session_id));
+    res.render('headlines.ejs', { articles: response.data.articles, bookmarkCache: strippedCache, uId: req.session.session_id, loggedIn: loggedIn, count: response.data.articles.length, country: req.query.country || "us", logged_in: req.session.session_id || false });
   })
   .catch((error) => {
     res.status(400).send({ error: error, message: "Unable to retrieve" });
@@ -120,7 +138,8 @@ app.get('/user/:id/feed', (req, res) => {
         });
         // Once we get our results, we need to render the page for the user
         const dataArticles = helperFunctions.compileAPIFetchData(fetchResults);
-        res.render('feed.ejs', { topics_list: listTopics, uId: req.session.session_id, data: resultingData, arrayCount: dataArticles.length, data_articles: dataArticles.flat() } );
+        const strippedCache = cacheFunctions.strip(cache.get(req.session.session_id));
+        res.render('feed.ejs', { topics_list: listTopics, uId: req.session.session_id, data: resultingData, arrayCount: dataArticles.length, data_articles: dataArticles.flat(), bookmarkCache: strippedCache } );
       });
     });
     
@@ -163,11 +182,9 @@ app.get('/user/:id/bookmarks', (req, res) => {
   if (req.session.session_id) {
     // First we need to access the DB and get all saved articles for the user
     dbFunctions.getBookmarks({ email: req.session.session_id }).then((response) => {
-     console.log(response)
       res.render('bookmarks.ejs', { uId: req.session.session_id, data: response });
     })
     .catch((err) => {
-      console.log("Error 170", err);
       res.response(400).json({ message: 'Server Error' });
     });
     
@@ -250,24 +267,36 @@ app.post("/login", [check('email').isEmail().trim().escape(), check('password').
       req.session.session_id = req.body.email;
       req.session.database_id = result.db_id;
       // They should be forwarded to their landing page - which user users/:id/feed
-      res.redirect(`/user/${req.session.session_id}/feed`);
+      
+      // Retrieve their bookmarks, store it in a cache.
+      dbFunctions.getBookmarks({ email: req.session.session_id }).then((bookmarkData) => {
+        cache.put(req.session.session_id, bookmarkData);
+        console.log("CACHE", cache.get(req.session.session_id));
+        res.redirect(`/user/${req.session.session_id}/feed`);
+      })
+      .catch((err) => {
+        // Redirect anyway, ignoring the cache
+        res.redirect(`/user/${req.session.session_id}/feed`);
+      });
+      
     } else {
       res.render('login.ejs', { message: "Invalid username / password" });
     }
   }).catch((err) => {
-    
     res.render('login.ejs', { message: "Invalid username / password" });
   });
 });
 
-app.post("/user/:id/bookmarks/update", (req, res) => {
+app.post("/user/:id/bookmarks/add", (req, res) => {
   // This handles updating of saved/favourite articles
-
+  
   if (req.session.session_id) {
-    const articleUpdatePackage = { database_id: req.session.database_id, url: req.body.url, headline: req.body.headlineText, thumbnail: req.body.imageSrc };
-    dbFunctions.updateSavedArticlesForUser(articleUpdatePackage).then((result) => {
-      if (result.status === 'ok') {
-        res.status(200).json({response: "ok"});
+    const articleUpdatePackage = { user_id: req.session.session_id, database_id: req.session.database_id, url: req.body.url, headline: req.body.headlineText, thumbnail: req.body.imageSrc };
+    dbFunctions.addBookmarkForUser(articleUpdatePackage).then((result) => {
+      if (result.response) {
+        // Update cache
+        cache.put(req.session.session_id, result.response);
+        res.status(200).json({ response: "ok"});
       } else {
         res.status(400).json({ status: 'error updating database'});
       }
@@ -278,17 +307,33 @@ app.post("/user/:id/bookmarks/update", (req, res) => {
   }
 });
 
-app.post('/user/:id/bookmarks/delete', (req, res) => {
+app.post('/user/:id/bookmarks/:id/delete', (req, res) => {
   // Deletes a bookmarked favorite
-	
+  
   if (req.session.session_id) {
-    const bookmarkObject = { user_id: req.session.database_id, url_to_delete: req.body.url };
-    dbFunctions.deleteBookmarkedArticle(bookmarkObject).then((result) => {
+    const bookmarkObject = { email: req.session.session_id, user_id: req.session.database_id, url_to_delete: req.body.url };
+    dbFunctions.deleteBookmarkForUser(bookmarkObject).then((result) => {
+      // Update the cache
+      cache.put(req.session.session_id, result.result);
       res.status(200).json({ response: 'ok'});
     })
     .catch((err) => {
       res.status(400).json({ response: 'error' });
     });
+  }
+});
+
+app.post('/user/:id/bookmarks/delete', (req, res) => {
+  // Deletes all the bookmarks for the user
+
+  if (req.session.session_id) {
+    const bookmarkObject = { email: req.session.session_id, user_id: req.session.database_id };
+    dbFunctions.deleteAllBookmarksForUser(bookmarkObject).then((result) => {
+      cache.put(req.session.session_id, result.result);
+      res.status(200).json({ response: 'ok'});
+    });
+  } else {
+    res.status(404).json( {response: 'not authorized'});
   }
 });
 

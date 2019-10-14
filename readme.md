@@ -25,11 +25,10 @@
 - #### UI Responsive
 
 - #### Saved Articles
-	- Feature in progress.
-
+	- Authenticated users can save articles for reading later. 
+	- Authenticated users can remove articles from their bookmark list
 ### Future Feature ideas
-
-- Saving articles to *favorites* (feature in progress)
+- caching of favorite articles so as to minimize hits to the database.
 - ad hoc custom searches with multiple search topics
 - testing of routes
 - multiple language options

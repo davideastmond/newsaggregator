@@ -20,6 +20,7 @@
     "express": "^4.17.1",
     "express-validator": "^6.2.0",
     "knex": "^0.19.5",
+    "memory-cache": "^0.2.0",
     "moment": "^2.24.0",
     "node-fetch": "^2.6.0",
     "pg": "^7.12.1"

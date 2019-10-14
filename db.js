@@ -77,12 +77,14 @@ module.exports = {
   },
 
   /** Gets the bookmarks for a given user, performing join operations
-   * @param {object} userData @param {string} userData.email E-mail address
+   * @param {object} userData 
+   * @param {string} userData.email E-mail address
    * @returns {Promise} Returns a promise with the results of the db query
    */
   getBookmarks: (userData) => {
     // Get all saved bookedmarks for a specific user
-    return knex.select('email', 'url', 'headline', 'image_src', 'A.created_at').from('user as U')
+    console.log("86-- Get bookmarks", userData);
+    return knex.select('email', 'url', 'headline', 'image_src', 'UA.id' ,'A.created_at').from('user as U')
     .innerJoin('user_article as UA', 'U.id', 'UA.user_id')
     .innerJoin('article as A', 'UA.article_id', 'A.id' )
     .where('U.email', userData.email); 
@@ -93,6 +95,7 @@ module.exports = {
    * @param {string} inputData.email User's e-mail address
    * @param {number} inputData.database_id User's database id # (assigned at login)
    * @param {[]} inputData.topicArray an array of strings containing each subscribed topic
+   * @returns {Promise}
    */
   updateTopicListForUser: (inputData) => {
     return new Promise((resolve, reject) => {
@@ -130,6 +133,7 @@ module.exports = {
    * @param {string} newData.forUser E-mail address
    * @param {string} newData.first_password matching password
    * @param {string} newData.second_password matching password
+   * @returns {Promise}
    */
   updateUserPassword: (newData) => {
     return new Promise((resolve, reject) => {
@@ -165,7 +169,7 @@ module.exports = {
    * @param {string} updateData.headline Short headline text
    * @param {string} updateData.thumbnail href to thumbnmail image
    */
-  updateSavedArticlesForUser: (updateData) => {
+  addBookmarkForUser: (updateData) => {
     // We should first check if the article is in the article table already. If so, grab the id
     // then check the user_article table if it is associated with the user
 
@@ -180,19 +184,30 @@ module.exports = {
             
             // Then insert it into the user_article database
             knex('user_article').insert({ article_id: rows1[0].id, user_id: updateData.database_id }).then(()=> {
-              resolve({ status: 'ok' });
+              // Get all bookmarks
+              getBookmarks({ email: updateData.user_id }).then((resultingData) => {
+                resolve({ response: resultingData });
+              }).catch((err)=> {
+                reject({error: err});
+              });
+            }).catch((err) => {
+              console.log(err);
             });
           });
         } else {
           // Insert the record into the user_article table. First find the 
           knex('user_article').where({ user_id: updateData.database_id, article_id: rows[0].id }).then((results) => {
-            console.log("176: ", results);
             if (results.length === 0) {
               
               knex('user_article').insert({ article_id: rows[0].id, user_id: updateData.database_id }).then(()=> {
-                resolve({ status: 'ok' });
+                console.log("199 getting all bookmarks before");
+                getBookmarks({ email: updateData.user_id }).then((resultingData) => {
+                  resolve({ response: resultingData });
+                });
               });
             }
+          }).catch((err) => {
+            console.log(err);
           });
         }
       });
@@ -203,21 +218,46 @@ module.exports = {
    * @param {object} articleUserData an object containing the article url and the user's db ID
    * @param {string} articleUserData.url_to_delete url of the article to delete
    * @param {number} articleUserData.user_id Database id for the user deleting from their favorites
+   * @param {string} articleUserData.email 
    */
-  deleteBookmarkedArticle:(articleUserData) => {
+  deleteBookmarkForUser:(articleUserData) => {
     return new Promise((resolve, reject) => {
       getArticleIDByURL(articleUserData.url_to_delete).then((results1) => {
-        console.log("Found delete Results: ", results1);
         if (results1.length > 0) {
           // The result should be the article id
           const targetArticleID = results1[0].id;
           deleteUserArticleFavorite({ article_id: targetArticleID, user_id: articleUserData.user_id }).then(()=> {
-            resolve({ status: `article_ID: ${targetArticleID} for user ${articleUserData.user_id} deleted successfully`});
+            // get the articles
+            getBookmarks({ email: articleUserData.email }).then((resultingData) => {
+              resolve({ result: resultingData});
+            });
           })
           .catch((err) => {
             reject({ error: 'unable to delete entry from the user_article table.'});
           });
         }
+      });
+    });
+  },
+
+  /**
+   * @param {object} userData Object containing the e-mail and database_id
+   * @param {number} userData.user_id Database user_id
+   * @param {string} email Email address
+   * @returns {Promise}
+   */
+  deleteAllBookmarksForUser:(userData) => {
+    return new Promise((resolve, reject) => {
+      knex('user_article').del()
+      .where({ user_id: userData.user_id })
+      .then(()=> {
+        getBookmarks({ email: userData.email })
+        .then((resultingData)=> {
+          resolve({ result: resultingData });
+        });
+      })
+      .catch((error) => {
+        reject(error);
       });
     });
   }
@@ -253,7 +293,6 @@ function insertNewTopicsIntoDB(topicListArray) {
     const batch = topicListArray.map((info) => {
       return insertTopic(info);
     });
-
     resolve(Promise.all(batch));
   });
 }
@@ -326,4 +365,12 @@ function getArticleIDByURL(search_url) {
 function deleteUserArticleFavorite(delete_info) {
   return knex('user_article').del()
   .where({ article_id: delete_info.article_id, }).andWhere({user_id: delete_info.user_id});
+}
+
+function getBookmarks (userData) {
+  // Get all saved bookedmarks for a specific user
+  return knex.select('email', 'url', 'headline', 'image_src', 'UA.id' ,'A.created_at').from('user as U')
+  .innerJoin('user_article as UA', 'U.id', 'UA.user_id')
+  .innerJoin('article as A', 'UA.article_id', 'A.id' )
+  .where('U.email', userData.email); 
 }

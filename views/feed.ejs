@@ -38,10 +38,14 @@
             <h5 class="mt-0"><%= article.title %></h5>
             <p> <%= article.description %></p>
             <footer>
-							<span>
-								<i class="far fa-bookmark"></i>
-								<p> <a href=<%= article.url %> target="_blank"> <%= article.source.name %> </a></p>
-							</span>
+              <span>
+                <% if (bookmarkCache && bookmarkCache.includes(article.url)) { %>
+                  <i class="fas fa-bookmark" disabled></i>
+                <% } else { %>
+                  <i class="far fa-bookmark"></i>
+                <% } %>
+                <p> <a href=<%= article.url %> target="_blank"> <%= article.source.name %> </a></p>
+              </span>
             </footer>
           </div>
         </div>

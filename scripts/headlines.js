@@ -45,7 +45,6 @@ $(() => {
     // The url we want to save is index[3]
     doUpdateFavoritesAjaxRequest(favArticleData).then((result) => {
       makeBookMarkIconRed(e);
-      console.log(result);
     });
     
   });
@@ -62,7 +61,7 @@ function doUpdateFavoritesAjaxRequest(articleInfo) {
   // This method is going to send an AJAX post request to the server to update the favorites
   return $.ajax({
     type: "POST",
-    url: "/user/:id/bookmarks/update",
+    url: "/user/:id/bookmarks/add",
     data: articleInfo
   });
 }
