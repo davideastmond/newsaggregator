@@ -32,7 +32,6 @@
     use of database.
 
 ### Future Feature ideas
-- caching of favorite articles so as to minimize hits to the database.
 - ad hoc custom searches with multiple search topics
 - testing of routes
 - multiple language options
@@ -46,7 +45,7 @@
 ![Update topics](https://github.com/davideastmond/newsaggregator/blob/master/docs/pick_topics_04.png)
 ### Requirements
 
-- This app uses [!NewsAPI](https://newsapi.org/) to grab news articles. You'll need to obtain your own API key for their service. Once obtained, include the key in your `.env` file
+- This app uses [NewsAPI](https://newsapi.org/) to grab news articles. You'll need to obtain your own API key for their service. Once obtained, include the key in your `.env` file
 
 ### How to Use
 
