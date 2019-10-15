@@ -38,11 +38,11 @@
 
 ### What it looks like
 
-![Log in screen](https://github.com/davideastmond/newsaggregator/blob/master/docs/news_agg_login_01.png)
-![Main screen](https://github.com/davideastmond/newsaggregator/blob/master/docs/news_agg_main_screen_00.png)
-![Your feed](https://github.com/davideastmond/newsaggregator/blob/master/docs/news_agg_your_feed_02.png)
-![Update Profile](https://github.com/davideastmond/newsaggregator/blob/master/docs/news_profile_settings_03.png)
-![Update topics](https://github.com/davideastmond/newsaggregator/blob/master/docs/pick_topics_04.png)
+[Log in screen](https://github.com/davideastmond/newsaggregator/blob/master/docs/news_agg_login_01.png)
+[Main screen](https://github.com/davideastmond/newsaggregator/blob/master/docs/news_agg_main_screen_00.png)
+[Your feed](https://github.com/davideastmond/newsaggregator/blob/master/docs/news_agg_your_feed_02.png)
+[Update Profile](https://github.com/davideastmond/newsaggregator/blob/master/docs/news_profile_settings_03.png)
+[Update topics](https://github.com/davideastmond/newsaggregator/blob/master/docs/pick_topics_04.png)
 ### Requirements
 
 - This app uses [NewsAPI](https://newsapi.org/) to grab news articles. You'll need to obtain your own API key for their service. Once obtained, include the key in your `.env` file
@@ -51,7 +51,7 @@
 
 - Clone or fork the project.
 - Run `npm i` to install all required packages
-- Obtain your own api key from [!NewsAPI](https://newsapi.org/)
+- Obtain your own api key from [NewsAPI](https://newsapi.org/)
 - Download or use moment.js CDN for client side
 - Create a .ENV file in the app folder (more below)
 
