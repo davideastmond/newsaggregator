@@ -37,6 +37,7 @@ exports.up = function(knex) {
 			table.increments('id').primary();
 			table.integer('article_id');
 			table.integer('user_id');
+			table.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
 			table.foreign('article_id').references('article.id');
 			table.foreign('user_id').references('user.id');
 		})
