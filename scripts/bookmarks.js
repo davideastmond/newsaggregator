@@ -1,3 +1,4 @@
+
 // This handles deleting the links. User has clicked the little trash icon for a bookmarked article
 $(()=> {
   $('.fa-trash-alt').on('click', (e) => {
@@ -21,6 +22,9 @@ $(()=> {
       console.log(err);
     });
   });
+  
+  convertMomentDates();
+
 });
 
 /**
@@ -43,4 +47,13 @@ function doAjaxRequestDeleteAllBookmarks () {
     url: '/user/:id/bookmarks/delete',
     data: { command: 'delete all'}
   });
+}
+
+function convertMomentDates() {
+  let domObjectArray = document.getElementsByClassName('bookmark-date');
+
+  for (let i = 0; i < domObjectArray.length; i++) {
+    const bookmarkDate = new Date(domObjectArray[i].innerHTML);
+    domObjectArray[i].innerHTML = bookmarkDate.toDateString("YYYY/MM/DD hh:mm");
+  }
 }

@@ -24,9 +24,13 @@
   - Any user (regardless if signed in) can search ad hoc for news articles by date and by topic.
 - #### UI Responsive
 
-- #### Saved Articles
-	- Authenticated users can save articles for reading later. 
-	- Authenticated users can remove articles from their bookmark list
+- #### Bookmarked Articles
+  - Authenticated users can save articles for reading later. 
+  - Authenticated users can remove articles from their bookmark list
+    #### Cache Implementation
+    - Caching system introduced to keep track of saved bookmarks across feed, news and headline pages, minimizing
+    use of database.
+
 ### Future Feature ideas
 - caching of favorite articles so as to minimize hits to the database.
 - ad hoc custom searches with multiple search topics

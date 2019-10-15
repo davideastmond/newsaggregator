@@ -109,6 +109,9 @@
 	padding-top: 8%;
 }
 
+.article-footer-margin-bottom-bookmark {
+	padding-top: 3%;
+}
 .article-footer-margin-bottom:hover {
 	cursor: pointer;
 }

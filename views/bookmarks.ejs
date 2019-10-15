@@ -6,7 +6,6 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
-  <link rel="stylesheet" href="styles/news-articles.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   
   <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
@@ -35,8 +34,8 @@
           <img class="align-self-center mr-3 article-thumbnail" src= <%= bookmark.image_src %>>
           <div class="media-body">
             <h5 class="mt-0"> <p> <a href=<%= bookmark.url %> target="_blank"> <%= bookmark.headline %> </p> </a></h5>
-            <footer class="article-footer-margin-bottom">
-							<p class="h6">As of</p>
+            <footer class="article-footer-margin-bottom-bookmark">
+							<p class="h6 bookmark-date"><%= bookmark.created_at %></p>
               <i class="far fa-trash-alt"></i>
             </footer>
           </div>
