@@ -33,16 +33,16 @@
 
 ### Future Feature ideas
 - ad hoc custom searches with multiple search topics
-- testing of routes
 - multiple language options
+- social media sharing (using some kind of API)
 
 ### What it looks like
 
-[Log in screen](https://github.com/davideastmond/newsaggregator/blob/master/docs/news_agg_login_01.png)
-[Main screen](https://github.com/davideastmond/newsaggregator/blob/master/docs/news_agg_main_screen_00.png)
-[Your feed](https://github.com/davideastmond/newsaggregator/blob/master/docs/news_agg_your_feed_02.png)
-[Update Profile](https://github.com/davideastmond/newsaggregator/blob/master/docs/news_profile_settings_03.png)
-[Update topics](https://github.com/davideastmond/newsaggregator/blob/master/docs/pick_topics_04.png)
+![Log in screen](https://github.com/davideastmond/newsaggregator/blob/master/docs/news_agg_login_01.png)
+![Main screen](https://github.com/davideastmond/newsaggregator/blob/master/docs/news_agg_main_screen_00.png)
+![Your feed](https://github.com/davideastmond/newsaggregator/blob/master/docs/news_agg_your_feed_02.png)
+![Update Profile](https://github.com/davideastmond/newsaggregator/blob/master/docs/news_profile_settings_03.png)
+![Update topics](https://github.com/davideastmond/newsaggregator/blob/master/docs/pick_topics_04.png)
 ### Requirements
 
 - This app uses [NewsAPI](https://newsapi.org/) to grab news articles. You'll need to obtain your own API key for their service. Once obtained, include the key in your `.env` file
@@ -56,7 +56,8 @@
 - Create a .ENV file in the app folder (more below)
 
 - Download and install the latest version of PostgreSQL
-- Initialize a knex file using `[coming soon]`
+- install postgress for node using `npm install pg --save`
+- Initialize a knex file using `knex init`
 - Run the latest migration using `knex migrate:latest`
 - Optional: seed the db using `knex seed:run`
 - Run the server using `npm start`

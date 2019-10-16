@@ -83,7 +83,6 @@ module.exports = {
    */
   getBookmarks: (userData) => {
     // Get all saved bookedmarks for a specific user
-    console.log("86-- Get bookmarks", userData);
     return knex.select('email', 'url', 'headline', 'image_src', 'UA.id' ,'UA.created_at').from('user as U')
     .innerJoin('user_article as UA', 'U.id', 'UA.user_id')
     .innerJoin('article as A', 'UA.article_id', 'A.id' )

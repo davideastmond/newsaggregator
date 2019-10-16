@@ -32,7 +32,7 @@
       <% data.forEach((bookmark) => { %>
         <div class="media padded-media">
           <img class="align-self-center mr-3 article-thumbnail" src= <%= bookmark.image_src %>>
-          <div class="media-body">
+          <div class="media-body div-media-body">
             <h5 class="mt-0"> <p> <a href=<%= bookmark.url %> target="_blank"> <%= bookmark.headline %> </p> </a></h5>
             <footer class="article-footer-margin-bottom-bookmark">
 							<p class="h6 bookmark-date"><%= bookmark.created_at %></p>
