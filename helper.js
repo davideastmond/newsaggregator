@@ -6,13 +6,13 @@ require('dotenv').config();
 // This module consists of helper functions concerning password validation and doing fetch requests to the API,
 // collating data etc
 module.exports = {
-	
-	/** Determines if password meet security and complexity requirements
-	 * @param {object} rawPassword
-	 * @param {string} rawPassword.first first of mandatory matching password
-	 * @param {string} rawPassword.second second of mandatory matching password
-	 * @returns {boolean} Returns true if password meets requirements
-	 */
+  
+  /** Determines if password meet security and complexity requirements
+   * @param {object} rawPassword
+   * @param {string} rawPassword.first first of mandatory matching password
+   * @param {string} rawPassword.second second of mandatory matching password
+   * @returns {boolean} Returns true if password meets requirements
+   */
   passwordMeetsSecurityRequirements: (rawPassword) => {
     // Password security verification: SERVER SIDE
     /* 
@@ -35,28 +35,28 @@ module.exports = {
     return regEx.test(rawPassword.first);
   },
 
-	/**
-	 * Synchornously hashes a password - mainly used for the db seeding
-	 * @param {string} rawPassword 
-	 */
+  /**
+   * Synchornously hashes a password - mainly used for the db seeding
+   * @param {string} rawPassword 
+   */
   hashPassword: function(rawPassword) {
     // This sync method is used for seeding the database
     return bcrypt.hashSync(rawPassword, parseInt(process.env.SALT_ROUNDS));
   },
-	
-	/**
-	 * Uses bcrypt to asynchronously hash a password string
-	 * @param {string} rawPassword
-	 * @returns {Promise} Returns a promise
-	 */
+  
+  /**
+   * Uses bcrypt to asynchronously hash a password string
+   * @param {string} rawPassword
+   * @returns {Promise} Returns a promise
+   */
   hashPasswordAsync: function(rawPassword) {
     return bcrypt.hash(rawPassword, parseInt(process.env.SALT_ROUNDS));
   },
-	
-	/** For each of the user topics, create a corresponding axios request
-	 * @param {object} data
-	 * @returns {Promise}
-	 */
+  
+  /** For each of the user topics, create a corresponding axios request
+   * @param {object} data
+   * @returns {Promise}
+   */
   doTopicsAxiosFetchRequest: (data)=> {
     // Interpret all of the user's topics and request them from the newsAPI
     // Map the requests for a Promise.all
@@ -71,9 +71,9 @@ module.exports = {
     });
   },
   /** A function that coallates all of the API fetch requests
-	 * @param {array} fetchResults
-	 * @returns {array}
-	 */
+   * @param {array} fetchResults
+   * @returns {array}
+   */
   compileAPIFetchData: (fetchResults)=> {
     
     const dataArticles = fetchResults.map((el) => {
@@ -82,6 +82,24 @@ module.exports = {
       });
     });
     return dataArticles;
+  },
+  
+  /**
+   * For each news article, keep track of how many times the headline appears. That could signal there are duplicates 
+   */
+  getDuplicatesFromArticleArray: (articleArrayData) => {
+    let duplicateTracker = {};
+    let filteredList = [];
+    articleArrayData.forEach((article) => {
+      console.log("93-", article.title);
+      if (!duplicateTracker[article.title]) {
+        duplicateTracker[article.title] = 1;
+        filteredList.push(article);
+      } else {
+        duplicateTracker[article.title] += 1;
+      }
+    });
+    return filteredList;
   }
 };
 

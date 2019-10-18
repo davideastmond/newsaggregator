@@ -126,8 +126,9 @@ app.get("/register", (req, res) => {
 
 app.get('/user/:id/feed', (req, res) => {
   if (req.session.session_id) {
-    // render the page - will have to hit the database and get the user's topic feed
-    // This won't be topics.ejs - but instead a call to the api and live result. 
+    /* This function queries the database and grabs all of the saved topics for the user.
+      With the resulting data it will query the newsAPI for each topic. 
+    */
     
     dbFunctions.getUserTopics({ email: req.session.session_id })
     .then((resultingData) => {
@@ -137,9 +138,13 @@ app.get('/user/:id/feed', (req, res) => {
           return resultElement.name;
         });
         // Once we get our results, we need to render the page for the user
+        // We'll also pull from the cached bookmarks incase there are any articles in the feed that are bookmarked.
         const dataArticles = helperFunctions.compileAPIFetchData(fetchResults);
         const strippedCache = cacheFunctions.strip(cache.get(req.session.session_id));
-        res.render('feed.ejs', { topics_list: listTopics, uId: req.session.session_id, data: resultingData, arrayCount: dataArticles.length, data_articles: dataArticles.flat(), bookmarkCache: strippedCache } );
+        const flattenedArticlesArray = dataArticles.flat();
+        // Here we'll perform a test on the variable 'flattenedArticlesArray' to see if there are duplicate headlines
+        const filteredArticleData = helperFunctions.getDuplicatesFromArticleArray(flattenedArticlesArray);
+        res.render('feed.ejs', { topics_list: listTopics, uId: req.session.session_id, data: resultingData, arrayCount: filteredArticleData.length, data_articles: filteredArticleData, bookmarkCache: strippedCache } );
       });
     });
     
@@ -200,7 +205,7 @@ app.post('/user/:id/profile/update',[check('pwdone').trim().escape(), check('pwd
     // Database request. This essentially updates the user's password
     dbFunctions.updateUserPassword({ forUser: req.session.session_id, first_password: req.body.pwdone, 
     second_password: req.body.pwdtwo })
-    .then((result) => {
+    .then(() => {
       // Send a good response
       res.status(200).json({ status: 'ok', newURL: "#"}); // 	
     })
@@ -268,14 +273,13 @@ app.post("/login", [check('email').isEmail().trim().escape(), check('password').
       req.session.database_id = result.db_id;
       // They should be forwarded to their landing page - which user users/:id/feed
       
-      // Retrieve their bookmarks, store it in a cache.
+      // Retrieve their bookmarks, store it in cache, and redirect user to their feed
       dbFunctions.getBookmarks({ email: req.session.session_id }).then((bookmarkData) => {
         cache.put(req.session.session_id, bookmarkData);
-        console.log("CACHE", cache.get(req.session.session_id));
         res.redirect(`/user/${req.session.session_id}/feed`);
       })
-      .catch((err) => {
-        // Redirect anyway, ignoring the cache
+      .catch(() => {
+        // Redirect anyway, ignoring the cache if there is an error
         res.redirect(`/user/${req.session.session_id}/feed`);
       });
       
