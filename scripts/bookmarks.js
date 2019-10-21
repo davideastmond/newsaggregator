@@ -41,6 +41,9 @@ function doAjaxRequestDeleteBookmark(urlToDelete) {
   });
 }
 
+/**
+ * @returns {Promise} A promise indicating that the deletion of all a user's bookmarks will be completed
+ */
 function doAjaxRequestDeleteAllBookmarks () {
   return $.ajax({
     type: "POST",
@@ -49,6 +52,10 @@ function doAjaxRequestDeleteAllBookmarks () {
   });
 }
 
+/**
+ * A DOM helper function that converts date elements in the bookmark-date class into friendly readable date formats using moment.js
+ * 
+ */
 function convertMomentDates() {
   let domObjectArray = document.getElementsByClassName('bookmark-date');
 

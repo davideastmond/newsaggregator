@@ -361,6 +361,7 @@ function getArticleIDByURL(search_url) {
  * @param {object} delete_info 
  * @param {number} delete_info.article_id;
  * @param {number} delete_info.user_id
+ * @returns {Promise}
  */
 function deleteUserArticleFavorite(delete_info) {
   return knex('user_article').del()
