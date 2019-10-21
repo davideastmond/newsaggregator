@@ -20,7 +20,7 @@ $(() => {
       return;
     }
 
-    // Disbale the submit button
+    // Disable the submit button
     $("#change-profile-submit-button").attr('disabled', 'true');
 
     // Submit a password change and refresh page
@@ -47,10 +47,9 @@ function ifPasswordsMatch(pwd1, pwd2) {
 
 /**
  * Allows user to submit a request to change their password
- * @returns {Promise} A promise, the result of a POSt request to update user profile info
+ * @returns {Promise} A promise, the result of a POST request to update user profile info
  */
 function submitPasswordChange() {
-  // Essentially makes an AJAX post request to the server and returns a promise
   return $.ajax({
     url: '/user/:id/profile/update',
     data: $("#profile-update-password-change-form").serialize(),

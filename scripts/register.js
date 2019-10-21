@@ -85,6 +85,7 @@
     /**
      * 
      * @param {object} serializedData 
+		 * @returns {Promise} A promise indicating that the request will eventually be resolved
      */
   function sendRegistrationRequest(serializedData) {
     // Validation has passed. Send an ajax request to the server with registration info.

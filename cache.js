@@ -10,7 +10,6 @@ module.exports = {
       const strippedData = cacheData.map((obj) => {
         return obj.url;
       });
-      console.log("Stripped: ", strippedData);
       return strippedData;
     } else {
       return;

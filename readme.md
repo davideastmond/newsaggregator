@@ -35,6 +35,7 @@
 - ad hoc custom searches with multiple search topics
 - multiple language options
 - social media sharing (using some kind of API)
+- UI themes (dark / light etc)
 
 ### What it looks like
 

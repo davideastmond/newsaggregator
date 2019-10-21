@@ -86,12 +86,12 @@ module.exports = {
   
   /**
    * For each news article, keep track of how many times the headline appears. That could signal there are duplicates 
+   * @param {object} articleArrayData;
    */
   getDuplicatesFromArticleArray: (articleArrayData) => {
     let duplicateTracker = {};
     let filteredList = [];
     articleArrayData.forEach((article) => {
-      console.log("93-", article.title);
       if (!duplicateTracker[article.title]) {
         duplicateTracker[article.title] = 1;
         filteredList.push(article);

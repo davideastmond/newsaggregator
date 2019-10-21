@@ -161,13 +161,15 @@ module.exports = {
     });
   },
   
-  /**
-   * @param {object} updateData An object consisting of the database_id:(int), url:(string), headline:(string) and image_src:(string)
-   * @param {number} updateData.database_id: User's db id
-   * @param {string} updateData.url URL of the article
-   * @param {string} updateData.headline Short headline text
-   * @param {string} updateData.thumbnail href to thumbnmail image
-   */
+  /** This function checks if the article is in the article table already. If so, grab the id and
+   * then check the user_article table if it is associated with the user.
+    // If it is not in the article table - add it, grab the id and then add it to the user_article table
+  * @param {object} updateData An object consisting of the database_id:(int), url:(string), headline:(string) and image_src:(string)
+  * @param {number} updateData.database_id: User's db id
+  * @param {string} updateData.url URL of the article
+  * @param {string} updateData.headline Short headline text
+  * @param {string} updateData.thumbnail href to thumbnmail image
+  */
   addBookmarkForUser: (updateData) => {
     // We should first check if the article is in the article table already. If so, grab the id
     // then check the user_article table if it is associated with the user
@@ -199,7 +201,6 @@ module.exports = {
             if (results.length === 0) {
               
               knex('user_article').insert({ article_id: rows[0].id, user_id: updateData.database_id }).then(()=> {
-                console.log("199 getting all bookmarks before");
                 getBookmarks({ email: updateData.user_id }).then((resultingData) => {
                   resolve({ response: resultingData });
                 });
@@ -352,7 +353,7 @@ function insertUser_Topic(iData) {
  */
 function getArticleIDByURL(search_url) {
   return knex.select('id').from('article')
-    .where({ url: search_url});
+    .where({ url: search_url });
 }
 
 /**
@@ -366,8 +367,12 @@ function deleteUserArticleFavorite(delete_info) {
   .where({ article_id: delete_info.article_id, }).andWhere({user_id: delete_info.user_id});
 }
 
+/**
+ * Gets all saved bookedmarks for a specific user
+ * @param {object} userData
+ * @returns {Promise}
+ */
 function getBookmarks (userData) {
-  // Get all saved bookedmarks for a specific user
   return knex.select('email', 'url', 'headline', 'image_src', 'UA.id' ,'UA.created_at').from('user as U')
   .innerJoin('user_article as UA', 'U.id', 'UA.user_id')
   .innerJoin('article as A', 'UA.article_id', 'A.id' )
