@@ -62,7 +62,8 @@
   }
   /**
    * 
-   * @param {string} pwd 
+   * @param {string} pwd Password string to evaluate if it meets requirements
+	 * @returns {boolean}
    */
   function passwordSecurityValid(pwd) {
     // Enforcement principles should be a js object
@@ -74,8 +75,9 @@
   }
 
   /**
-   * 
+   * Returs 
    * @param {string} email 
+	 * @returns {boolean}
    */
   function ValidateEmail(email) 
   {

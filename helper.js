@@ -37,7 +37,9 @@ module.exports = {
 
   /**
    * Synchornously hashes a password - mainly used for the db seeding
+	 * @function
    * @param {string} rawPassword 
+	 * @returns {string} returns a hashed string
    */
   hashPassword: function(rawPassword) {
     // This sync method is used for seeding the database
@@ -54,6 +56,7 @@ module.exports = {
   },
   
   /** For each of the user topics, create a corresponding axios request
+	 * @function
    * @param {object} data
    * @returns {Promise}
    */
@@ -71,6 +74,7 @@ module.exports = {
     });
   },
   /** A function that coallates all of the API fetch requests
+	 * @function
    * @param {array} fetchResults
    * @returns {array}
    */

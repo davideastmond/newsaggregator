@@ -46,7 +46,7 @@ function ifPasswordsMatch(pwd1, pwd2) {
 }
 
 /**
- * Allows user to submit a request to change their password
+ * Allows user to submit a request to change their password. Sends an AJAX post request to the server to update info
  * @returns {Promise} A promise, the result of a POST request to update user profile info
  */
 function submitPasswordChange() {

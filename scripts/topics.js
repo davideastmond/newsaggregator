@@ -81,9 +81,14 @@ function processDeleteTopic_Click (e) {
   rebuildTopicList(arrOfTopics);
 }
 
+/**
+ * This function converts the current list on screen to an array of strings, and returns the array. 
+ * This representation can later be added or subtracted from, then re-rendered in the DOM
+ * @function
+ * @returns {string[]}
+ */
 function getTopicListFromDOM () {
-  // This function converts the current list on screen to an array of strings, 
-  // and returns the array. This representation can later be added or subtracted from, then re-rendered in the DOM
+
   const topicsList = $("#ul-topics");
   const arrOfTopics = [];
 
@@ -93,6 +98,11 @@ function getTopicListFromDOM () {
   return arrOfTopics;
 }
 
+/**
+ * @function
+ * Builds a list client side of the current topic subscriptions
+ * @param {object} e An event object
+ */
 function processAddTopic_Click (e) {
   // Adds topics to the list and then summons a function
   const targetTopic = $("#topic-to-add").val().toLowerCase().trim();
@@ -110,9 +120,15 @@ function processAddTopic_Click (e) {
   rebuildTopicList(currentList);
 }
 
+/**
+ * @function
+ * This function gathers the topics the user desires to subscribe to based on
+ * certain DOM elements. It then sends an ajax HTTP request to server to update the database w/ user's topic list
+ * 
+ */
 function saveTopicDataToServer () {
-  // This sends an ajax HTTP request to server, update database
-  const listFromDOM = getTopicListFromDOM();
+  
+  const listFromDOM = getTopicListFromDOM(); // Gets all of the topics based on DOM Elements
 
   let myData = { topics: JSON.stringify(listFromDOM) };
   $("#save-topic-button").attr('disabled', true);
@@ -130,10 +146,12 @@ function saveTopicDataToServer () {
   });
 }
 
+/**
+ * 
+ * @param {object} data // an object representing the value from a successful request.
+ */
 function respondToSuccess (data) {
   // re-enables button and logs response
-  
-
   window.location = "/user/user/feed";
   // Redirect to user feed
 }
@@ -142,6 +160,9 @@ function respondToError (data) {
   throw Error("Not implemented");
 }
 
+/**
+ * Removes event handlers from the elements and then binds new ones
+ */
 function clearTopicContainer () {
   // First we clear the container
   $(".list-group-item").detach();

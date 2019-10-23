@@ -11,8 +11,6 @@ module.exports = {
         return obj.url;
       });
       return strippedData;
-    } else {
-      return;
     }
   }
 };
