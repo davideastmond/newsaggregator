@@ -66,7 +66,9 @@ app.get("/news", (req, res) => {
     if (cache.get(req.session.session_id)) {
       cacheData = cacheFunctions.strip(cache.get(req.session.session_id));
     }
-  }
+	}
+	
+	
   axios.get(url)
   .then((response) => {
     if (cacheData === [] && loggedInState) {
@@ -287,7 +289,7 @@ app.post("/login", [check('email').isEmail().trim().escape(), check('password').
       res.render('login.ejs', { message: "Invalid username / password" });
     }
   }).catch((err) => {
-    res.render('login.ejs', { message: "Invalid username / password" });
+    res.render('login.ejs', { message: err.response });
   });
 });
 

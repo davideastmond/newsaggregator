@@ -14,53 +14,44 @@ module.exports = {
    * @param {string} registrationData.second_password matching passwords
    * @returns {Promise} A Promise containing the status message
    */
-  registerUser: (registrationData) => {
+  registerUser: async (registrationData) => {
     // First check to see if password meets security requirements
-    return new Promise((resolve, reject) => {
-      if (!helperFunctions.passwordMeetsSecurityRequirements({ first: registrationData.first_password, second: registrationData.second_password })) {
-        reject({error: 'password does not meet security requirements'});
-        return;
-      }
+    //
+    console.log("REGISTER USER");
+    if (!helperFunctions.passwordMeetsSecurityRequirements({ first: registrationData.first_password, second: registrationData.second_password })) {
+      return Promise.reject({error: 'password does not meet security requirements'});
+    }
 
-      helperFunctions.hashPasswordAsync((registrationData.first_password))
-      .then((hashedPassword) => {
-        // Once password is hashed, insert everything into the database
-        knex('user').insert({ email: registrationData.email, password: hashedPassword, is_registered: true, has_chosen_topics: false })
-        .returning(['id', 'email', 'is_registered', 'has_chosen_topics'])
-        .then((result) => {
-          resolve({ response: result, message: 'successful insertion into database' });
-          return;
-        })
-        .catch((error) => {
-          reject({message: error });
-          return;
-        });
-      });
-    });
+    try {
+      const hashedPassword = await helperFunctions.hashPasswordAsync((registrationData.first_password));
+      const result = await knex('user').insert({ email: registrationData.email, password: hashedPassword, is_registered: true, has_chosen_topics: false })
+        .returning(['id', 'email', 'is_registered', 'has_chosen_topics']);
+
+      return Promise.resolve({ response: result, message: 'successful insertion into database' }); 
+    } catch(error) {
+      return Promise.reject({ message: error });
+    }
   },
   
   /** Authenticates user
    * @param {object} loginData containing the user login info - email and password.
    * @returns {Promise}
    */
-  verifyLogin: (loginData) => {
+  verifyLogin: async function (loginData) {
     // Access the DB, verify user name, password and registration, return true or false
-    return new Promise ((resolve, reject) => {
-      knex('user').where({ email: loginData.email }).then ((rows) => {
-          bcrypt.compare(loginData.password, rows[0].password, (err, res) => {
-          if (res) {
-            // If the login is successful, we need to timestamp in the database.
-            knex('user').where({ email: loginData.email }).update({ last_login: loginData.last_login }).then(() => {
-              resolve({ email: loginData.email, success: true, response: `ok`, has_chosen_topics: rows[0].has_chosen_topics, db_id: rows[0].id });
-            });
-          } else {
-            reject({ email: loginData.email, success: false, response: `Invalid username and/or password `});
-          }
-        });
-      }).catch((err) => {
-        reject({ email: loginData.email, success: false, response: `Invalid username and/or password `});
-      });
-    });
+    const rows = await knex('user').where({ email: loginData.email });
+    const res = await bcrypt.compare(loginData.password, rows[0].password);
+
+    try {
+      if (res) {
+        await knex('user').where({ email: loginData.email }).update({ last_login: loginData.last_login });
+        return Promise.resolve({ email: loginData.email, success: true, response: `ok`, has_chosen_topics: rows[0].has_chosen_topics, db_id: rows[0].id });
+      } else {
+        return Promise.reject({ email: loginData.email, success: false, response: `Invalid username and/or password.`});
+      }
+    } catch(err) {
+      return Promise.reject({ email: loginData.email, success: false, response: `Invalid username and/or password.`});
+    }
   },
 
   /** Creates a join to find all the topics for a given user
@@ -96,35 +87,25 @@ module.exports = {
    * @param {[]} inputData.topicArray an array of strings containing each subscribed topic
    * @returns {Promise}
    */
-  updateTopicListForUser: (inputData) => {
-    return new Promise((resolve, reject) => {
-      // First we need  to check if the topics already exist in the DB. If not, add it.
-      // We need to retrieve the user id from the email_Data
-      // We should hit the user_topic table, delete all entries where the user_id and user.id match, then we need to replace the data with updated info for the user's topics
+  updateTopicListForUser: async (inputData) => {
+    // First we need to check if the topics already exist in the DB. If not, add them.
+    // We need to retrieve the user id from the email_Data
+    // We should hit the user_topic table, delete all entries where the user_id and user.id match, then we need to replace the data with updated info for the user's topics
     
-      // Grab all of the topics by name
-      knex.select('id', 'name').from('topic')
-      .then((first_result) => {
-        // Create a list of topics that need to be inserted into the database
-        const insertList = createListOfTopicsToBeInsertedIntoDB(first_result, inputData.topicArray);
-        if (insertList && insertList.length >= 1) {
-          // We have things to insert
-          insertNewTopicsIntoDB(insertList).then((resulting) => {
-            update_user_topic_table(inputData).then();
-          });
-        } else {
-          update_user_topic_table(inputData).then(); 
-        }
-        // hit the database and changed the has_chosen_topics value to true
-        knex('user')
-        .where({ id: inputData.database_id })
-        .update({ has_chosen_topics: true})
-        .returning(['id', 'email', 'has_chosen_topics'])
-        .then(() => {
-          resolve(first_result);
-        });
-      });
-    });
+    const first_result = await knex.select('id', 'name').from('topic');
+    const insertList = createListOfTopicsToBeInsertedIntoDB(first_result, inputData.topicArray);
+    if (insertList && insertList.length >= 1) {
+      await insertNewTopicsIntoDB(insertList);
+      await update_user_topic_table(inputData);
+    } else {
+      await update_user_topic_table(inputData);
+    }
+
+    await knex('user').where({ id: inputData.database_id })
+    .update({ has_chosen_topics: true})
+    .returning(['id', 'email', 'has_chosen_topics']);
+
+    return Promise.resolve(first_result);
   },
   
   /** Updates the user's password
@@ -134,31 +115,21 @@ module.exports = {
    * @param {string} newData.second_password matching password
    * @returns {Promise}
    */
-  updateUserPassword: (newData) => {
-    return new Promise((resolve, reject) => {
-      // First we make sure the password meets security requirements
-      if (!helperFunctions.passwordMeetsSecurityRequirements({first: newData.first_password, second: newData.second_password })) {
-        // Reject, as it doesn't meet requirements
-        reject({ error: 'Password does not meet security requirements'});
-        return;
-      }
-      
-      // if the password has cleared requirements, hash it.
-      helperFunctions.hashPasswordAsync(newData.first_password)
-      .then((hashedPassword) => {
-        // Now we have the hashed password. Update the database
-        knex('user').where({ email: newData.forUser })
+  updateUserPassword: async (newData) => {
+    if (!helperFunctions.passwordMeetsSecurityRequirements({first: newData.first_password, second: newData.second_password })) {
+      // Reject, as it doesn't meet requirements
+      Promise.reject({ error: 'Password does not meet security requirements'});
+    }
+
+    try {
+      const hashedPassword = await helperFunctions.hashPasswordAsync(newData.first_password);
+      const result = await knex('user').where({ email: newData.forUser })
         .update({ password: hashedPassword })
-        .returning(['id', 'email', 'password'])
-        .then((result) => {
-          resolve({ returning: result, message: 'ok'});
-          return;
-        })
-        .catch((error) => {
-          reject({ error: error, message: 'unable to update password in database'});
-        });
-      });
-    });
+        .returning(['id', 'email', 'password']);
+        return Promise.resolve({ returning: result, message: 'ok '});
+    } catch (error) {
+      return Promise.reject({ error: error, message: 'unable to update password in database'});
+    }
   },
   
   /** This function checks if the article is in the article table already. If so, grab the id and
@@ -170,48 +141,35 @@ module.exports = {
   * @param {string} updateData.headline Short headline text
   * @param {string} updateData.thumbnail href to thumbnmail image
   */
-  addBookmarkForUser: (updateData) => {
+  addBookmarkForUser: async (updateData) => {
     // We should first check if the article is in the article table already. If so, grab the id
     // then check the user_article table if it is associated with the user
 
     // If it is not in the article table - add it, grab the id and then add it to the user_article table
-    return new Promise((resolve, reject) => {
-      
-      knex('article').where({ url: updateData.url}).returning(['id'])
-      .then((rows) => {
-        // If rows is zero, we need to insert a new entry, otherwise get the id of the existing article and add it to the user_article table
-        if (rows.length === 0) {
-          knex('article').insert({ url: updateData.url, headline: updateData.headline, image_src: updateData.thumbnail }).returning(['id']).then((rows1) => {
-            
-            // Then insert it into the user_article database
-            knex('user_article').insert({ article_id: rows1[0].id, user_id: updateData.database_id }).then(()=> {
-              // Get all bookmarks
-              getBookmarks({ email: updateData.user_id }).then((resultingData) => {
-                resolve({ response: resultingData });
-              }).catch((err)=> {
-                reject({error: err});
-              });
-            }).catch((err) => {
-              console.log(err);
-            });
-          });
-        } else {
-          // Insert the record into the user_article table. First find the 
-          knex('user_article').where({ user_id: updateData.database_id, article_id: rows[0].id }).then((results) => {
-            if (results.length === 0) {
-              
-              knex('user_article').insert({ article_id: rows[0].id, user_id: updateData.database_id }).then(()=> {
-                getBookmarks({ email: updateData.user_id }).then((resultingData) => {
-                  resolve({ response: resultingData });
-                });
-              });
-            }
-          }).catch((err) => {
-            console.log(err);
-          });
+
+    const rows = await knex('article').where({ url: updateData.url}).returning(['id']);
+
+    if (rows.length === 0) {
+      try { 
+        const rows1 = await knex('article').insert({ url: updateData.url, headline: updateData.headline, image_src: updateData.thumbnail }).returning(['id']);
+        await knex('user_article').insert({ article_id: rows1[0].id, user_id: updateData.database_id });
+        const resultingData = await getBookmarks({ email: updateData.user_id });
+      return Promise.resolve({ response: resultingData });
+      } catch(err) {
+        return Promise.reject({error: err});
+      }
+    } else {
+      try {
+        const results = await knex('user_article').where({ user_id: updateData.database_id, article_id: rows[0].id });
+        if (results.length === 0) {
+          await knex('user_article').insert({ article_id: rows[0].id, user_id: updateData.database_id });
+          const resultingData = await getBookmarks({ email: updateData.user_id });
+          return Promise.resolve({ response: resultingData });
         }
-      });
-    });
+      } catch(err) {
+        return Promise.reject({error: err});
+      }
+    }
   },
   /**
    * Deletes a bookmarked article from the user_article table
@@ -220,24 +178,19 @@ module.exports = {
    * @param {number} articleUserData.user_id Database id for the user deleting from their favorites
    * @param {string} articleUserData.email 
    */
-  deleteBookmarkForUser:(articleUserData) => {
-    return new Promise((resolve, reject) => {
-      getArticleIDByURL(articleUserData.url_to_delete).then((results1) => {
-        if (results1.length > 0) {
-          // The result should be the article id
-          const targetArticleID = results1[0].id;
-          deleteUserArticleFavorite({ article_id: targetArticleID, user_id: articleUserData.user_id }).then(()=> {
-            // get the articles
-            getBookmarks({ email: articleUserData.email }).then((resultingData) => {
-              resolve({ result: resultingData});
-            });
-          })
-          .catch((err) => {
-            reject({ error: 'unable to delete entry from the user_article table.'});
-          });
-        }
-      });
-    });
+  deleteBookmarkForUser: async (articleUserData) => {
+
+    try {
+      const results1 = await getArticleIDByURL(articleUserData.url_to_delete);
+      if (results1.length > 0) {
+        const targetArticleID = results1[0].id;
+        await deleteUserArticleFavorite({ article_id: targetArticleID, user_id: articleUserData.user_id });
+        const resultingData = await getBookmarks({ email: articleUserData.email });
+        return Promise.resolve({ result: resultingData});
+      }
+    } catch(err) {
+      return Promise.reject({ error: 'unable to delete entry from the user_article table.'});
+    }
   },
 
   /**
@@ -246,20 +199,16 @@ module.exports = {
    * @param {string} email Email address
    * @returns {Promise}
    */
-  deleteAllBookmarksForUser:(userData) => {
-    return new Promise((resolve, reject) => {
-      knex('user_article').del()
-      .where({ user_id: userData.user_id })
-      .then(()=> {
-        getBookmarks({ email: userData.email })
-        .then((resultingData)=> {
-          resolve({ result: resultingData });
-        });
-      })
-      .catch((error) => {
-        reject(error);
-      });
-    });
+  deleteAllBookmarksForUser: async (userData) => {
+
+    try {
+      await knex('user_article').del()
+      .where({ user_id: userData.user_id });
+      const resultingData = await  getBookmarks({ email: userData.email });
+    return Promise.resolve({ result: resultingData });
+    } catch (err) {
+      return Promise.reject(err);
+    }
   }
 };
 
@@ -289,7 +238,7 @@ function createListOfTopicsToBeInsertedIntoDB(listFromDB, topicsToLookUp) {
  * @returns {Promise} A promise indicating the result from inserting new topics into the table
  */
 function insertNewTopicsIntoDB(topicListArray) {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     const batch = topicListArray.map((info) => {
       return insertTopic(info);
     });
@@ -314,26 +263,19 @@ function insertTopic(string_topic) {
  * @param {object} user_data 
  * @returns {Promise}
  */
-function update_user_topic_table(user_data) {
-  return new Promise((resolve, reject) => {
-    knex.select().table('topic').then((topics_from_db) => {
-      knex('user_topic').del().where('user_id', user_data.database_id).returning(['user_id', 'topic_id'])
-      .then(() => {
-        // We've deleted all the user_topic ids
+async function update_user_topic_table(user_data) {
 
-        const insert_query = user_data.topicArray.map((el) => {
-          const fnd = topics_from_db.find((qElement) => {
-            return qElement.name === el;
-          });
-          return insertUser_Topic({user_id: user_data.database_id, topic_id: fnd.id });
-        });
-
-        // once the map is done, do a Promise.all for the mass insert
-        resolve(Promise.all(insert_query));
-      });
+  const topics_from_db = await knex.select().table('topic');
+  await knex('user_topic').del().where('user_id', user_data.database_id).returning(['user_id', 'topic_id']);
+  const insert_query = user_data.topicArray.map((el) => {
+    const fnd = topics_from_db.find((qElement) => {
+      return qElement.name === el;
     });
+    return insertUser_Topic({user_id: user_data.database_id, topic_id: fnd.id });
   });
 
+  // once the map is done, do a Promise.all for the mass insert
+  return Promise.resolve(Promise.all(insert_query));
 }
 
 /**
