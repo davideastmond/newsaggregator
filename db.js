@@ -171,6 +171,7 @@ module.exports = {
       }
     }
   },
+  
   /**
    * Deletes a bookmarked article from the user_article table
    * @param {object} articleUserData an object containing the article url and the user's db ID
@@ -179,7 +180,6 @@ module.exports = {
    * @param {string} articleUserData.email 
    */
   deleteBookmarkForUser: async (articleUserData) => {
-
     try {
       const results1 = await getArticleIDByURL(articleUserData.url_to_delete);
       if (results1.length > 0) {
@@ -200,12 +200,10 @@ module.exports = {
    * @returns {Promise}
    */
   deleteAllBookmarksForUser: async (userData) => {
-
     try {
-      await knex('user_article').del()
-      .where({ user_id: userData.user_id });
-      const resultingData = await  getBookmarks({ email: userData.email });
-    return Promise.resolve({ result: resultingData });
+      await knex('user_article').del().where({ user_id: userData.user_id });
+      const resultingData = await getBookmarks({ email: userData.email });
+      return Promise.resolve({ result: resultingData });
     } catch (err) {
       return Promise.reject(err);
     }
@@ -258,13 +256,13 @@ function insertTopic(string_topic) {
 }
 
 /**
- * This function refreshes data and gets a current state of the topics database. Then deletes all of the entries for the matching user_id in the user_topic table.
- * It then re-adds a refresh collection of topics for the user.
+ * This function refreshes data and gets a current state of the topics database. 
+ * Then deletes all of the entries for the matching user_id in the user_topic table.
+ * It then re-adds a refreshed collection of topics for the user.
  * @param {object} user_data 
  * @returns {Promise}
  */
 async function update_user_topic_table(user_data) {
-
   const topics_from_db = await knex.select().table('topic');
   await knex('user_topic').del().where('user_id', user_data.database_id).returning(['user_id', 'topic_id']);
   const insert_query = user_data.topicArray.map((el) => {

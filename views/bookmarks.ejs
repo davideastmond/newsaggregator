@@ -22,10 +22,14 @@
   <div class="jumbotron jumbo-tron-margin-top">
     <h1>Your Bookmarks</h1>
     <a class="h5" href="/">Home</a>
-	</div>
-	<div id="div-bookmarks-menu">
-		<button class='btn btn-danger' id="btn-clear-all-bookmarks">Clear All</button>
-	</div>
+  </div>
+
+  <% if (data.length > 0) { %>
+    <div id="div-bookmarks-menu">
+      <button class='btn btn-danger' id="btn-clear-all-bookmarks">Clear All</button>
+    </div>
+  <% } %>
+  
   <div id="articles-master-container">
     <!-- This is going to contain the list of bookmarks -->
     <% if (data.length > 0) { %>
@@ -35,7 +39,7 @@
           <div class="media-body div-media-body">
             <h5 class="mt-0"> <p> <a href=<%= bookmark.url %> target="_blank"> <%= bookmark.headline %> </p> </a></h5>
             <footer class="article-footer-margin-bottom-bookmark">
-							<p class="h6 bookmark-date"><%= bookmark.created_at %></p>
+              <p class="h6 bookmark-date"><%= bookmark.created_at %></p>
               <i class="far fa-trash-alt"></i>
             </footer>
           </div>

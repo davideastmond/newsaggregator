@@ -11,17 +11,20 @@
 
     if(!ValidateEmail(registrationEmail)) {
       $("#validation-error").text('Enter a valid e-mail address.').css("display", "block");
+      $("#submit-form").attr('disabled', false);
       return;
     }
     // Password must be at least 8 characters
     if (!passwordSecurityValid(passwordText1)) {
       $("#validation-error").text('Password should be minimum 8 characters, contain upper and lower case characters, a special character and a number.').css("display", "block");
+      $("#submit-form").attr('disabled', false);
       return;
     }
 
     if (passwordText1 !== passwordText2) {
       // Display an error, the password texts must match
       $("#validation-error").text('Please enter matching passwords').css("display", "block");
+      $("#submit-form").attr('disabled', false);
       return;
     }	
 
@@ -37,6 +40,7 @@
     ajaxRegisterRequest.error((err) => {
       if (err) {
         $("#validation-error-space").text(err.responseJSON.error.detail || "Error registering account.").css('display', 'block').css('color', 'red');
+        $("#submit-form").attr('disabled', false);
       }
     });
   };
@@ -63,7 +67,7 @@
   /**
    * 
    * @param {string} pwd Password string to evaluate if it meets requirements
-	 * @returns {boolean}
+   * @returns {boolean}
    */
   function passwordSecurityValid(pwd) {
     // Enforcement principles should be a js object
@@ -77,7 +81,7 @@
   /**
    * Returs 
    * @param {string} email 
-	 * @returns {boolean}
+   * @returns {boolean}
    */
   function ValidateEmail(email) 
   {
@@ -87,7 +91,7 @@
     /**
      * 
      * @param {object} serializedData 
-		 * @returns {Promise} A promise indicating that the request will eventually be resolved
+     * @returns {Promise} A promise indicating that the request will eventually be resolved
      */
   function sendRegistrationRequest(serializedData) {
     // Validation has passed. Send an ajax request to the server with registration info.
