@@ -6,6 +6,10 @@
 #div-profile-edit-password, #div-edit-topics {
 	width: 50%;
 	margin-left: 1.5em;
+	border: 2px solid black;
+	border-radius: 4px;
+	margin-bottom: 1em;
+	padding: 1.5%;
 }
 
 #home-link {
