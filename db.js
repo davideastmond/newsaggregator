@@ -194,10 +194,11 @@ module.exports = {
   },
 
   /**
+	 * Accesses the database and deletes all of the bookmarks associated with the user_id
    * @param {object} userData Object containing the e-mail and database_id
    * @param {number} userData.user_id Database user_id
    * @param {string} email Email address
-   * @returns {Promise}
+   * @returns {Promise} Promise resulting from the database operation.
    */
   deleteAllBookmarksForUser: async (userData) => {
     try {

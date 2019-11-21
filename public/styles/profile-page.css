@@ -34,11 +34,19 @@
 		margin-top: 1em;
 		margin-bottom: 1em;
 	}
+
+	#div-edit-topics {
+		margin-left: 0%;
+	}
 }
 
 @media only screen and (min-width: 701px) and (max-width: 830px) {
 	#div-profile-edit-password {
 		width: 100%;
 		margin: 0em;
+	}
+	#div-edit-topics {
+		margin-left: 0%;
+		margin-top: 0.5em;
 	}
 }
