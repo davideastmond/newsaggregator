@@ -306,6 +306,9 @@ app.post("/user/:id/bookmarks/add", (req, res) => {
       } else {
         res.status(400).json({ status: 'error updating database'});
       }
+    })
+    .catch((error) => {
+      console.log(error);
     });
   
   } else {
