@@ -2,4 +2,3 @@ node_modules
 .env
 moment.js
 .vscode
-Procfile
