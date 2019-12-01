@@ -23,6 +23,7 @@
 - #### Custom ad hoc topic searches
   - Any user (regardless if signed in) can search ad hoc for news articles by date and by topic.
 - #### UI Responsive
+  - App looks good in mobile and/or web format
 
 - #### Bookmarked Articles
   - Authenticated users can save articles for reading later. 
