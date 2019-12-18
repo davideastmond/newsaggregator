@@ -16,10 +16,10 @@ const doLogout = ()=> {
     type: "POST",
     url: "/logout",
     data: { message: 'log out'},
-    success: (res) => {
+    success: () => {
       window.location = "/";
     },
-    error: (err) => {
+    error: () => {
       alert('There was an error sending the request');
     }
   });

@@ -1,4 +1,4 @@
-dbConnectString = require('./knexfile');
+dbConnectString = require('../knexfile');
 const knex = require('knex')(dbConnectString.development);
 const bcrypt = require('bcrypt');
 const helperFunctions = require('./helper');
