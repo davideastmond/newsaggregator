@@ -3,13 +3,13 @@
 	display: none;
 }
 
-#div-profile-edit-password, #div-edit-topics {
-	width: 50%;
-	margin-left: 1.5em;
+.password-input-layout {
+	width: 100%;
 	border: 2px solid black;
 	border-radius: 4px;
 	margin-bottom: 1em;
-	padding: 1.5%;
+  padding: 1.5%;
+  background-color: white;
 }
 
 #home-link {
@@ -19,11 +19,18 @@
 
 #settings-home-div-header {
 	margin-top: 1em;
-	margin-bottom: 1em;
+  margin-bottom: 1em;
+  background-color: white;
 }
 
 
-@media only screen and (min-width: 400px) and (max-width: 700px) {
+@media only screen and (max-width: 400px) {
+  .password-input-layout {
+    width: 100%;
+    margin: 0px;
+  }
+}
+@media only screen and (min-width: 401px) and (max-width: 700px) {
 	#div-profile-edit-password {
 		width: 100%;
 		margin-left: 0em;
@@ -32,11 +39,8 @@
 
 	#settings-home-div-header {
 		margin-top: 1em;
-		margin-bottom: 1em;
-	}
-
-	#div-edit-topics {
-		margin-left: 0%;
+    margin-bottom: 1em;
+    
 	}
 }
 

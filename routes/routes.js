@@ -114,11 +114,7 @@ router.get('/user/:id/feed', async (req, res) => {
         const dataArticles = helperFunctions.compileAPIFetchData(fetchResults);
         const strippedCache = cacheFunctions.strip(cache.get(req.session.session_id));
         const flattenedArticlesArray = dataArticles.flat();
-        // Here we'll perform a test on the variable 'flattenedArticlesArray' to see if there are duplicate headlines
         
-        // TEST:
-        //const filteredArticleData = helperFunctions.getDuplicatesFromArticleArray(flattenedArticlesArray);
-
         const filteredArticleData = Array.from(new Set(flattenedArticlesArray));
         res.render('feed.ejs', { topics_list: listTopics, uId: req.session.session_id, 
           data: resultingData, 

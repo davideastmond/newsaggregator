@@ -1,17 +1,21 @@
 
+html, body {
+  margin-left: 10%;
+  margin-right: 10%;
+  background-color:#003300;
+  height: 100%;
+}
 #main-enclosing-login-box {
 	border-style: solid;
 	border-width: 0.1em;
 	border-color: black;
-	margin-left: 10%;
-	margin-right: 5em;
+	height: 100%;
 	width: 80%;
-	height: auto;
-	padding: 1.5%;
+
+	padding: 0.8em;
 	padding-bottom: 5%;
-	box-shadow: 8px 10px gray;
-	margin-top: 5%;
-	border-radius: 0.5em;
+	background-color: white;
+
 }
 
 #sign-up-link {
@@ -26,16 +30,24 @@
 	color: red;
 }
 
-@media only screen and (min-width: 400px) and (max-width: 700px) {
+@media only screen and (min-width: 100px) and (max-width: 700px) {
   #main-enclosing-login-box {
 		width: 100%;
-		margin-left: 0%
-	}
+    height: 100%;
+  }
+  body, html {
+    margin: 0%;
+    height: 100%;
+  }
 }
 
 @media only screen and (min-width: 701px) and (max-width: 830px) {
   #main-enclosing-login-box {
 		width: 100%;
-		margin-left: 0%
-	}
+		height: 100%;
+  }
+  body, html {
+    margin: 0%;
+    height: 100%;
+  }
 }

@@ -32,7 +32,6 @@ $(()=> {
  * @returns {Promise} Ajax request to delete a bookmark
  */
 function doAjaxRequestDeleteBookmark(urlToDelete) {
-  // Sends an ajax request to delete a bookmarked URL from the user's bookmark list
   return $.ajax({
     type: "POST",
     url: "/user/:id/bookmarks/:id/delete",

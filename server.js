@@ -12,9 +12,10 @@ app.use(cookieParser());
 app.use(cookieSession({
   name: process.env.COOKIE_SESSION,
   keys: cookieKeys,
-  maxAge: 600000 // 5 minutes
+  maxAge: parseInt(process.env.COOKIE_TIME_OUT)
 }));
 
+console.log(parseInt(process.env.COOKIE_TIME_OUT));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.urlencoded());
 app.use(express.static(path.join(__dirname, 'scripts'))); 

@@ -56,9 +56,9 @@ $(() => {
  * @param {string} articleInfo.headlineText The short headline for the article
  * @param {string} articleInfo.url URL for article
  * @param {string} articleInfo.imageSrc URL for thumbnail image
+ * @returns {Promise} A Promise indicating the completion of the AJAX post request
  */
 function doUpdateFavoritesAjaxRequest(articleInfo) {
-  // This method is going to send an AJAX post request to the server to update the favorites
   return $.ajax({
     type: "POST",
     url: "/user/:id/bookmarks/add",

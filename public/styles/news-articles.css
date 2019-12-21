@@ -11,8 +11,6 @@
 	border-style: solid;
 	border-width: 2px;
 	border-color: black;
-	box-shadow: 5px 5px darkblue;
-	border-radius: 6px;
 	display:flex;
 	justify-content: space-between;
 }
@@ -26,7 +24,14 @@
 }
 
 .jumbo-tron-margin-top {
-	margin-top: 2%;
+  margin-top: 2%;
+  margin-bottom: 2%;
+}
+.headlines-header-div {
+  padding: 0.8em;
+  background-color: white;
+  margin-top: 2%;
+  margin-bottom: 1%;
 }
 
 /* Dropdown Button */
@@ -83,18 +88,34 @@
 }
 
 #articles-master-container {
-	border-bottom: 2px;
-	margin-left: 0.5em;
-	margin-right: 0.5em;
-	margin-bottom: 1em;
+  border-bottom: 2px; 
+  margin-top: 0.5em;
+  margin-bottom: 1em;
+  background-color: white;
+  padding: 0.8em;
 }
 
 .select-topics-popular-topics-div {
 	margin-left: 4px;
 }
 
+#selected-topics-list {
+  margin-top: 4px;
+}
+
+#ul-topics {
+  border-radius: 0px;
+}
+
 .new-topic-div-section {
-	padding-left: 1em;
+  padding-left: 1em;
+  background-color: white;
+  padding: 2%;
+  border: 2px solid black;
+}
+
+.btn {
+  border-radius: 0px;
 }
 
 .space-left {
@@ -116,12 +137,22 @@
 	cursor: pointer;
 }
 
-#div-bookmarks-menu {
-	margin-left: 1em;
+.div-bookmarks-menu {
+  background-color: white;
+  padding: 2%;
 }
 
 .div-media-body:hover {
 	background-color: #e3dfd3;
+}
+
+@media only screen and (min-width: 701px) {
+  html, body {
+    margin-left: 10%;
+    margin-right: 10%;
+    background-color:#003300;
+    height: 100%;
+  }
 }
 @media only screen and (max-width: 700px) {
 	.mobile {
@@ -180,7 +211,13 @@
 }
 
 #div-topics-header {
-	padding-left: 15px;
+  padding-left: 15px;
+  background-color: white;
+}
+
+#div-headlines-header {
+  padding: 0.8em;
+  background-color: white;
 }
 
 @media only screen and (min-width: 710px ) and (max-width: 830px) and (orientation: landscape) {
