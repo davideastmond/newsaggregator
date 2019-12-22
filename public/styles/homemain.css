@@ -8,4 +8,13 @@
 .badge:hover {
   cursor: pointer;
 }
+
+.fa-newspaper {
+  color: #d1911b;
+  font-size: 8rem;
+}
+
+.title-text {
+  text-align: center;
+}
 /*# sourceMappingURL=homemain.css.map */
