@@ -1,5 +1,5 @@
 <head>
-  <link rel="stylesheet" href="styles/news-articles.css">
+  <link rel="stylesheet" href="styles/newsarticles.css">
   <script src="https://kit.fontawesome.com/9566ef13c4.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
@@ -19,14 +19,13 @@
         <a class="nav-link mobile" href="/user/user/profile">Settings</a>
 				<a class="nav-link mobile" href="/user/user/feed">My Feed</a>
 				<a class="nav-link mobile" href="/user/user/bookmarks">Bookmarks</a>
-        <a class="nav-link mobile" id="header-top-nav-logout-link"> Log Out </a>
-        <!-- <a class="nav-link" id="header-top-nav-logout-link">Log Out</a> -->
+        <a class="nav-link mobile header-top-nav-logout-link" id="header-top-nav-logout-link"> Log Out </a>
         <div class="dropdown"><i class="fas fa-user dropbtn"></i> <%= uId %>
           <div class="dropdown-content">
             <a href="/user/<%= uId %>/profile">Settings</a>
 						<a href="/user/<%= uId %>/feed">My Feed</a>
 						<a href="/user/<%= uId %>/bookmarks">Bookmarks</a>
-            <a class="nav-link desktop" id="header-top-nav-logout-link-menu-click"> Log Out </a>
+            <a class="nav-link desktop header-top-nav-logout-link header-top-nav-logout-link-menu-click" id="header-top-nav-logout-link-menu-click"> Log Out </a>
           </div>
         </div>
       <% } %>

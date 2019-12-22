@@ -1,0 +1,253 @@
+.article-thumbnail {
+  width: 200px;
+  height: 8em;
+  margin-left: 0.5em;
+  margin-top: 0.5em;
+}
+
+.div-strip {
+  background-color: white;
+  border-style: solid;
+  border-width: 2px;
+  border-color: black;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.header-top-nav-logout-link:hover, .header-top-nav-logout-link-menu-click:hover {
+  cursor: pointer;
+}
+
+.header-top-nav-logout-link {
+  margin-right: 5%;
+}
+
+.jumbo-tron-margin-top {
+  margin-top: 2%;
+  margin-bottom: 2%;
+}
+
+.headlines-header-div {
+  padding: 0.8em;
+  background-color: mainBGColor;
+  margin-top: 2%;
+  margin-bottom: 1%;
+}
+
+/* Dropdown Button */
+.dropbtn {
+  background-color: cadetblue;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  -webkit-box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+          box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {
+  background-color: #ddd;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.news-header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.error-message {
+  color: red;
+}
+
+.mobile {
+  display: none;
+}
+
+.articles-master-container {
+  border-bottom: 2px;
+  margin-top: 0.5em;
+  margin-bottom: 1em;
+  background-color: white;
+  padding: 0.8em;
+}
+
+.select-topics-popular-topics-div {
+  margin-left: 4px;
+}
+
+.selected-topics-list {
+  margin-top: 4px;
+}
+
+.ul-topics {
+  border-radius: 0px;
+}
+
+.new-topic-div-section {
+  padding-left: 1em;
+  background-color: white;
+  padding: 2%;
+  border: 2px solid black;
+}
+
+.btn {
+  border-radius: 0px;
+}
+
+.space-left {
+  margin-left: 0.5em;
+}
+
+.far:hover {
+  color: red;
+}
+
+.article-footer-margin-bottom {
+  padding-top: 3%;
+}
+
+.article-footer-margin-bottom-bookmark {
+  padding-top: 4%;
+}
+
+.article-footer-margin-bottom:hover {
+  cursor: pointer;
+}
+
+.div-bookmarks-menu {
+  background-color: white;
+  padding: 2%;
+}
+
+.div-media-body:hover {
+  background-color: #e3dfd3;
+}
+
+@media only screen and (min-width: 701px) {
+  html, body {
+    margin-left: 10%;
+    margin-right: 10%;
+    background-color: #003300;
+    height: 100%;
+  }
+}
+
+@media only screen and (max-width: 700px) {
+  .mobile {
+    display: inline;
+  }
+  .article-thumbnail {
+    width: 100px;
+    height: 64px;
+  }
+  .article-description-blurb-justify {
+    text-align: justify;
+    text-justify: inter-character;
+  }
+  .dropdown {
+    display: none;
+  }
+  .media-body {
+    padding: 0.5em;
+  }
+  .far:hover {
+    color: red;
+  }
+}
+
+@media only screen and (min-width: 400px) and (max-width: 700px) and (orientation: landscape) {
+  .mobile {
+    display: inline;
+  }
+  .article-thumbnail {
+    width: 160px;
+    height: 128px;
+  }
+  .dropdown {
+    display: none;
+  }
+  .article-description-blurb-justify {
+    text-align: justify;
+    text-justify: inter-character;
+  }
+  .footer-span {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+  }
+  .far:hover {
+    color: red;
+  }
+}
+
+.div-topics-header {
+  padding-left: 15px;
+  background-color: white;
+}
+
+.div-headlines-header {
+  padding: 0.8em;
+  background-color: white;
+}
+
+@media only screen and (min-width: 710px) and (max-width: 830px) and (orientation: landscape) {
+  .mobile {
+    display: inline;
+  }
+  .article-thumbnail {
+    width: 160px;
+    height: 128px;
+  }
+  .article-description-blurb-justify {
+    text-align: justify;
+    text-justify: inter-character;
+  }
+  .dropdown {
+    display: none;
+  }
+  .far:hover {
+    color: red;
+  }
+}
+/*# sourceMappingURL=newsarticles.css.map */
