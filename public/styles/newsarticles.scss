@@ -1,4 +1,4 @@
-$mainBGColor : white;
+@import './globals';
 .article-thumbnail {
   width: 200px;
 	height: 8em;
@@ -95,6 +95,10 @@ $mainBGColor : white;
   padding: 0.8em;
 }
 
+a, .article-body-text-color {
+  color: black;
+}
+
 .select-topics-popular-topics-div {
 	margin-left: 4px;
 }
@@ -138,19 +142,20 @@ $mainBGColor : white;
 }
 
 .div-bookmarks-menu {
-  background-color: white;
+  background-color: $mainBGColor;
   padding: 2%;
 }
 
 .div-media-body:hover {
-	background-color: #e3dfd3;
+  background-color: $creamHoverColor;
+  cursor: pointer;
 }
 
 @media only screen and (min-width: 701px) {
   html, body {
     margin-left: 10%;
     margin-right: 10%;
-    background-color:#003300;
+    background-color: $mainBackDropColor;
     height: 100%;
   }
 }
@@ -173,7 +178,7 @@ $mainBGColor : white;
 	}
 
 	.media-body {
-		padding: 0.5em;
+    padding: 0.5em;
 	}
 
 	.far:hover {

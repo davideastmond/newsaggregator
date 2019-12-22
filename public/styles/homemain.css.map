@@ -1,0 +1,10 @@
+{
+    "version": 3,
+    "mappings": "ACAA,4BAA4B;ADC5B,AAAA,+BAA+B,CAAC;EAC9B,MAAM,EAAE,IAAI;EACZ,gBAAgB,ECFH,KAAK;EDGlB,OAAO,EAAE,GAAG;CACb;;AACD,AAAA,MAAM,AAAA,MAAM,CAAC;EACZ,MAAM,EAAE,OAAO;CACf",
+    "sources": [
+        "homemain.scss",
+        "_globals.scss"
+    ],
+    "names": [],
+    "file": "homemain.css"
+}

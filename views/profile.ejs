@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
-  <link rel="stylesheet" href="/../styles/profile-page.css">
+  <link rel="stylesheet" href="/../styles/profilepage.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="profile.js" async></script>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -16,13 +16,13 @@
   <head>
     <% include ./partials/_login_header %>
 	</head>
-	<div id="settings-home-div-header">
-		<a class="h5" id="home-link" href="/">Home</a>
+	<div class="settings-home-div-header">
+		<a class="h5 home-link" href="/">Home</a>
 	</div>
   <div class="jumbotron">
     <p class="h1">Your Profile</p>
   </div>
-  <div id="div-profile-edit-password" class="password-input-layout">
+  <div class="password-input-layout div-profile-edit-password">
     <h4> Password</h4>
     <form id="profile-update-password-change-form" method="POST" action="/user/:id/profile/update" >
       <div class="form-group">
@@ -38,11 +38,11 @@
       </div>
     </form>
     <div id="change-password-error">
-      <p class="lead" id="change-password-error-message"></p>
-      <p class="lead" id="change-password-success-message"></p>
+      <p class="lead change-password-error-message" id="change-password-error-message"></p>
+      <p class="lead change-password-success-message" id="change-password-success-message"></p>
     </div>
   </div>
-  <div id="div-edit-topics" class="password-input-layout">
+  <div class="password-input-layout div-edit-topics">
     <h4> Topics </h4>
     <a class="lead" href="/user/user/topics">Change your topics</a>
   </div>

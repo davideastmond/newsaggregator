@@ -37,9 +37,9 @@
       window.location = responseData.response;
     });
     
-    ajaxRegisterRequest.error((err) => {
+    ajaxRegisterRequest.fail((err) => {
       if (err) {
-        $("#validation-error-space").text(err.responseJSON.error.detail || "Error registering account.").css('display', 'block').css('color', 'red');
+        $("#validation-error-space").text(err.responseJSON.error || "Error registering account.").css('display', 'block').css('color', 'red');
         $("#submit-form").attr('disabled', false);
       }
     });

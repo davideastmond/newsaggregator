@@ -1,11 +1,12 @@
+@import './globals';
 
 html, body {
   margin-left: 10%;
   margin-right: 10%;
-  background-color:#003300;
+  background-color:$mainBackDropColor;
   height: 100%;
 }
-#main-enclosing-login-box {
+.main-enclosing-login-box {
 	border-style: solid;
 	border-width: 0.1em;
 	border-color: black;
@@ -14,24 +15,24 @@ html, body {
 
 	padding: 0.8em;
 	padding-bottom: 5%;
-	background-color: white;
+	background-color: $mainBGColor;
 
 }
 
-#sign-up-link {
+.sign-up-link {
 	float: right;
 }
 
-#login-button-div {
+.login-button-div {
 	padding-top: 15%;
 }
 
-#login-error-message {
-	color: red;
+.login-error-message {
+	color: $errorMessageColor;
 }
 
 @media only screen and (min-width: 100px) and (max-width: 700px) {
-  #main-enclosing-login-box {
+  .main-enclosing-login-box {
 		width: 100%;
     height: 100%;
   }
@@ -42,7 +43,7 @@ html, body {
 }
 
 @media only screen and (min-width: 701px) and (max-width: 830px) {
-  #main-enclosing-login-box {
+  .main-enclosing-login-box {
 		width: 100%;
 		height: 100%;
   }

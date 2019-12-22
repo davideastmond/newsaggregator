@@ -16,8 +16,6 @@ module.exports = {
    */
   registerUser: async (registrationData) => {
     // First check to see if password meets security requirements
-    //
-    console.log("REGISTER USER");
     if (!helperFunctions.passwordMeetsSecurityRequirements({ first: registrationData.first_password, second: registrationData.second_password })) {
       return Promise.reject({error: 'password does not meet security requirements'});
     }
@@ -29,7 +27,9 @@ module.exports = {
 
       return Promise.resolve({ response: result, message: 'successful insertion into database' }); 
     } catch(error) {
-      return Promise.reject({ message: error });
+      const displayMessage = error.detail.split('(').join('').split(')').join('').split('email=').join('').split('Key').join('');
+      return Promise.reject({ message: `${displayMessage} Please use a different email.` });
+
     }
   },
   

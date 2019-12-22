@@ -9,10 +9,10 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-  <link rel="stylesheet" href="../styles/login-page.css">
+  <link rel="stylesheet" href="../styles/loginpage.css">
 </head>
 <body>
-  <div id="main-enclosing-login-box">
+  <div class="main-enclosing-login-box">
     <div class="jumbotron">
       <p class="h3"> <a href="/">News Aggregator </a></p>
       <a class="h5"> Log In</a>
@@ -26,16 +26,16 @@
         <label for="exampleInputPassword1">Password</label>
         <input type="password" class="form-control" name="password" id="exampleInputPassword1" placeholder="Password" required>
       </div>
-      <div id="login-button-div">
-          <button type="submit" id="login-submit-button" class="btn btn-primary">Log in</button> <a id="sign-up-link" href="register">Sign up</a>
+      <div class="login-button-div">
+          <button type="submit" id="login-submit-button" class="btn btn-primary">Log in</button> <a class="sign-up-link" href="register">Sign up</a>
       </div>
     </form>
     <div>
       <!-- This is for error messages -->
       <% if (message) { %>
-        <p class="lead" id="login-error-message"><%= message %> </p>
+        <p class="lead" class="login-error-message"><%= message %> </p>
       <% } else { %>
-        <p class="lead" id="login-error-message"></p>
+        <p class="lead" class="login-error-message"></p>
       <% } %>
     </div>
   </div>

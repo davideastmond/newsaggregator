@@ -35,6 +35,7 @@
       <% data_articles.forEach((article) => { %>
         <div class="media padded-media">
           <img class="align-self-center mr-3 article-thumbnail" src= <%= article.urlToImage %>>
+          <a class="article-body-text-color" href="<%= article.url %>" target="_blank">
           <div class="media-body div-media-body">
             <h5 class="mt-0"><%= article.title %></h5>
             <p> <%= article.description %></p>
@@ -49,6 +50,7 @@
               </span>
             </footer>
           </div>
+          </a>
         </div>
       <% }) %>
     <% } else { %>
