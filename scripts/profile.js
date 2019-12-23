@@ -1,12 +1,16 @@
 $(() => {
 
+  /**
+   * This procedure is called when user updates their profile attribute.
+   * It resets any error messages displayed and sanitizes and validates password input.
+   * Finally it sends an AJAX post request to the server w/ the updated info.
+   */
   $("#change-profile-submit-button").click((e) => {
-    // Reset the error message
+
     $("#change-password-error-message").css('display', 'none');
-    // The submit button was clicked. We must validate the passwords
+
     e.preventDefault(); 
   
-    // Grab the password text boxes
     const $pwd1 = $("#change-password-box-one").val().trim();
     const $pwd2 = $("#change-password-box-two").val().trim();
     
@@ -14,16 +18,14 @@ $(() => {
       showErrorMessage("Please enter a valid password.");
       return;
     }
-    // Testing for password match
+   
     if (!ifPasswordsMatch($pwd1, $pwd2)) {
       showErrorMessage("Please enter a valid password.");
       return;
     }
-
-    // Disable the submit button
+  
     $("#change-profile-submit-button").attr('disabled', 'true');
 
-    // Submit a password change and refresh page
     const ajaxPromise = submitPasswordChange();
 
     ajaxPromise.done(()=> {

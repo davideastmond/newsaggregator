@@ -23,11 +23,17 @@
       <p> Enter a topic and add it to the list. Click save when done.</p>
       <a class="lead">New topic</a>
       <span>
-        <input type="text" id="topic-to-add"> 
+        <input type="text" id="topic-to-add" maxlength="30"> 
         <button type="button" class="btn btn-primary" id="add-topic-button">Add</button> 
         <button type="button" class="btn btn-success" id="save-topic-button">Save</button>
         <button class="btn btn-danger" id="btn-clear-button">Clear list</button>
       </span>
+      <div class="error-message-display">
+        <span>
+          <i class="fas fa-exclamation-triangle"></i>
+          <p class="error-message-text">Error</p>
+        </span>
+      </div>
     </div>
     <div class='selected-topics-list'>
       <!-- Enclosure for check boxes that include popular topics ---->

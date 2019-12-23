@@ -231,7 +231,7 @@ router.post("/login", [check('email').isEmail().trim().escape(), check('password
   const verificationObject = { email: req.body.email, password: req.body.password, last_login: timeStamp};
 
   try {
-    const result = await  dbFunctions.verifyLogin(verificationObject);
+    const result = await dbFunctions.verifyLogin(verificationObject);
     if (result.success) {
       req.session.session_id = req.body.email;
       req.session.database_id = result.db_id;

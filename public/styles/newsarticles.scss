@@ -49,6 +49,7 @@
 .dropdown {
   position: relative;
   display: block;
+  padding-right: 0.8em;
 }
 
 /* Dropdown Content (Hidden by Default) */
@@ -90,8 +91,16 @@
   width: 100%;
 }
 
-.error-message {
+.error-message, .fa-exclamation-triangle {
   color: red;
+}
+
+.error-message-display {
+  display: none;
+}
+.error-message-text {
+  color: $errorMessageColor;
+  display: inline;
 }
 .mobile {
   display: none;

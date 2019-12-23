@@ -17,6 +17,16 @@ $(document).ready(function() {
     $("#btn-clear-button").click((e) => {
       clearTopicContainer();
     });
+
+    $('#topic-to-add').focus((e) => {
+      // Clear any error messages.
+      $('.error-message-display').css('display', 'none');
+
+      const textBox = document.querySelector("#topic-to-add");
+      if (textBox.value.length > 1) {
+        textBox.value = "";
+      }
+    });
 });
 
 /**
@@ -61,18 +71,16 @@ function makeIndividualTopicListItem(itemName, i_index) {
 
 /**
  * This handles when the delete x icon is clicked. Starts process of deleting the topic from the array and refreshing the DOM
+ * @function
  * @param {object} e 
+ * 
  */
 function processDeleteTopic_Click (e) {
   const etd = e.target.id;
-
-  // Get an array of the current topic lists from the DOM. We can later add or subtract from this list and re-render it in the DOM
   const currentList = getTopicListFromDOM();
   const topicsList = $("#ul-topics");
-  // Get the target topic that is to be deleted
   const targetTopic = topicsList[0].children[etd].dataset.caption;
 
-  // Filter out (remove) the topic to be deleted
   const arrOfTopics = currentList.filter((element) => {
     return element != targetTopic;
   });
@@ -109,7 +117,9 @@ function processAddTopic_Click (e) {
   // Get the current state
 
   // Disallow empty strings from being entered as topics
-  if (targetTopic === "") {
+  if (targetTopic === "" || targetTopic.length > 30 ) {
+    // Show an error message
+    respondToError("Topic entered is not valid. Make sure it is max 30 characters long.");
     return;
   }
   const currentList = getTopicListFromDOM();
@@ -157,7 +167,8 @@ function respondToSuccess (data) {
 }
 
 function respondToError (data) {
-  throw Error("Not implemented");
+  $('.error-message-text').text(data).css('color', 'red');
+  $('.error-message-display').css('display', 'block');
 }
 
 /**
