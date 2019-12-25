@@ -39,18 +39,20 @@ module.exports = {
    */
   verifyLogin: async function (loginData) {
     // Access the DB, verify user name, password and registration, return true or false
-    const rows = await knex('user').where({ email: loginData.email });
-    const res = await bcrypt.compare(loginData.password, rows[0].password);
-
     try {
+      const rows = await knex('user').where({ email: loginData.email });
+      const res = await bcrypt.compare(loginData.password, rows[0].password);
+
       if (res) {
         await knex('user').where({ email: loginData.email }).update({ last_login: loginData.last_login });
         return Promise.resolve({ email: loginData.email, success: true, response: `ok`, has_chosen_topics: rows[0].has_chosen_topics, db_id: rows[0].id });
       } else {
-        return Promise.reject({ email: loginData.email, success: false, response: `Invalid username and/or password.`});
+
+        return Promise.reject({ email: loginData.email, success: false, response: `Invalid username and/or password1.`});
       }
     } catch(err) {
-      return Promise.reject({ email: loginData.email, success: false, response: `Invalid username and/or password.`});
+
+      return Promise.reject({ email: loginData.email, success: false, response: `Invalid username and/or password2.`});
     }
   },
 

@@ -73,7 +73,7 @@ module.exports = {
       });
     });
   },
-  /** A function that coallates all of the API fetch requests
+  /** Gathers all of the returned articles from the API fetch request
 	 * @function
    * @param {array} fetchResults
    * @returns {array}
@@ -85,7 +85,7 @@ module.exports = {
         return arts;
       });
     });
-    return dataArticles;
+    return module.exports.getDuplicatesFromArticleArray(dataArticles);
   },
   
   /**
@@ -103,6 +103,7 @@ module.exports = {
         duplicateTracker[article.title] += 1;
       }
     });
+    // A test would ensure that no duplicate headlines are in the array
     return filteredList;
   }
 };

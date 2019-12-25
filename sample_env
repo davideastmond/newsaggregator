@@ -13,3 +13,4 @@ COOKIE_TIME_OUT=[in milliseconds]
 SALT_ROUNDS=[10 is default]
 
 TEST_PASSWORD=[password used for seeding]
+TEST_USER=[user email account used for testing]
