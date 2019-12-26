@@ -3,6 +3,7 @@ const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
 const expect = chai.expect;
 const dbFunctions = require('../helpers/db');
+const helpers = require('../helpers/helper');
 chai.use(chaiAsPromised);
 
 
@@ -97,6 +98,76 @@ describe('DB functions', ()=> {
       }
     });
   });
+});
 
-  
+
+describe('Helper Functions', ()=> {
+  describe('Password Meets Security requirements function', ()=> {
+    it('should return true when a valid password is submitted', ()=> {
+      // Arrange
+      const testPassword =  {first: process.env.TEST_PASSWORD, second: process.env.TEST_PASSWORD};
+      // Act
+      const result = helpers.passwordMeetsSecurityRequirements(testPassword);
+      // Assert
+      return expect(result).to.eql(true);
+    });
+
+    it('should return false when an invalid password is submitted', ()=> {
+      // Arrange
+      const testPassword =  {first: process.env.TEST_WEAK_PASSWORD, second: process.env.TEST_WEAK_PASSWORD};
+      // Act
+      const result = helpers.passwordMeetsSecurityRequirements(testPassword);
+      // Assert
+      return expect(result).to.eql(false);
+    });
+
+    it('should throw if first password field is null', ()=> {
+      // Arrange
+      const testPassword =  {first: null, second: process.env.TEST_PASSWORD};
+      // Act
+      // Assert
+      return expect(()=> helpers.passwordMeetsSecurityRequirements(testPassword)).to.throw;
+    });
+
+    it('should throw if second password field is null', ()=> {
+      // Arrange
+      const testPassword =  {first: process.env.TEST_PASSWORD, second: null };
+      // Act
+      // Assert
+      return expect(()=> helpers.passwordMeetsSecurityRequirements(testPassword)).to.throw;
+    });
+
+    it('should return false if first and second passwords are valid but do not match', ()=> {
+      // Arrange
+      const testPassword =  {first: process.env.TEST_PASSWORD, second: process.env.TEST_ALTERNATE_PASSWORD };
+
+      // Act
+      const result = helpers.passwordMeetsSecurityRequirements(testPassword);
+
+      // Assert
+      return expect(result).to.be.false;
+    });
+  });
+
+  describe('doTopicsAxiosFetchRequest', ()=> {
+    it('should return a collection of request of length > 0', async ()=> {
+      // Arrange 
+      const resultingData = await dbFunctions.getUserTopics({ email: process.env.TEST_USER });
+      // Act
+      const fetchResults = await helpers.doTopicsAxiosFetchRequest({ userTopics: resultingData, db_id: 1 });
+
+      // Assert
+      return expect(fetchResults.length).to.be.greaterThan(0);
+    });
+  });
+
+  describe('getDuplicatesFromArticleArray', ()=> {
+    it('should return only unique articles based on headline title', ()=> {
+      // Arrange
+
+      // Act
+
+      // Assert
+    });
+  })
 });
