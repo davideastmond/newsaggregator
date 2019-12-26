@@ -13,10 +13,11 @@ describe('DB functions', ()=> {
       const testUser = { email: process.env.TEST_USER, password: process.env.TEST_PASSWORD, last_login: new Date() };
 
       // Act
-      const result = await dbFunctions.verifyLogin(testUser);
-
+     
+        const result = await dbFunctions.verifyLogin(testUser);
+        return expect(result.success).to.eql(true);
+    
       // Assert
-      return expect(result.success).to.eql(true);
     });
 
     it('should return false if the e-mail and password combination are invalid', async ()=> {
@@ -40,9 +41,62 @@ describe('DB functions', ()=> {
         // Act
         const result = await dbFunctions.verifyLogin(testUser);
       } catch(error) {
-        // Should reject
+        // Assert
+        return expect(error.success).to.eql(false);
+      }
+    });
+
+    it('should return false if there is a empty string e-mail', async ()=> {
+      // Arrange
+      const testUser = { email: "", password: process.env.TEST_PASSWORD, last_login: new Date() };
+      try {
+        // Act
+        const result = await dbFunctions.verifyLogin(testUser);
+      } catch (error) {
+        //Assert
+        return expect(error.success).to.eql(false);
+      }
+    });
+
+    it('success should return false if there is a empty password string', async ()=> {
+      const testUser = { email: process.env.TEST_USER, password: '', last_login: new Date() };
+      try {
+        const result = await dbFunctions.verifyLogin(testUser);
+      } catch (error) {
         return expect(error.success).to.eql(false);
       }
     });
   });
+  describe('DB Function: registerUser', ()=> {
+    it('success should return false if a user with existing e-mail is already in the database', async ()=> {
+      const testUser = { email: process.env.TEST_USER, first_password: process.env.TEST_PASSWORD, second_password: process.env.TEST_PASSWORD };
+
+      try {
+        const result = await dbFunctions.registerUser(testUser);
+      } catch (error) {
+        return expect(error.success).to.eql(false);
+      }
+    });
+    it('success should return false if the password does not meet security requirements.', async()=> {
+      const testUser = { email: process.env.TEST_USER, first_password: process.env.TEST_WEAK_PASSWORD, second_password: process.env.TEST_WEAK_PASSWORD };
+  
+      try {
+        const result = await dbFunctions.registerUser(testUser);
+      } catch (error) {
+        return expect(error.success).to.eql(false);
+      }
+    });
+
+    it('success should return false if the first_password is different from the second_password', async()=> {
+      const testUser = { email: process.env.TEST_USER, first_password: process.env.TEST_PASSWORD, second_password: process.env.TEST_ALTERNATE_PASSWORD };
+
+      try {
+        const result = await dbFunctions.registerUser(testUser);
+      } catch (error) {
+        return expect(error.success).to.eql(false);
+      }
+    });
+  });
+
+  
 });

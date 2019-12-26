@@ -17,7 +17,7 @@ module.exports = {
   registerUser: async (registrationData) => {
     // First check to see if password meets security requirements
     if (!helperFunctions.passwordMeetsSecurityRequirements({ first: registrationData.first_password, second: registrationData.second_password })) {
-      return Promise.reject({error: 'password does not meet security requirements'});
+      return Promise.reject({error: 'password does not meet security requirements', success: false});
     }
 
     try {
@@ -25,10 +25,10 @@ module.exports = {
       const result = await knex('user').insert({ email: registrationData.email, password: hashedPassword, is_registered: true, has_chosen_topics: false })
         .returning(['id', 'email', 'is_registered', 'has_chosen_topics']);
 
-      return Promise.resolve({ response: result, message: 'successful insertion into database' }); 
+      return Promise.resolve({ response: result, message: 'successful insertion into database', success: true }); 
     } catch(error) {
       const displayMessage = error.detail.split('(').join('').split(')').join('').split('email=').join('').split('Key').join('');
-      return Promise.reject({ message: `${displayMessage} Please use a different email.` });
+      return Promise.reject({ message: `${displayMessage} Please use a different email.`, success: false });
 
     }
   },

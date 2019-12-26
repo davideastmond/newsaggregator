@@ -12,5 +12,7 @@ COOKIE_KEYS=
 COOKIE_TIME_OUT=[in milliseconds]
 SALT_ROUNDS=[10 is default]
 
-TEST_PASSWORD=[password used for seeding]
+TEST_PASSWORD=[valid password used for seeding]
+TEST_ALTERNATE_PASSWORD=[alternate valid password used for testing]
 TEST_USER=[user email account used for testing]
+TEST_WEAK_PASSWORD=[provide a weak password here for testing]
