@@ -22,7 +22,7 @@ router.get("/news", async (req, res) => {
   // Obtain the query parameters to be used for a API fetch request
   const reqDate = req.query.date;
   const reqQuery = req.query.newsQuery;
-  const url = `https://newsapi.org/v2/everything?q=${reqQuery}&from=${reqDate}&sortBy=publishedAt&apiKey=${process.env.PERSONAL_API_KEY}&pageSize=20&language=en`;
+  const url = `https://newsapi.org/v2/everything?q=${reqQuery}&from=${reqDate}&sortBy=publishedAt&apiKey=${process.env.PERSONAL_API_KEY}&pageSize=30&language=en`;
     // Create an API URI based on received info, query the URI, get a response, and send that data to render in news.ejs view
   
   let loggedInState = false;
@@ -67,7 +67,7 @@ router.get("/headlines", async (req, res)=> {
   req.session.session_id ? loggedIn = true : loggedIn = false;
   let url;
   req.query.country ? 
-    url = `https://newsapi.org/v2/top-headlines?sources=google-news&apiKey=${process.env.PERSONAL_API_KEY}&pageSize=20&language=en`: url = `https://newsapi.org/v2/top-headlines?sources=google-news&apiKey=${process.env.PERSONAL_API_KEY}&pageSize=20&language=en`;
+    url = `https://newsapi.org/v2/top-headlines?sources=associated-press&apiKey=${process.env.PERSONAL_API_KEY}&pageSize=30&language=en`: url = `https://newsapi.org/v2/top-headlines?sources=google-news&apiKey=${process.env.PERSONAL_API_KEY}&pageSize=30&language=en`;
 
   try { 
     const response = await axios.get(url);

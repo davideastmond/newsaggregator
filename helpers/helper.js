@@ -114,7 +114,7 @@ module.exports = {
  * @param {number} num_articles 
  * @returns {Promise} Returns an axios get request as a Promise
  */
-function axiosFetchFromApiSingleTopic(str_topic, num_articles=10) {
+function axiosFetchFromApiSingleTopic(str_topic, num_articles=30) {
   const grabDate = moment().format("MM/DD/YYYY");
   // TODO: Here is where we can determine how many articles to fetch based on the amount of topics
   const url = `https://newsapi.org/v2/everything?q=${str_topic}&from=${grabDate}&sortBy=publishedAt&apiKey=${process.env.PERSONAL_API_KEY}&pageSize=${num_articles}&language=en`;
