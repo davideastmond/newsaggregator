@@ -169,5 +169,5 @@ describe('Helper Functions', ()=> {
 
       // Assert
     });
-  })
+  });
 });
