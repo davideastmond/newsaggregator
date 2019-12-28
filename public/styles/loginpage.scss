@@ -47,8 +47,13 @@ html, body {
   .main-enclosing-login-box {
    
     width: 100%;
-    height: auto;
+    height: 100%;
   }
+
+  .jumbotron {
+    padding: 0px;
+  }
+
   body, html {
     margin: 0%;
     height: 100%;
@@ -73,10 +78,12 @@ html, body {
   .main-enclosing-login-box {
     position: relative;
     width: 100%;
-    height: auto;
+    height: 100%;
   }
 
-
+  .jumbotron {
+    padding: 0px;
+  }
   body, html {
     margin: 0%;
     height: 100%;
@@ -87,17 +94,23 @@ html, body {
   .main-enclosing-login-box {
     position: relative;
     width: 100%;
-    height: auto;
+    height: 100%;
   }
-
 
   body, html {
     margin: 0%;
     height: 100%;
   }
+}
 
-  .login-button-div {
-    margin-top: 0.8em;
-    padding-bottom: 0.8em;
+@media only screen and (min-width: 1024px) and (orientation: portrait) {
+  .main-enclosing-login-box {
+    margin-left: 10%;
+  }
+}
+
+@media only screen and (min-width: 1024px) and (orientation: landscape) {
+  .main-enclosing-login-box {
+    margin-left: 10%;
   }
 }
