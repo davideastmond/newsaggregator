@@ -63,7 +63,7 @@ router.get("/news", async (req, res) => {
 });
 
 router.get("/headlines", async (req, res)=> {
-  // Grab the date
+
   req.session.session_id ? loggedIn = true : loggedIn = false;
   let url;
   req.query.country ? 

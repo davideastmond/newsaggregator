@@ -1,11 +1,8 @@
 require('dotenv').config();
 const chai = require('chai');
-const chaiAsPromised = require('chai-as-promised');
 const expect = chai.expect;
 const dbFunctions = require('../helpers/db');
 const helpers = require('../helpers/helper');
-chai.use(chaiAsPromised);
-
 
 describe('DB functions', ()=> {
   describe('DB Function: verifyUserLogin', ()=> {
@@ -27,7 +24,7 @@ describe('DB functions', ()=> {
 
       // Act
       try {
-        const result = await dbFunctions.verifyLogin(testUser);
+        await dbFunctions.verifyLogin(testUser);
       } catch (error) {
         // Assert - there should be an error thrown
         return expect(error.success).to.eql(false);
@@ -40,7 +37,7 @@ describe('DB functions', ()=> {
       const testUser = { email: ")*#$@email.com", password: process.env.TEST_PASSWORD, last_login: new Date() };
       try {
         // Act
-        const result = await dbFunctions.verifyLogin(testUser);
+        await dbFunctions.verifyLogin(testUser);
       } catch(error) {
         // Assert
         return expect(error.success).to.eql(false);
@@ -52,7 +49,7 @@ describe('DB functions', ()=> {
       const testUser = { email: "", password: process.env.TEST_PASSWORD, last_login: new Date() };
       try {
         // Act
-        const result = await dbFunctions.verifyLogin(testUser);
+        await dbFunctions.verifyLogin(testUser);
       } catch (error) {
         //Assert
         return expect(error.success).to.eql(false);
@@ -62,18 +59,19 @@ describe('DB functions', ()=> {
     it('success should return false if there is a empty password string', async ()=> {
       const testUser = { email: process.env.TEST_USER, password: '', last_login: new Date() };
       try {
-        const result = await dbFunctions.verifyLogin(testUser);
+        await dbFunctions.verifyLogin(testUser);
       } catch (error) {
         return expect(error.success).to.eql(false);
       }
     });
   });
+  
   describe('DB Function: registerUser', ()=> {
     it('success should return false if a user with existing e-mail is already in the database', async ()=> {
       const testUser = { email: process.env.TEST_USER, first_password: process.env.TEST_PASSWORD, second_password: process.env.TEST_PASSWORD };
 
       try {
-        const result = await dbFunctions.registerUser(testUser);
+        await dbFunctions.registerUser(testUser);
       } catch (error) {
         return expect(error.success).to.eql(false);
       }
@@ -82,7 +80,7 @@ describe('DB functions', ()=> {
       const testUser = { email: process.env.TEST_USER, first_password: process.env.TEST_WEAK_PASSWORD, second_password: process.env.TEST_WEAK_PASSWORD };
   
       try {
-        const result = await dbFunctions.registerUser(testUser);
+        await dbFunctions.registerUser(testUser);
       } catch (error) {
         return expect(error.success).to.eql(false);
       }
@@ -92,7 +90,7 @@ describe('DB functions', ()=> {
       const testUser = { email: process.env.TEST_USER, first_password: process.env.TEST_PASSWORD, second_password: process.env.TEST_ALTERNATE_PASSWORD };
 
       try {
-        const result = await dbFunctions.registerUser(testUser);
+        await dbFunctions.registerUser(testUser);
       } catch (error) {
         return expect(error.success).to.eql(false);
       }
@@ -150,7 +148,7 @@ describe('Helper Functions', ()=> {
   });
 
   describe('doTopicsAxiosFetchRequest', ()=> {
-    it('should return a collection of request of length > 0', async ()=> {
+    it('should return a collection of requests of length > 0', async ()=> {
       // Arrange 
       const resultingData = await dbFunctions.getUserTopics({ email: process.env.TEST_USER });
       // Act
