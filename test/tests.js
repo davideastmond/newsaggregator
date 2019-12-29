@@ -65,7 +65,7 @@ describe('DB functions', ()=> {
       }
     });
   });
-  
+
   describe('DB Function: registerUser', ()=> {
     it('success should return false if a user with existing e-mail is already in the database', async ()=> {
       const testUser = { email: process.env.TEST_USER, first_password: process.env.TEST_PASSWORD, second_password: process.env.TEST_PASSWORD };

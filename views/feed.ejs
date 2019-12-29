@@ -34,7 +34,7 @@
       <!-- Render the list, else, return a statement that says, 'no articles found-->
       <% data_articles.forEach((article) => { %>
         <div class="media padded-media">
-          <img class="align-self-center mr-3 article-thumbnail" src= <%= article.urlToImage %>>
+          <a href= <%= article.url %>><img class="align-self-center mr-3 article-thumbnail" src= <%= article.urlToImage %>></a>
           
           <div class="media-body div-media-body">
             <h5 class="mt-0"><%= article.title %></h5>

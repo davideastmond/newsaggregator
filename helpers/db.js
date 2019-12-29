@@ -134,7 +134,7 @@ module.exports = {
     }
   },
   
-  /** This function checks if the article is in the article table already. If so, grab the id and
+  /** Checks if the article is in the article table already. If so, grab the id and
    * then check the user_article table if it is associated with the user.
     // If it is not in the article table - add it, grab the id and then add it to the user_article table
   * @param {object} updateData An object consisting of the database_id:(int), url:(string), headline:(string) and image_src:(string)
@@ -214,7 +214,7 @@ module.exports = {
 };
 
 /**
- * 
+ * Creates a list of topics to be inserted into the database
  * @param {array} listFromDB 
  * @param {array} topicsToLookUp
  * @returns {array} A finalized list of topics to look up
@@ -234,7 +234,7 @@ function createListOfTopicsToBeInsertedIntoDB(listFromDB, topicsToLookUp) {
 }
 
 /**
- * 
+ * Batch inserts a list of topics into the database.
  * @param {*} topicListArray 
  * @returns {Promise} A promise indicating the result from inserting new topics into the table
  */

@@ -253,7 +253,7 @@ router.post("/login", [check('email').isEmail().trim().escape(), check('password
 router.post("/user/:id/bookmarks/add", async (req, res) => {
   /* This handles updating of saved/favourite articles for logged in users via a POST request.
     We add a bookmark for the user and then update a cache that stores the user's bookmarks. That way, when a user visits a headlines or topics page
-    that has a bookmarked article therin, the article entry will show as being bookmarked
+    that has a bookmarked article therin, the article entry will show as being bookmarked with a cute little red bookmark ^_^
   */
   
   if (req.session.session_id) {
