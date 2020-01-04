@@ -11,7 +11,7 @@
   - users can log in and out of the system. 
   - cookies are used to keep track of a user's log-in state.
   - relational database used to keep track of user accounts.
-  - password hashing and validation has been implemented.
+  - password hashing and validation have been implemented.
     #### User Profile
     - Users can change their password
 - #### User custom news feed:
