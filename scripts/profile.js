@@ -19,7 +19,7 @@ $(() => {
       return;
     }
    
-    if (!ifPasswordsMatch($pwd1, $pwd2)) {
+    if (!passwordsMatch($pwd1, $pwd2)) {
       showErrorMessage("Please enter a valid password.");
       return;
     }
@@ -43,7 +43,7 @@ $(() => {
  * @param {string} pwd2 
  * @returns {boolean}
  */
-function ifPasswordsMatch(pwd1, pwd2) {
+function passwordsMatch(pwd1, pwd2) {
   return pwd1 === pwd2;
 }
 

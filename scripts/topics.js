@@ -76,10 +76,9 @@ function makeIndividualTopicListItem(itemName, i_index) {
  * 
  */
 function processDeleteTopic_Click (e) {
-  const etd = e.target.id;
   const currentList = getTopicListFromDOM();
   const topicsList = $("#ul-topics");
-  const targetTopic = topicsList[0].children[etd].dataset.caption;
+  const targetTopic = topicsList[0].children[e.target.id].dataset.caption;
 
   const arrOfTopics = currentList.filter((element) => {
     return element != targetTopic;
