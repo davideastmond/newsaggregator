@@ -1,6 +1,6 @@
 // This module handles the topics list and sending data re: the list to the server
 
-$(document).ready(function() {
+$(() => {
     $(".delete-button").click((e) => {
       processDeleteTopic_Click(e);
     });

@@ -12,7 +12,7 @@ $(()=> {
     });
   });
   
-  $('#btn-clear-all-bookmarks').on('click', (e) => {
+  $('.btn-clear-all-bookmarks').on('click', (e) => {
     // Sends the ajax command to delete all the bookmarks for this user
     e.target.disabled = true;
     doAjaxRequestDeleteAllBookmarks().then((res) => {
