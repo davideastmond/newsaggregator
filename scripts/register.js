@@ -26,7 +26,7 @@
       $("#validation-error").text('Please enter matching passwords').css("display", "block");
       $("#submit-form").attr('disabled', false);
       return;
-    }	
+    }
 
     // Validation has passed. Send an ajax request to the server with registration info.
     const serializedData = $("#registration-form").serialize();
