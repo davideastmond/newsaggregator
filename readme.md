@@ -40,11 +40,12 @@
 
 ### What it looks like
 
-![Log in screen](https://github.com/davideastmond/newsaggregator/blob/master/docs/news_agg_login_01.png)
-![Main screen](https://github.com/davideastmond/newsaggregator/blob/master/docs/news_agg_main_screen_00.png)
-![Your feed](https://github.com/davideastmond/newsaggregator/blob/master/docs/news_agg_your_feed_02.png)
-![Update Profile](https://github.com/davideastmond/newsaggregator/blob/master/docs/news_profile_settings_03.png)
-![Update topics](https://github.com/davideastmond/newsaggregator/blob/master/docs/pick_topics_04.png)
+![Log in screen](https://github.com/davideastmond/newsaggregator/blob/master/docs/1_login.png)
+![Main screen](https://github.com/davideastmond/newsaggregator/blob/master/docs/1_mainscreen.png)
+![Your feed](https://github.com/davideastmond/newsaggregator/blob/master/docs/1_yourfeed.png)
+![Update Profile](https://github.com/davideastmond/newsaggregator/blob/master/docs/1_profilesettings.png)
+![Update topics](https://github.com/davideastmond/newsaggregator/blob/master/docs/1_picktopics.png)
+![Bookmarks Page](https://github.com/davideastmond/newsaggregator/blob/master/docs/1_bookmarks.png)
 ### Requirements
 
 - This app uses [NewsAPI](https://newsapi.org/) to grab news articles. You'll need to obtain your own API key for their service. Once obtained, include the key in your `.env` file
