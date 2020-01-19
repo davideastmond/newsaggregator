@@ -1,64 +1,69 @@
 
-// This handles deleting the links. User has clicked the little trash icon for a bookmarked article
+/* This handles deleting the links.
+User has clicked the little trash icon for a bookmarked article */
 $(()=> {
   $('.fa-trash-alt').on('click', (e) => {
-    const del_url = e.target.parentNode.parentNode.children[0].children[0].children[0].href;
+    const delUrl = e.target.parentNode
+        .parentNode
+        .children[0].children[0].children[0].href;
     // Complete an AJAX post request, then refresh the page
-    doAjaxRequestDeleteBookmark(del_url).then(() => {
-      window.location = "/user/user/bookmarks";
+    doAjaxRequestDeleteBookmark(delUrl).then(() => {
+      window.location = '/user/user/bookmarks';
     })
-    .catch(() => {
-      window.location = "/";
-    });
+        .catch(() => {
+          window.location = '/';
+        });
   });
-  
+
   $('.btn-clear-all-bookmarks').on('click', (e) => {
     // Sends the ajax command to delete all the bookmarks for this user
     e.target.disabled = true;
     doAjaxRequestDeleteAllBookmarks().then((res) => {
-      window.location = "/user/user/bookmarks";
+      window.location = '/user/user/bookmarks';
     })
-    .catch((err)=> {
-      console.log(err);
-    });
+        .catch((err)=> {
+          console.log(err);
+        });
   });
-  
+
   convertMomentDates();
 });
 
 /**
- * 
+ *
  * @param {string} urlToDelete The URL to remove from the bookmark
- * @returns {Promise} Ajax request to delete a bookmark
+ * @return {Promise} Ajax request to delete a bookmark
  */
 function doAjaxRequestDeleteBookmark(urlToDelete) {
   return $.ajax({
-    type: "POST",
-    url: "/user/:id/bookmarks/:id/delete",
-    data: { url: urlToDelete }
+    type: 'POST',
+    url: '/user/:id/bookmarks/:id/delete',
+    data: { url: urlToDelete },
   });
 }
 
 /**
- * @returns {Promise} A promise indicating that the deletion of all a user's bookmarks will be completed
+ * @return {Promise} A promise indicating that the deletion of
+ * all a user's bookmarks will be completed
  */
-function doAjaxRequestDeleteAllBookmarks () {
+function doAjaxRequestDeleteAllBookmarks() {
   return $.ajax({
-    type: "POST",
+    type: 'POST',
     url: '/user/:id/bookmarks/delete',
-    data: { command: 'delete all'}
+    data: { command: 'delete all' },
   });
 }
 
 /**
- * A DOM helper function that converts date elements in the bookmark-date class into friendly readable date formats using moment.js
- * 
+ * A DOM helper function that converts date elements
+ * in the bookmark-date class into friendly readable date formats using moment.js
+ *
  */
 function convertMomentDates() {
-  let domObjectArray = document.getElementsByClassName('bookmark-date');
+  const domObjectArray = document.getElementsByClassName('bookmark-date');
 
   for (let i = 0; i < domObjectArray.length; i++) {
     const bookmarkDate = new Date(domObjectArray[i].innerHTML);
-    domObjectArray[i].innerHTML = bookmarkDate.toDateString("YYYY/MM/DD hh:mm");
+    domObjectArray[i].innerHTML = bookmarkDate.toDateString('YYYY/MM/DD hh:mm');
   }
 }

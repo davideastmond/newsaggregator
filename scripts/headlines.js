@@ -1,19 +1,19 @@
 $(() => {
-  $("#headlines-submit-new-search").on('click', (e) => {
+  $('#headlines-submit-new-search').on('click', (e) => {
     doHTTPRequest();
   });
-  
-  $("#news-results-click-box").on("click", (e) => {
+
+  $('#news-results-click-box').on('click', (e) => {
     doHTTPRequest();
   });
-  
-  $("#search-box").on("keypress", (e) => {
+
+  $('#search-box').on('keypress', (e) => {
     if (e.which === 13) {
       doHTTPRequest();
     }
   });
-  
-  $("#qSearchBox").on("keypress", (e) => {
+
+  $('#qSearchBox').on('keypress', (e) => {
     if (e.which === 13) {
       // Submit the query
       doHTTPRequest();
@@ -40,13 +40,12 @@ $(() => {
     if (!articleURL) {
       articleURL = e.target.parentNode.children[1].children[0].href;
     }
-    
+
     const favArticleData = { headlineText: headlineText, url: articleURL, imageSrc: imageRef };
     // The url we want to save is index[3]
     doUpdateFavoritesAjaxRequest(favArticleData).then((result) => {
       makeBookMarkIconRed(e);
     });
-    
   });
 });
 
@@ -56,13 +55,13 @@ $(() => {
  * @param {string} articleInfo.headlineText The short headline for the article
  * @param {string} articleInfo.url URL for article
  * @param {string} articleInfo.imageSrc URL for thumbnail image
- * @returns {Promise} A Promise indicating the completion of the AJAX post request
+ * @return {Promise} A Promise indicating the completion of the AJAX post request
  */
 function doUpdateFavoritesAjaxRequest(articleInfo) {
   return $.ajax({
-    type: "POST",
-    url: "/user/:id/bookmarks/add",
-    data: articleInfo
+    type: 'POST',
+    url: '/user/:id/bookmarks/add',
+    data: articleInfo,
   });
 }
 
@@ -75,18 +74,18 @@ function makeBookMarkIconRed(obj) {
   obj.target.classList.toggle('far');
   obj.target.classList.toggle('fas');
   if (obj.target.style.color === 'red') {
-    obj.target.style.color = "";
+    obj.target.style.color = '';
   } else {
     obj.target.style.color = 'red';
   }
 }
 
 /**
- * Performs a GET request to the server with search inquiry 
+ * Performs a GET request to the server with search inquiry
  */
 function doHTTPRequest() {
   const $searchQueryElement = $('#search-box').val();
-  const $qSearchBox = $("#qSearchBox").val();
+  const $qSearchBox = $('#qSearchBox').val();
   let mSearch;
   if ($searchQueryElement) {
     if ($searchQueryElement.trim() === '') {
@@ -102,13 +101,13 @@ function doHTTPRequest() {
   }
 
   const xhr = new XMLHttpRequest();
-  const queryDate = moment().format("MM/DD/YYYY");
-  let params = `date=${queryDate}&newsQuery=${mSearch}`;
-  
-  xhr.open("GET", "/news" + "?" + params, true);
-  xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-  xhr.responseType = "document";
-  
+  const queryDate = moment().format('MM/DD/YYYY');
+  const params = `date=${queryDate}&newsQuery=${mSearch}`;
+
+  xhr.open('GET', '/news' + '?' + params, true);
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.responseType = 'document';
+
   // Gather the query and the date
   xhr.onreadystatechange = () => {
     if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200 ) {

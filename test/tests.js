@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 require('dotenv').config();
 const chai = require('chai');
 const expect = chai.expect;
@@ -11,48 +12,67 @@ describe('DB functions', ()=> {
       const testUser = { email: process.env.TEST_USER, password: process.env.TEST_PASSWORD, last_login: new Date() };
 
       // Act
-     
-        const result = await dbFunctions.verifyLogin(testUser);
-        return expect(result.success).to.eql(true);
-    
+
+      const result = await dbFunctions.verifyLogin(testUser);
+      return expect(result.success).to.eql(true);
+
       // Assert
     });
 
-    it('should return false if the e-mail and password combination are invalid', async ()=> {
+    it('should not throw an error if the e-mail and password combination are correctly verified', async ()=> {
       // Arrange
-      const testUser = { email: process.env.TEST_USER, password: `badPassword`, last_login: new Date() };
+      const testUser = { email: process.env.TEST_USER, password: process.env.TEST_PASSWORD, last_login: new Date() };
 
       // Act
-      try {
-        await dbFunctions.verifyLogin(testUser);
-      } catch (error) {
-        // Assert - there should be an error thrown
-        return expect(error.success).to.eql(false);
-      }
-      return expect(error.success).to.eql(false);
+
+      const result = await dbFunctions.verifyLogin(testUser);
+      return expect(result.success).to.not.throw;
+
+      // Assert
     });
 
-    it('should return false if there is an invalid e-mail', async() => {
+    it('should retrieve a valid user object from the database, provided credentials are correct', async ()=> {
+      const testUser = { email: process.env.TEST_USER, password: process.env.TEST_PASSWORD, last_login: new Date() };
+
+      try {
+        const result = await dbFunctions.getUser(testUser);
+        return expect(result.email).to.eql('email@email.com');
+      } catch (exception) {
+        console.log(exception);
+      }
+    });
+
+    it('should throw an error if the e-mail and password combination are invalid', async ()=> {
       // Arrange
-      const testUser = { email: ")*#$@email.com", password: process.env.TEST_PASSWORD, last_login: new Date() };
+      const testUser = { email: process.env.TEST_USER, password: `badPassword`, last_login: new Date() };
+      try {
+        await dbFunctions.verifyLogin(testUser);
+      } catch (ex) {
+        return expect(ex).to.throw;
+      }
+    });
+
+    it('should throw if there is an invalid e-mail', async () => {
+      // Arrange
+      const testUser = { email: ')*#$@email.com', password: process.env.TEST_PASSWORD, last_login: new Date() };
       try {
         // Act
         await dbFunctions.verifyLogin(testUser);
-      } catch(error) {
+      } catch (error) {
         // Assert
-        return expect(error.success).to.eql(false);
+        return expect(error).to.throw;
       }
     });
 
-    it('should return false if there is a empty string e-mail', async ()=> {
+    it('should throw if there is a empty string e-mail', async ()=> {
       // Arrange
-      const testUser = { email: "", password: process.env.TEST_PASSWORD, last_login: new Date() };
+      const testUser = { email: '', password: process.env.TEST_PASSWORD, last_login: new Date() };
       try {
         // Act
         await dbFunctions.verifyLogin(testUser);
       } catch (error) {
-        //Assert
-        return expect(error.success).to.eql(false);
+        // Assert
+        return expect(error).to.throw;
       }
     });
 
@@ -76,9 +96,9 @@ describe('DB functions', ()=> {
         return expect(error.success).to.eql(false);
       }
     });
-    it('success should return false if the password does not meet security requirements.', async()=> {
+    it('success should return false if the password does not meet security requirements.', async ()=> {
       const testUser = { email: process.env.TEST_USER, first_password: process.env.TEST_WEAK_PASSWORD, second_password: process.env.TEST_WEAK_PASSWORD };
-  
+
       try {
         await dbFunctions.registerUser(testUser);
       } catch (error) {
@@ -86,7 +106,7 @@ describe('DB functions', ()=> {
       }
     });
 
-    it('success should return false if the first_password is different from the second_password', async()=> {
+    it('success should return false if the first_password is different from the second_password', async ()=> {
       const testUser = { email: process.env.TEST_USER, first_password: process.env.TEST_PASSWORD, second_password: process.env.TEST_ALTERNATE_PASSWORD };
 
       try {
@@ -103,7 +123,7 @@ describe('Helper Functions', ()=> {
   describe('Password Meets Security requirements function', ()=> {
     it('should return true when a valid password is submitted', ()=> {
       // Arrange
-      const testPassword =  {first: process.env.TEST_PASSWORD, second: process.env.TEST_PASSWORD};
+      const testPassword = { first: process.env.TEST_PASSWORD, second: process.env.TEST_PASSWORD };
       // Act
       const result = helpers.passwordMeetsSecurityRequirements(testPassword);
       // Assert
@@ -112,7 +132,7 @@ describe('Helper Functions', ()=> {
 
     it('should return false when an invalid password is submitted', ()=> {
       // Arrange
-      const testPassword =  {first: process.env.TEST_WEAK_PASSWORD, second: process.env.TEST_WEAK_PASSWORD};
+      const testPassword = { first: process.env.TEST_WEAK_PASSWORD, second: process.env.TEST_WEAK_PASSWORD };
       // Act
       const result = helpers.passwordMeetsSecurityRequirements(testPassword);
       // Assert
@@ -121,7 +141,7 @@ describe('Helper Functions', ()=> {
 
     it('should throw if first password field is null', ()=> {
       // Arrange
-      const testPassword =  {first: null, second: process.env.TEST_PASSWORD};
+      const testPassword = { first: null, second: process.env.TEST_PASSWORD };
       // Act
       // Assert
       return expect(()=> helpers.passwordMeetsSecurityRequirements(testPassword)).to.throw;
@@ -129,7 +149,7 @@ describe('Helper Functions', ()=> {
 
     it('should throw if second password field is null', ()=> {
       // Arrange
-      const testPassword =  {first: process.env.TEST_PASSWORD, second: null };
+      const testPassword = { first: process.env.TEST_PASSWORD, second: null };
       // Act
       // Assert
       return expect(()=> helpers.passwordMeetsSecurityRequirements(testPassword)).to.throw;
@@ -137,7 +157,7 @@ describe('Helper Functions', ()=> {
 
     it('should return false if first and second passwords are valid but do not match', ()=> {
       // Arrange
-      const testPassword =  {first: process.env.TEST_PASSWORD, second: process.env.TEST_ALTERNATE_PASSWORD };
+      const testPassword = { first: process.env.TEST_PASSWORD, second: process.env.TEST_ALTERNATE_PASSWORD };
 
       // Act
       const result = helpers.passwordMeetsSecurityRequirements(testPassword);
@@ -149,7 +169,7 @@ describe('Helper Functions', ()=> {
 
   describe('doTopicsAxiosFetchRequest', ()=> {
     it('should return a collection of requests of length > 0', async ()=> {
-      // Arrange 
+      // Arrange
       const resultingData = await dbFunctions.getUserTopics({ email: process.env.TEST_USER });
       // Act
       const fetchResults = await helpers.doTopicsAxiosFetchRequest({ userTopics: resultingData, db_id: 1 });
