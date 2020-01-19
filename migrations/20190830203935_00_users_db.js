@@ -10,13 +10,13 @@ exports.up = function(knex) {
       table.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
       table.timestamp('last_login').defaultTo(knex.fn.now());
     }),
-    
+
     knex.schema.createTable('topic', (table) => {
       table.increments('id').primary();
       table.string('name').unique().notNullable();
       table.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
     }),
-    
+
     knex.schema.createTable('user_topic', (table) => {
       table.increments('id').primary();
       table.integer('user_id');
@@ -40,7 +40,7 @@ exports.up = function(knex) {
       table.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
       table.foreign('article_id').references('article.id');
       table.foreign('user_id').references('user.id');
-    })
+    }),
   ]);
 };
 

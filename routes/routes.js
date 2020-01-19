@@ -1,8 +1,9 @@
 const express = require('express');
+// eslint-disable-next-line new-cap
 const router = express.Router();
 const axios = require('axios');
 const helperFunctions = require('../helpers/helper');
-const { check, validationResult } = require('express-validator');
+const { check } = require('express-validator');
 const cache = require('memory-cache');
 const cacheFunctions = require('../helpers/cache');
 const dbFunctions = require('../helpers/db');
@@ -21,8 +22,10 @@ router.get('/news', async (req, res) => {
   // Obtain the query parameters to be used for a API fetch request
   const reqDate = req.query.date;
   const reqQuery = req.query.newsQuery;
+  // eslint-disable-next-line max-len
   const url = `https://newsapi.org/v2/everything?q=${reqQuery}&from=${reqDate}&sortBy=publishedAt&apiKey=${process.env.PERSONAL_API_KEY}&pageSize=30&language=en`;
-  // Create an API URI based on received info, query the URI, get a response, and send that data to render in news.ejs view
+  /* Create an API URI based on received info, query the URI,
+  get a response, and send that data to render in news.ejs view */
 
   let loggedInState = false;
   let cacheData = [];
@@ -38,7 +41,8 @@ router.get('/news', async (req, res) => {
     const response = await axios.get(url);
     if (cacheData === [] && loggedInState) {
       // hit the database
-      const bookmarkResponses = await dbFunctions.getBookmarks({ email: req.session.session_id });
+      const bookmarkResponses = await dbFunctions
+          .getBookmarks({ email: req.session.session_id });
       cacheData = cacheFunctions.strip(bookmarkResponses);
       res.render('news.ejs', { loggedIn: loggedInState,
         bookmarkCache: cacheData,
@@ -65,7 +69,10 @@ router.get('/headlines', async (req, res)=> {
   req.session.session_id ? loggedIn = true : loggedIn = false;
   let url;
   req.query.country ?
-    url = `https://newsapi.org/v2/top-headlines?sources=associated-press&apiKey=${process.env.PERSONAL_API_KEY}&pageSize=30&language=en`: url = `https://newsapi.org/v2/top-headlines?sources=google-news&apiKey=${process.env.PERSONAL_API_KEY}&pageSize=30&language=en`;
+    // eslint-disable-next-line max-len
+    url = `https://newsapi.org/v2/top-headlines?sources=associated-press&apiKey=${process.env.PERSONAL_API_KEY}&pageSize=30&language=en` :
+    // eslint-disable-next-line max-len
+    url = `https://newsapi.org/v2/top-headlines?sources=google-news&apiKey=${process.env.PERSONAL_API_KEY}&pageSize=30&language=en`;
 
   try {
     const response = await axios.get(url);
@@ -102,13 +109,17 @@ router.get('/user/:id/feed', async (req, res) => {
     */
 
     try {
-      const resultingData = await dbFunctions.getUserTopics({ email: req.session.session_id });
-      const fetchResults = await helperFunctions.doTopicsAxiosFetchRequest({ userTopics: resultingData, db_id: req.session.database_id });
+      const resultingData = await dbFunctions
+          .getUserTopics({ email: req.session.session_id });
+      const fetchResults = await helperFunctions
+          .doTopicsAxiosFetchRequest({ userTopics: resultingData,
+            db_id: req.session.database_id });
       const listTopics = resultingData.map((resultElement) => {
         return resultElement.name;
       });
-      // Once we get our results, we need to render the page for the user
-        // We'll also pull from the cached bookmarks incase there are any articles in the feed that are bookmarked.
+      /* Once we get our results, we need to render the page for the user
+        We'll also pull from the cached bookmarks
+        incase there are any articles in the feed that are bookmarked. */
       const dataArticles = helperFunctions.compileAPIFetchData(fetchResults);
       const strippedCache = cacheFunctions.strip(cache.get(req.session.session_id));
       const flattenedArticlesArray = dataArticles.flat();
@@ -131,11 +142,15 @@ router.get('/user/:id/topics', async (req, res) => {
   if (req.session.session_id) {
     /*
     This is the topics configuration page.
-    This route needs to hit the database and pull all of the topics associated with the user
+    This route needs to hit the database and
+    pull all of the topics associated with the user
     We plug the results into the ejs view variable for display.
     */
     const result = await dbFunctions.getUserTopics({ email: req.session.session_id });
-    res.render('topics.ejs', { email: req.params.id, topics: result, logged_in: true, uId: req.session.session_id });
+    res.render('topics.ejs', { email: req.params.id,
+      topics: result,
+      logged_in: true,
+      uId: req.session.session_id });
   } else {
     res.redirect('/login');
   }
@@ -143,7 +158,8 @@ router.get('/user/:id/topics', async (req, res) => {
 
 router.get('/user/:id/profile', (req, res) => {
   /*
-  This route will display the user's profile page. It will allow the user to change their password and add/delete news topics
+  This route will display the user's profile page.
+  It will allow the user to change their password and add/delete news topics
   */
   if (req.session.session_id) {
     res.render('profile.ejs', { uId: req.session.session_id });
@@ -166,28 +182,39 @@ router.get('/user/:id/bookmarks', async (req, res) => {
   }
 });
 
-router.post('/user/:id/profile/update', [check('pwdone').trim().escape(), check('pwdtwo').trim().escape()], async (req, res) => {
-  // This route handles password changes
+router.post('/user/:id/profile/update',
+    [check('pwdone')
+        .trim().escape(),
+    check('pwdtwo').trim()
+        .escape()], async (req, res) => {
+      // This route handles password changes
 
-  if (req.session.session_id) {
-    // Database request. This essentially updates the user's password
-    try {
-      await dbFunctions.updateUserPassword({ forUser: req.session.session_id, first_password: req.body.pwdone,
-        second_password: req.body.pwdtwo });
-      res.status(200).json({ status: 'ok', newURL: '#' });
-    } catch (error) {
-      res.status(400).json({ error: error.error, message: 'Unable to update the password ' });
-    }
-  } else {
-    res.redirect('/login');
-  }
-});
+      if (req.session.session_id) {
+        // Database request. This essentially updates the user's password
+        try {
+          await dbFunctions
+              .updateUserPassword({ forUser: req.session.session_id,
+                first_password: req.body.pwdone,
+                second_password: req.body.pwdtwo });
+          res.status(200).json({ status: 'ok', newURL: '#' });
+        } catch (error) {
+          res.status(400).json({ error: error.error,
+            message: 'Unable to update the password' });
+        }
+      } else {
+        res.redirect('/login');
+      }
+    });
 
 router.post('/user/:id/topics/update', async (req, res) => {
   if (req.session.session_id) {
-    // This route is responsible for updating the DB with the changes to a user's topics subscription.
-    const updateData = { email: req.session.session_id, database_id: req.session.database_id, topicArray: JSON.parse(req.body.topics) };
-    // We have an array of new topics for the user. We need to hit the database. Reference by email
+    /* This route is responsible for updating the DB
+    with the changes to a user's topics subscription. */
+    const updateData = { email: req.session.session_id,
+      database_id: req.session.database_id,
+      topicArray: JSON.parse(req.body.topics) };
+    /* We have an array of new topics for the user.
+    We need to hit the database. Reference by email */
     try {
       await dbFunctions.updateTopicListForUser(updateData);
       res.status(200).json({ response: 'ok' });
@@ -210,9 +237,11 @@ router.post('/register', [check('emailAddr').isEmail().trim().escape(),
   }
 
   try {
-    const result = await dbFunctions.registerUser({ email: req.body.emailAddr, first_password: req.body.passwordOne,
-      second_password: req.body.passwordTwo,
-      is_registered: true });
+    const result = await dbFunctions
+        .registerUser({ email: req.body.emailAddr,
+          first_password: req.body.passwordOne,
+          second_password: req.body.passwordTwo,
+          is_registered: true });
     req.session.session_id = result.response[0].email;
     req.session.database_id = result.response[0].id;
     res.status(200).json({ response: `/user/${req.session.session_id}/topics` });
@@ -221,36 +250,46 @@ router.post('/register', [check('emailAddr').isEmail().trim().escape(),
   }
 });
 
-router.post('/login', [check('email').isEmail().trim().escape(), check('password').trim().escape()], async (req, res) => {
-  /* After the user logs in, we set a cookie and forward the user to their landing page - which user users/:id/feed.
+router.post('/login',
+    [check('email').isEmail().trim().escape(),
+      check('password').trim().escape()], async (req, res) => {
+      /* After the user logs in, we set a cookie and forward the user to their
+      landing page - which user users/:id/feed.
     We retrieve their bookmarks, store it in cache. */
-  const timeStamp = new Date();
-  const verificationObject = { email: req.body.email, password: req.body.password, last_login: timeStamp };
+      const timeStamp = new Date();
+      const verificationObject = { email: req.body.email,
+        password: req.body.password,
+        last_login: timeStamp };
 
-  try {
-    const result = await dbFunctions.verifyLogin(verificationObject);
-    if (result.success) {
-      req.session.session_id = req.body.email;
-      req.session.database_id = result.db_id;
       try {
-        const bookmarkData = await dbFunctions.getBookmarks({ email: req.session.session_id });
-        cache.put(req.session.session_id, bookmarkData);
-        res.redirect(`/user/${req.session.session_id}/feed`);
-      } catch (_) {
-        res.redirect(`/user/${req.session.session_id}/feed`);
+        const result = await dbFunctions.verifyLogin(verificationObject);
+        if (result.success) {
+          req.session.session_id = req.body.email;
+          req.session.database_id = result.db_id;
+          try {
+            const bookmarkData = await dbFunctions
+                .getBookmarks({ email: req.session.session_id });
+            cache.put(req.session.session_id, bookmarkData);
+            res.redirect(`/user/${req.session.session_id}/feed`);
+          } catch (_) {
+            res.redirect(`/user/${req.session.session_id}/feed`);
+          }
+        } else {
+          res.render('login.ejs', { message: 'Invalid username / password' });
+        }
+      } catch (err) {
+        res.render('login.ejs', { message: err.response });
       }
-    } else {
-      res.render('login.ejs', { message: 'Invalid username / password' });
-    }
-  } catch (err) {
-    res.render('login.ejs', { message: err.response });
-  }
-});
+    });
 
 router.post('/user/:id/bookmarks/add', async (req, res) => {
-  /* This handles updating of saved/favourite articles for logged in users via a POST request.
-    We add a bookmark for the user and then update a cache that stores the user's bookmarks. That way, when a user visits a headlines or topics page
-    that has a bookmarked article therin, the article entry will show as being bookmarked with a cute little red bookmark ^_^
+  /* This handles updating of saved/favourite
+  articles for logged in users via a POST request.
+    We add a bookmark for the user and then update a cache
+    that stores the user's bookmarks. That way, when a user visits a
+    headlines or topics page
+    that has a bookmarked article therin, the article entry will show as being
+    bookmarked with a cute little red bookmark ^_^
   */
 
   if (req.session.session_id) {
@@ -280,7 +319,9 @@ router.post('/user/:id/bookmarks/:id/delete', async (req, res) => {
   // Deletes a bookmarked favorite for a logged-in user
 
   if (req.session.session_id) {
-    const bookmarkObject = { email: req.session.session_id, user_id: req.session.database_id, url_to_delete: req.body.url };
+    const bookmarkObject = { email: req.session.session_id,
+      user_id: req.session.database_id,
+      url_to_delete: req.body.url };
     try {
       const result = await dbFunctions.deleteBookmarkForUser(bookmarkObject);
       cache.put(req.session.session_id, result.result);
@@ -295,7 +336,8 @@ router.post('/user/:id/bookmarks/delete', async (req, res) => {
   // Deletes all the bookmarks for the user
 
   if (req.session.session_id) {
-    const bookmarkObject = { email: req.session.session_id, user_id: req.session.database_id };
+    const bookmarkObject = { email: req.session.session_id,
+      user_id: req.session.database_id };
     const result = await dbFunctions.deleteAllBookmarksForUser(bookmarkObject);
     cache.put(req.session.session_id, result.result);
     res.status(200).json({ response: 'ok' });
@@ -309,10 +351,12 @@ router.post('/logout', (req, res) => {
   res.render('home.ejs', { logged_in: false, uId: null });
 });
 
+// eslint-disable-next-line no-extend-native
 Object.defineProperty(Array.prototype, 'flat', {
   value: function(depth = 1) {
     return this.reduce(function(flat, toFlatten) {
-      return flat.concat((Array.isArray(toFlatten) && (depth > 1)) ? toFlatten.flat(depth - 1) : toFlatten);
+      return flat.concat((Array.isArray(toFlatten) && (depth > 1)) ?
+      toFlatten.flat(depth - 1) : toFlatten);
     }, []);
   },
 

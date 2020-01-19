@@ -2,11 +2,11 @@
 
 $(() => {
   $('.delete-button').click((e) => {
-    processDeleteTopic_Click(e);
+    processDeleteTopicClick(e);
   });
 
   $('#add-topic-button').click((e) => {
-    processAddTopic_Click(e);
+    processAddTopicClick(e);
   });
 
   // Save the new topics by means of a post request to server
@@ -35,7 +35,8 @@ $(() => {
  */
 function rebuildTopicList(iTopics) {
   clearTopicContainer();
-  // Iterate through each topic and create an HTML element li with an embedded span (x close button)
+  /* Iterate through each topic and create an HTML
+  element li with an embedded span (x close button) */
   iTopics.forEach((elementTopic, index) => {
     const $topicElement = makeIndividualTopicListItem(elementTopic, index);
     $('#ul-topics').append($topicElement);
@@ -51,17 +52,24 @@ function rebuildTopicList(iTopics) {
 /**
  *
  * @param {string} itemName
- * @param {number} i_index
+ * @param {number} iIndex
  * @return {object} returns a jQuery listItem DOM object
  */
-function makeIndividualTopicListItem(itemName, i_index) {
+function makeIndividualTopicListItem(itemName, iIndex) {
   // Item name is a string
   if (typeof(itemName) !== 'string') {
     throw error('itemName must be of type string');
   }
 
-  const $listItem = $('<li>').addClass('list-group-item button-to-right').attr('data-caption', itemName.toLowerCase()).text(itemName.toLowerCase());
-  const $closeIcon = $('<span>').addClass('badge delete-button badge-danger').text('×').attr('id', i_index).click(processDeleteTopic_Click);
+  const $listItem = $('<li>')
+      .addClass('list-group-item button-to-right')
+      .attr('data-caption', itemName.toLowerCase())
+      .text(itemName.toLowerCase());
+  const $closeIcon = $('<span>')
+      .addClass('badge delete-button badge-danger')
+      .text('×')
+      .attr('id', iIndex)
+      .click(processDeleteTopicClick);
 
   $listItem.append($closeIcon);
 
@@ -70,12 +78,13 @@ function makeIndividualTopicListItem(itemName, i_index) {
 
 
 /**
- * This handles when the delete x icon is clicked. Starts process of deleting the topic from the array and refreshing the DOM
+ * This handles when the delete x icon is clicked.
+ * Starts process of deleting the topic from the array and refreshing the DOM
  * @function
  * @param {object} e
  *
  */
-function processDeleteTopic_Click(e) {
+function processDeleteTopicClick(e) {
   const currentList = getTopicListFromDOM();
   const topicsList = $('#ul-topics');
   const targetTopic = topicsList[0].children[e.target.id].dataset.caption;
@@ -89,7 +98,8 @@ function processDeleteTopic_Click(e) {
 }
 
 /**
- * This function converts the current list on screen to an array of strings, and returns the array.
+ * This function converts the current list on screen
+ * to an array of strings, and returns the array.
  * This representation can later be added or subtracted from, then re-rendered in the DOM
  * @function
  * @return {string[]}
@@ -105,11 +115,11 @@ function getTopicListFromDOM() {
 }
 
 /**
- * @function
+ *
  * Builds a list client side of the current topic subscriptions
  * @param {object} e An event object
  */
-function processAddTopic_Click(e) {
+function processAddTopicClick(e) {
   // Adds topics to the list and then summons a function
   const targetTopic = $('#topic-to-add').val().toLowerCase().trim();
   // Get the current state
@@ -129,13 +139,13 @@ function processAddTopic_Click(e) {
 }
 
 /**
- * @function
- * This function gathers the topics the user desires to subscribe to based on
- * certain DOM elements. It then sends an ajax HTTP request to server to update the database w/ user's topic list
  *
+ * This function gathers the topics the user desires to subscribe to based on
+ * certain DOM elements. It then sends an ajax HTTP request to server
+ * to update the database w/ user's topic list
  */
 function saveTopicDataToServer() {
-  const listFromDOM = getTopicListFromDOM(); // Gets all of the topics based on DOM Elements
+  const listFromDOM = getTopicListFromDOM();
 
   const myData = { topics: JSON.stringify(listFromDOM) };
   $('#save-topic-button').attr('disabled', true);
@@ -163,6 +173,10 @@ function respondToSuccess(data) {
   // Redirect to user feed
 }
 
+/**
+ *
+ * @param {string} data
+ */
 function respondToError(data) {
   $('.error-message-text').text(data).css('color', 'red');
   $('.error-message-display').css('display', 'block');
@@ -176,5 +190,5 @@ function clearTopicContainer() {
   $('.list-group-item').detach();
 
   // Bind click events to the list group item (TODO: not sure if needed)
-  $('.list-group-item').bind('click', processDeleteTopic_Click);
+  $('.list-group-item').bind('click', processDeleteTopicClick);
 }
