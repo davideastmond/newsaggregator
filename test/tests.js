@@ -1,6 +1,8 @@
 /* eslint-disable max-len */
 require('dotenv').config();
 const chai = require('chai');
+const chaiAsPromised = require('chai-as-promised');
+chai.use(chaiAsPromised);
 const expect = chai.expect;
 const dbFunctions = require('../helpers/db');
 const helpers = require('../helpers/helper');
@@ -76,33 +78,34 @@ describe('DB functions', ()=> {
       }
     });
 
-    it('success should return false if there is a empty password string', async ()=> {
+    it('should eventually throw if empty password is provided', async ()=> {
       const testUser = { email: process.env.TEST_USER, password: '', last_login: new Date() };
       try {
-        await dbFunctions.verifyLogin(testUser);
-      } catch (error) {
-        return expect(error.success).to.eql(false);
+        const result = await dbFunctions.verifyLogin(testUser);
+        return expect(result.email).to.eql('');
+      } catch (ex) {
+        return expect(ex.toString()).to.contain(`Credentials Error: Invalid username and/or password.`);
       }
     });
   });
 
   describe('DB Function: registerUser', ()=> {
-    it('success should return false if a user with existing e-mail is already in the database', async ()=> {
+    it('success throw if a user with existing e-mail is already in the database', async ()=> {
       const testUser = { email: process.env.TEST_USER, first_password: process.env.TEST_PASSWORD, second_password: process.env.TEST_PASSWORD };
 
       try {
         await dbFunctions.registerUser(testUser);
       } catch (error) {
-        return expect(error.success).to.eql(false);
+        return expect().to.throw;
       }
     });
-    it('success should return false if the password does not meet security requirements.', async ()=> {
+    it('success should throw if the password does not meet security requirements.', async ()=> {
       const testUser = { email: process.env.TEST_USER, first_password: process.env.TEST_WEAK_PASSWORD, second_password: process.env.TEST_WEAK_PASSWORD };
 
       try {
         await dbFunctions.registerUser(testUser);
       } catch (error) {
-        return expect(error.success).to.eql(false);
+        return expect().to.throw;
       }
     });
 
@@ -112,7 +115,7 @@ describe('DB functions', ()=> {
       try {
         await dbFunctions.registerUser(testUser);
       } catch (error) {
-        return expect(error.success).to.eql(false);
+        return expect().to.throw;
       }
     });
   });

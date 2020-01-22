@@ -21,27 +21,52 @@ $(() => {
   });
 
   $('.fa-bookmark').click((e) => {
-    // The status of the heart icon can only change after a successful response from the server
+    /* The status of the heart icon can only
+    change after a successful response from the server */
     if (e.target && e.target.disabled) {
       // If the icon has been clicked and is solid red, abort
       return;
     }
-    // Capture the articles headline text, the article url and the thumbnail ref. I have to take into account
-    // If the events are being triggered by the feed.ejs or headlines.ejs as the DOM hierarchy is different for each
-    const headlineText = e.target.parentNode.parentNode.parentNode.parentNode.children[1].children[0].innerHTML;
-    let articleURL = e.target.parentNode.parentNode.parentNode.parentNode.children[0].href;
+    /* Capture the articles headline text, the article
+    url and the thumbnail ref. I have to take into account
+    ff the events are being triggered by the feed.ejs or
+    headlines.ejs as the DOM hierarchy is different for each */
+    const headlineText = e.target.parentNode
+        .parentNode
+        .parentNode
+        .parentNode
+        .children[1]
+        .children[0].innerHTML;
+    let articleURL = e.target.parentNode
+        .parentNode
+        .parentNode
+        .parentNode
+        .children[0]
+        .href;
     let imageRef;
 
     if (!e.target.parentNode.parentNode.parentNode.parentNode.children[0].children[0]) {
-      imageRef = e.target.parentNode.parentNode.parentNode.parentNode.children[0].currentSrc;
+      imageRef = e.target.parentNode
+          .parentNode
+          .parentNode
+          .parentNode
+          .children[0]
+          .currentSrc;
     } else {
-      imageRef = e.target.parentNode.parentNode.parentNode.parentNode.children[0].children[0].currentSrc;
+      imageRef = e.target.parentNode
+          .parentNode
+          .parentNode
+          .parentNode
+          .children[0]
+          .children[0]
+          .currentSrc;
     }
     if (!articleURL) {
       articleURL = e.target.parentNode.children[1].children[0].href;
     }
 
-    const favArticleData = { headlineText: headlineText, url: articleURL, imageSrc: imageRef };
+    const favArticleData = { headlineText: headlineText,
+      url: articleURL, imageSrc: imageRef };
     // The url we want to save is index[3]
     doUpdateFavoritesAjaxRequest(favArticleData).then((result) => {
       makeBookMarkIconRed(e);
@@ -50,7 +75,8 @@ $(() => {
 });
 
 /**
- * Sends an AJAX request to server indicating the article to be added to user's favorites list
+ * Sends an AJAX request to server indicating the
+ * article to be added to user's favorites list
  * @param {object} articleInfo An object containing article information
  * @param {string} articleInfo.headlineText The short headline for the article
  * @param {string} articleInfo.url URL for article

@@ -22,8 +22,7 @@ module.exports = {
     if (!helperFunctions
         .passwordMeetsSecurityRequirements({ first: registrationData.first_password,
           second: registrationData.second_password })) {
-      return Promise.reject(new Error(
-          { error: 'password does not meet security requirements', success: false }));
+      return Promise.reject(new Error('Password does not meet security requirements'));
     }
 
     try {
@@ -49,8 +48,7 @@ module.exports = {
           .join('')
           .split('Key')
           .join('');
-      return Promise.reject(new Error({
-        message: `${displayMessage} Please use a different email.`, success: false }));
+      return Promise.reject(new Error(`Please use a different email ${displayMessage}`));
     }
   },
 
