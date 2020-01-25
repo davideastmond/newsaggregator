@@ -14,13 +14,14 @@ document.getElementById('registration-form').onsubmit = (e) => {
     $('#submit-form').attr('disabled', false);
     return;
   }
-  // Password must be at least 8 characters
+  // Password must pass security and complexity requirements
   if (!passwordSecurityValid(passwordText1)) {
+    $('#validation-error-space').css('display', 'block');
     $('#validation-error')
         // eslint-disable-next-line max-len
         .text('Password should be minimum 8 characters, contain upper and lower case characters, a special character and a number.')
-        .css('display', 'block');
-    $('#submit-form').attr('disabled', false);
+        .css({ 'display': 'block', 'color': 'red' });
+    $('#submit-form').attr('disabled', true);
     return;
   }
 
@@ -43,7 +44,8 @@ document.getElementById('registration-form').onsubmit = (e) => {
 
   ajaxRegisterRequest.fail((err) => {
     if (err) {
-      $('#validation-error-space')
+      $('#validation-error-space').css('display', 'block');
+      $('#validation-error')
           .text(err.responseJSON.error || 'Error registering account.')
           .css('display', 'block').css('color', 'red');
       $('#submit-form').attr('disabled', false);
@@ -72,6 +74,7 @@ $('#pwd2').on('click', (e) => {
  */
 function clearValidationErrorMessage() {
   $('#validation-error').text('').css('display', 'none');
+  $('#submit-form').attr('disabled', false);
 }
 /**
    *

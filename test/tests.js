@@ -6,6 +6,7 @@ chai.use(chaiAsPromised);
 const expect = chai.expect;
 const dbFunctions = require('../helpers/db');
 const helpers = require('../helpers/helper');
+const axiosHelpers = require('../helpers/fetchTopicHelper');
 
 describe('DB functions', ()=> {
   describe('DB Function: verifyUserLogin', ()=> {
@@ -171,7 +172,7 @@ describe('Helper Functions', ()=> {
   });
 
   describe('doTopicsAxiosFetchRequest', ()=> {
-    it('should return a collection of requests of length > 0', async ()=> {
+    it(`should return a collection of  articles based on the user's topics. The array of topics returned should be of length > 0`, async ()=> {
       // Arrange
       const resultingData = await dbFunctions.getUserTopics({ email: process.env.TEST_USER });
       // Act
@@ -185,10 +186,26 @@ describe('Helper Functions', ()=> {
   describe('getDuplicatesFromArticleArray', ()=> {
     it('should return only unique articles based on headline title', ()=> {
       // Arrange
-
+      throw new Error('not implemented yet');
       // Act
 
       // Assert
+    });
+  });
+
+  describe('Requests to the api', ()=> {
+    it('should, when search for a valid topic, return an array of articles', async ()=> {
+      const topic = 'politics';
+      const result = await axiosHelpers.axiosFetchFromApiSingleTopic(topic, 30);
+      const { articles } = result.data;
+      return expect(articles.length).to.eql(30);
+    });
+
+    it('should, when search for a rubbish topic, return an array of 0 articles', async ()=> {
+      const topic = 'xyzm';
+      const result = await axiosHelpers.axiosFetchFromApiSingleTopic(topic, 30);
+      const { articles } = result.data;
+      return expect(articles.length).to.eql(0);
     });
   });
 });

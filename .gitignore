@@ -3,3 +3,4 @@ node_modules
 moment.js
 .vscode
 procfile
+.eslintrc.json

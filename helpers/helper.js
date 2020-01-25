@@ -1,7 +1,5 @@
-// const bcrypt = require('bcrypt');
-const axios = require('axios');
-const moment = require('moment');
 require('dotenv').config();
+const axiosHelpers = require('./fetchTopicHelper');
 
 /* This module consists of helper functions concerning password
   validation and doing fetch requests to the API,
@@ -66,7 +64,7 @@ module.exports = {
     // Map the requests for a Promise.all
     return new Promise((resolve, reject) => {
       const axiosQueries = data.userTopics.map((el)=> {
-        return axiosFetchFromApiSingleTopic(el.name);
+        return axiosHelpers.axiosFetchFromApiSingleTopic(el.name);
       });
 
       Promise.all(axiosQueries).then((resolvedData) => {
@@ -108,17 +106,16 @@ module.exports = {
     // A test would ensure that no duplicate headlines are in the array
     return filteredList;
   },
+
+  /**
+     * This is a server-side validation of an email address
+     * @param {string} emailAddress
+     * @return {boolean} Whether or not it matches the regular expression
+     * E-mail address.
+     */
+  validateEmail: (emailAddress) => {
+    return false;
+  },
 };
 
-/** Returns the result from a single API request to the newsApi website
- *
- * @param {string} strTopic
- * @param {number} numArticles
- * @return {Promise} Returns an axios get request as a Promise
- */
-function axiosFetchFromApiSingleTopic(strTopic, numArticles=30) {
-  const grabDate = moment().format('MM/DD/YYYY');
-  // eslint-disable-next-line max-len
-  const url = `https://newsapi.org/v2/everything?q=${strTopic}&from=${grabDate}&sortBy=publishedAt&apiKey=${process.env.PERSONAL_API_KEY}&pageSize=${numArticles}&language=en`;
-  return axios.get(url);
-}
+

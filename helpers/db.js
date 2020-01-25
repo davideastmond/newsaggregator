@@ -48,7 +48,7 @@ module.exports = {
           .join('')
           .split('Key')
           .join('');
-      return Promise.reject(new Error(`Please use a different email ${displayMessage}`));
+      return Promise.reject(new Error(`Please use a different email: ${displayMessage}`));
     }
   },
 

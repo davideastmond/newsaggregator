@@ -246,7 +246,7 @@ router.post('/register', [check('emailAddr').isEmail().trim().escape(),
     req.session.database_id = result.response[0].id;
     res.status(200).json({ response: `/user/${req.session.session_id}/topics` });
   } catch (error) {
-    res.status(400).send({ error: error.message, message: 'Error registering user' });
+    res.status(400).send({ error: `${error}` });
   }
 });
 
@@ -263,22 +263,18 @@ router.post('/login',
 
       try {
         const result = await dbFunctions.verifyLogin(verificationObject);
-        if (result.success) {
-          req.session.session_id = req.body.email;
-          req.session.database_id = result.db_id;
-          try {
-            const bookmarkData = await dbFunctions
-                .getBookmarks({ email: req.session.session_id });
-            cache.put(req.session.session_id, bookmarkData);
-            res.redirect(`/user/${req.session.session_id}/feed`);
-          } catch (_) {
-            res.redirect(`/user/${req.session.session_id}/feed`);
-          }
-        } else {
-          res.render('login.ejs', { message: 'Invalid username / password' });
+        req.session.session_id = req.body.email;
+        req.session.database_id = result.db_id;
+        try {
+          const bookmarkData = await dbFunctions
+              .getBookmarks({ email: req.session.session_id });
+          cache.put(req.session.session_id, bookmarkData);
+          res.redirect(`/user/${req.session.session_id}/feed`);
+        } catch (_) {
+          res.redirect(`/user/${req.session.session_id}/feed`);
         }
       } catch (err) {
-        res.render('login.ejs', { message: err.response });
+        res.render('login.ejs', { message: err });
       }
     });
 
