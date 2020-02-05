@@ -12,12 +12,12 @@ app.use(cookieParser());
 app.use(cookieSession({
   name: process.env.COOKIE_SESSION,
   keys: cookieKeys,
-  maxAge: parseInt(process.env.COOKIE_TIME_OUT)
+  maxAge: parseInt(process.env.COOKIE_TIME_OUT),
 }));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.urlencoded());
-app.use(express.static(path.join(__dirname, 'scripts'))); 
+app.use(express.static(path.join(__dirname, 'scripts')));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/user/:id/topics', express.static(path.join(__dirname, 'scripts')));
@@ -36,5 +36,5 @@ app.set('view engine', 'ejs');
 app.use(require('./routes/routes'));
 
 app.listen(PORT, () => {
-  console.log("Listening on port", PORT);
+  console.log('Listening on port', PORT);
 });

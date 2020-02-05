@@ -149,7 +149,7 @@ describe('Helper Functions', ()=> {
   });
 
   describe('getDuplicatesFromArticleArray', ()=> {
-    it('should there be articles with duplicate titles, the function should return false', ()=> {
+    it(', should there be articles with duplicate titles, the function should return false', ()=> {
       const jsonArticles = require('./duplicate_articles.json');
       const result = duplicateHelpers.getDuplicatesFromArticleArray(jsonArticles);
       return expect(result.test).to.be.false;

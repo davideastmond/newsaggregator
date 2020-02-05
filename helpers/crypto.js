@@ -7,7 +7,7 @@ const salt = bcrypt.genSaltSync(parseInt(process.env.SALT_ROUNDS));
 module.exports = {
   /** Hashes plain-text password
    * @param {string} data plain text password
-   * @return {string} hash
+   * @return {Promise<string>} Resolves to a string representing a hashed password
    */
   hashPassword: async (data) => {
     try {
@@ -22,7 +22,7 @@ module.exports = {
    * @param {object} data
    * @param {string} data.password
    * @param {string} data.hash
-   * @return {Promise} boolean
+   * @return {Promise<boolean>} boolean indicating if the hash matches
    */
   compare: async (data)=> {
     return await bcrypt.compare(data.password, data.hash);

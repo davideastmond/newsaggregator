@@ -23,13 +23,13 @@
 - #### Custom ad hoc topic searches
   - Any user (regardless if signed in) can search ad hoc for news articles by date and by topic.
 - #### UI Responsive
-  - App looks good in mobile and/or web format
+  - App is responsive to a variety of screen sizes
 
 - #### Bookmarked Articles
   - Authenticated users can save articles for reading later. 
   - Authenticated users can remove articles from their bookmark list
     #### Cache Implementation
-    - Caching system introduced to keep track of saved bookmarks across feed, news and headline pages, minimizing
+    - Caching implemented to keep track of saved bookmarks across feed, news and headline pages, minimizing
     use of database.
 
 ### Future Feature ideas
@@ -46,6 +46,7 @@
 ![Update Profile](https://github.com/davideastmond/newsaggregator/blob/master/docs/1_profilesettings.png)
 ![Update topics](https://github.com/davideastmond/newsaggregator/blob/master/docs/1_picktopics.png)
 ![Bookmarks Page](https://github.com/davideastmond/newsaggregator/blob/master/docs/1_bookmarks.png)
+
 ### Requirements
 
 - This app uses [NewsAPI](https://newsapi.org/) to grab news articles. You'll need to obtain your own API key for their service. Once obtained, include the key in your `.env` file
@@ -103,11 +104,3 @@
 
 - postgresql
 - knex.js
-
-### Migrations / Seeds
-
-- coming soon
-
-### Entity Relationship Diagrams
-
-- coming soon

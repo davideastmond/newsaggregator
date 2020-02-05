@@ -1,21 +1,20 @@
 const dbConnectString = require('../knexfile');
 const knex = require('knex')(dbConnectString.development);
-// const bcrypt = require('./crypto');
 const crypto = require('../helpers/crypto');
 const helperFunctions = require('./helper');
 
-// These are going to be our database functions
 module.exports = {
 
   /** Registers the user into the system.
    * Ensures no duplicate accounts. Checks to see
-   * if the password meets security requirements. H
+   * if the password meets security requirements.
    * Hashes the password and creates a new record.
    * @param {object} registrationData contains email + passwords for verification
    * @param {string} registrationData.email Unique e-mail address
    * @param {string} registrationData.first_password matching passwords
    * @param {string} registrationData.second_password matching passwords
-   * @return {Promise} A Promise containing the status message
+   * @return {Promise<{}>} A Promise containing an object
+   * or an error message if fail.
    */
   registerUser: async (registrationData) => {
     // First check to see if password meets security requirements
@@ -56,7 +55,7 @@ module.exports = {
    * @param {object} loginData containing the user login info - email and password.
    * @param {string} loginData.password
    * @param {string} loginData.email
-   * @return {Promise}
+   * @return {Promise<{}>}
    */
   verifyLogin: async function(loginData) {
     // Access the DB, verify user name, password and registration, return true or false
@@ -77,8 +76,7 @@ module.exports = {
         return Promise.reject(new Error(`Credentials Error: Invalid username and/or password.`));
       }
     } catch (err) {
-      return Promise.reject(new Error({ email: loginData.email,
-        success: false, response: `System Error: Unable to verify.` }));
+      return Promise.reject(new Error(`System Error: Unable to verify.` ));
     }
   },
 
@@ -87,6 +85,8 @@ module.exports = {
    * @param {object} loginData
    * @param {string} loginData.email User name
    * @param {string} loginData.password plain text password
+   * @return {Promise<{}>} An user object from the database if successful
+   * otherwise an error
    */
   getUser: async function(loginData) {
     try {
@@ -107,7 +107,7 @@ module.exports = {
   /** Creates a join to find all the topics for a given user
    * @param {object} userData Object containing the user's e-mail address
    * @param {string} userData.email User's e-mail address
-   * @return {Promise} Returns a promise with the results of the db query
+   * @return {Promise<{}>} Returns a promise representing db query as an object
    */
   getUserTopics: (userData) => {
     // Get all topics a user is subscribed to
@@ -120,7 +120,7 @@ module.exports = {
   /** Gets the bookmarks for a given user, performing join operations
    * @param {object} userData
    * @param {string} userData.email E-mail address
-   * @return {Promise} Returns a promise with the results of the db query
+   * @return {Promise<{}>} Returns a promise with the results of the db query
    */
   getBookmarks: (userData) => {
     // Get all saved bookedmarks for a specific user
@@ -138,7 +138,7 @@ module.exports = {
    * @param {string} inputData.email User's e-mail address
    * @param {number} inputData.database_id database id #
    * @param {[]} inputData.topicArray array of strings containing topic
-   * @return {Promise}
+   * @return {Promise<{}>}
    */
   updateTopicListForUser: async (inputData) => {
     /* First we need to check if the topics already exist in the DB.
@@ -171,7 +171,8 @@ module.exports = {
    * @param {string} newData.forUser E-mail address
    * @param {string} newData.first_password matching password
    * @param {string} newData.second_password matching password
-   * @return {Promise}
+   * @return {Promise<{}>} An object representing the result of query
+   * or an error
    */
   updateUserPassword: async (newData) => {
     if (!helperFunctions
@@ -204,6 +205,7 @@ module.exports = {
   * @param {string} updateData.url URL of the article
   * @param {string} updateData.headline Short headline text
   * @param {string} updateData.thumbnail href to thumbnmail image
+  * @return {Promise<{}>}
   */
   addBookmarkForUser: async (updateData) => {
     /* We should first check if the article is
@@ -350,7 +352,8 @@ async function updateUserTopicTable(userData) {
     const fnd = topicsFromDb.find((qElement) => {
       return qElement.name === el;
     });
-    return insertUserTopic({ user_id: userData.database_id, topic_id: fnd.id });
+    return insertUserTopic({ user_id: userData.database_id,
+      topic_id: fnd.id });
   });
 
   // once the map is done, do a Promise.all for the mass insert

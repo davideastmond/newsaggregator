@@ -16,7 +16,7 @@ module.exports = {
         duplicateTracker[article.title] += 1;
       }
     });
-    // A test would ensure that no duplicate headlines are in the array
+
     return { filteredList: filteredList,
       test: filteredList.length === articleArrayData.length };
   },
