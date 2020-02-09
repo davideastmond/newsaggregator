@@ -47,7 +47,7 @@ module.exports = {
   },
 
   /**
-   * Uses bcrypt to asynchronously hash a password string
+   * Uses bcryptjs to asynchronously hash a password string
    * @param {string} rawPassword
    * @return {Promise} Returns a promise
    */

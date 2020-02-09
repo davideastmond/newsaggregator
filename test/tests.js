@@ -77,7 +77,7 @@ describe('DB functions', ()=> {
   });
 
   describe('DB Function: registerUser', ()=> {
-    it('success throw if a user with existing e-mail is already in the database', async ()=> {
+    it('should throw if a user with existing e-mail is already in the database', async ()=> {
       const testUser = { email: process.env.TEST_USER, first_password: process.env.TEST_PASSWORD, second_password: process.env.TEST_PASSWORD };
 
       try {
@@ -87,7 +87,7 @@ describe('DB functions', ()=> {
       }
     });
 
-    it('success should throw if the password does not meet security requirements.', async ()=> {
+    it('should throw if the password does not meet security requirements.', async ()=> {
       const testUser = { email: process.env.TEST_USER, first_password: process.env.TEST_WEAK_PASSWORD, second_password: process.env.TEST_WEAK_PASSWORD };
 
       try {
@@ -97,7 +97,7 @@ describe('DB functions', ()=> {
       }
     });
 
-    it('success should return false if the first_password is different from the second_password', async ()=> {
+    it('should return false if the first_password is different from the second_password', async ()=> {
       const testUser = { email: process.env.TEST_USER, first_password: process.env.TEST_PASSWORD, second_password: process.env.TEST_ALTERNATE_PASSWORD };
 
       try {
@@ -171,7 +171,7 @@ describe('Helper Functions', ()=> {
   });
 
   describe('Requests to newsApi', ()=> {
-    it('should, when search for a valid topic, return an array of articles', async ()=> {
+    it('should, when searching for a valid topic, return an array of articles', async ()=> {
       const topic = 'politics';
       const result = await axiosHelpers.axiosFetchFromApiSingleTopic(topic, 30);
       const { articles } = result.data;

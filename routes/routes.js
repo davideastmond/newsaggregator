@@ -276,7 +276,8 @@ router.post('/login',
       } catch (err) {
         res.render('login.ejs', { message: err });
       }
-    });
+      // eslint-disable-next-line indent
+});
 
 router.post('/user/:id/bookmarks/add', async (req, res) => {
   /* This handles updating of saved/favourite

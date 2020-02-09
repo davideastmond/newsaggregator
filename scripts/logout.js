@@ -10,7 +10,6 @@ $(() => {
   });
 });
 
-
 const doLogout = ()=> {
   $.ajax({
     type: 'POST',
