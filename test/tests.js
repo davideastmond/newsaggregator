@@ -9,6 +9,8 @@ const helpers = require('../helpers/helper');
 const duplicateHelpers = require('../helpers/duplicateArticlesHelper');
 const axiosHelpers = require('../helpers/fetchTopicHelper');
 
+const logger = require('debug-logger')('newsaggregator');
+
 describe('DB functions', ()=> {
   describe('DB Function: verifyUserLogin', ()=> {
     it('should return true if the e-mail and password combination are correctly verified', async ()=> {
@@ -183,6 +185,16 @@ describe('Helper Functions', ()=> {
       const result = await axiosHelpers.axiosFetchFromApiSingleTopic(topic, 30);
       const { articles } = result.data;
       return expect(articles.length).to.eql(0);
+    });
+  });
+
+  describe('requests to local api', ()=> {
+    it('should return a 200 response when hitting the newsaggregator website', async () => {
+      const axios = require('axios');
+      const result = await axios.get(`http://localhost:6565/`);
+
+      logger.log('Test');
+      return expect(result.status === 200);
     });
   });
 });
