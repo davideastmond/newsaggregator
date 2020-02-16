@@ -150,15 +150,15 @@ function saveTopicDataToServer() {
   const myData = { topics: JSON.stringify(listFromDOM) };
   $('#save-topic-button').attr('disabled', true);
   $.ajax({
-    type: 'POST',
-    url: '/user/user/topics/update',
+    type: 'PUT',
+    url: '/user/user/topics',
     datatype: 'json',
     data: myData,
     success: function(response) {
       respondToSuccess(response);
     },
     error: function(errorResponse) {
-      respondToError(errorResponse);
+      respondToError(`Error: ${errorResponse.responseJSON.status}`);
     },
   });
 }

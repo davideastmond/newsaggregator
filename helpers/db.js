@@ -76,7 +76,7 @@ module.exports = {
         return Promise.reject(new Error(`Credentials Error: Invalid username and/or password.`));
       }
     } catch (err) {
-      return Promise.reject(new Error(`System Error: Unable to verify.` ));
+      return Promise.reject(new Error(`Invalid Username / password.` ));
     }
   },
 
@@ -348,7 +348,7 @@ async function updateUserTopicTable(userData) {
       .del()
       .where('user_id', userData.database_id)
       .returning(['user_id', 'topic_id']);
-  const insertQuery = user_data.topicArray.map((el) => {
+  const insertQuery = userData.topicArray.map((el) => {
     const fnd = topicsFromDb.find((qElement) => {
       return qElement.name === el;
     });

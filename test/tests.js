@@ -2,14 +2,14 @@
 require('dotenv').config();
 const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
+
 chai.use(chaiAsPromised);
 const expect = chai.expect;
 const dbFunctions = require('../helpers/db');
 const helpers = require('../helpers/helper');
 const duplicateHelpers = require('../helpers/duplicateArticlesHelper');
 const axiosHelpers = require('../helpers/fetchTopicHelper');
-
-const logger = require('debug-logger')('newsaggregator');
+const axios = require('axios');
 
 describe('DB functions', ()=> {
   describe('DB Function: verifyUserLogin', ()=> {
@@ -151,7 +151,7 @@ describe('Helper Functions', ()=> {
   });
 
   describe('getDuplicatesFromArticleArray', ()=> {
-    it(', should there be articles with duplicate titles, the function should return false', ()=> {
+    it('should there be articles with duplicate titles, the function should return false', ()=> {
       const jsonArticles = require('./duplicate_articles.json');
       const result = duplicateHelpers.getDuplicatesFromArticleArray(jsonArticles);
       return expect(result.test).to.be.false;
@@ -189,12 +189,19 @@ describe('Helper Functions', ()=> {
   });
 
   describe('requests to local api', ()=> {
-    it('should return a 200 response when hitting the newsaggregator website', async () => {
-      const axios = require('axios');
+    it('should return a 200 response when hitting the newsaggregator website homepage', async () => {
       const result = await axios.get(`http://localhost:6565/`);
-
-      logger.log('Test');
       return expect(result.status === 200);
+    });
+
+    it('should return a 200 after request to /user/:id/feed', async ()=> {
+      const result = await axios.get(`http://localhost:6565/user/:id/feed`);
+      return expect(result.res === 200);
+    });
+
+    it('should return a 200 after request to /user/:id/topics', async ()=> {
+      const result = await axios.get(`http://localhost:6565/user/:id/topics`);
+      return expect(result.res === 200);
     });
   });
 });

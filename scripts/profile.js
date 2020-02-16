@@ -54,7 +54,7 @@ function submitPasswordChange() {
   return $.ajax({
     url: '/user/:id/profile/update',
     data: $('#profile-update-password-change-form').serialize(),
-    type: 'POST',
+    type: 'PUT',
   });
 }
 

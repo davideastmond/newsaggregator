@@ -86,7 +86,7 @@ $(() => {
 function doUpdateFavoritesAjaxRequest(articleInfo) {
   return $.ajax({
     type: 'POST',
-    url: '/user/:id/bookmarks/add',
+    url: '/user/:id/bookmarks',
     data: articleInfo,
   });
 }

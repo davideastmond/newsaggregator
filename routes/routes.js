@@ -182,7 +182,7 @@ router.get('/user/:id/bookmarks', async (req, res) => {
   }
 });
 
-router.post('/user/:id/profile/update',
+router.put('/user/:id/profile/update',
     [check('pwdone')
         .trim().escape(),
     check('pwdtwo').trim()
@@ -206,7 +206,7 @@ router.post('/user/:id/profile/update',
       }
     });
 
-router.post('/user/:id/topics/update', async (req, res) => {
+router.put('/user/:id/topics', async (req, res) => {
   if (req.session.session_id) {
     /* This route is responsible for updating the DB
     with the changes to a user's topics subscription. */
@@ -219,6 +219,7 @@ router.post('/user/:id/topics/update', async (req, res) => {
       await dbFunctions.updateTopicListForUser(updateData);
       res.status(200).json({ response: 'ok' });
     } catch (error) {
+      console.log(error);
       res.status(500).json({ status: 'unable to update the database' });
     }
   } else {
@@ -279,7 +280,7 @@ router.post('/login',
       // eslint-disable-next-line indent
 });
 
-router.post('/user/:id/bookmarks/add', async (req, res) => {
+router.post('/user/:id/bookmarks', async (req, res) => {
   /* This handles updating of saved/favourite
   articles for logged in users via a POST request.
     We add a bookmark for the user and then update a cache
@@ -312,7 +313,8 @@ router.post('/user/:id/bookmarks/add', async (req, res) => {
   }
 });
 
-router.post('/user/:id/bookmarks/:id/delete', async (req, res) => {
+
+router.delete('/user/:id/bookmarks/:id', async (req, res) => {
   // Deletes a bookmarked favorite for a logged-in user
 
   if (req.session.session_id) {
@@ -329,7 +331,7 @@ router.post('/user/:id/bookmarks/:id/delete', async (req, res) => {
   }
 });
 
-router.post('/user/:id/bookmarks/delete', async (req, res) => {
+router.delete('/user/:id/bookmarks', async (req, res) => {
   // Deletes all the bookmarks for the user
 
   if (req.session.session_id) {

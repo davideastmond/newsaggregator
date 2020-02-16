@@ -36,8 +36,8 @@ $(()=> {
  */
 function doAjaxRequestDeleteBookmark(urlToDelete) {
   return $.ajax({
-    type: 'POST',
-    url: '/user/:id/bookmarks/:id/delete',
+    type: 'DELETE',
+    url: '/user/:id/bookmarks/:id',
     data: { url: urlToDelete },
   });
 }
@@ -48,8 +48,8 @@ function doAjaxRequestDeleteBookmark(urlToDelete) {
  */
 function doAjaxRequestDeleteAllBookmarks() {
   return $.ajax({
-    type: 'POST',
-    url: '/user/:id/bookmarks/delete',
+    type: 'DELETE',
+    url: '/user/:id/bookmarks',
     data: { command: 'delete all' },
   });
 }
