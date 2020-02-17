@@ -175,10 +175,12 @@ module.exports = {
    * or an error
    */
   updateUserPassword: async (newData) => {
-    if (!helperFunctions
+    const result = helperFunctions
         .passwordMeetsSecurityRequirements({ first: newData.first_password,
-          second: newData.second_password })) {
-      // Reject, as it doesn't meet requirements
+          second: newData.second_password });
+
+    console.log(result);
+    if (result === false) {
       Promise.reject(new Error({
         error: 'Password does not meet security requirements' }));
     }
@@ -348,6 +350,7 @@ async function updateUserTopicTable(userData) {
       .del()
       .where('user_id', userData.database_id)
       .returning(['user_id', 'topic_id']);
+
   const insertQuery = userData.topicArray.map((el) => {
     const fnd = topicsFromDb.find((qElement) => {
       return qElement.name === el;

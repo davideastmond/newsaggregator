@@ -52,6 +52,7 @@ module.exports = {
    * @return {Promise} Returns a promise
    */
   hashPasswordAsync: function(rawPassword) {
+    const bcrypt = require('bcryptjs');
     return bcrypt.hash(rawPassword, parseInt(process.env.SALT_ROUNDS));
   },
 
@@ -95,7 +96,7 @@ module.exports = {
      * E-mail address.
      */
   validateEmail: (emailAddress) => {
-    return false;
+    return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(emailAddress);
   },
 };
 

@@ -19,7 +19,6 @@ router.get('/', (req, res) => {
 });
 
 router.get('/news', async (req, res) => {
-  // Obtain the query parameters to be used for a API fetch request
   const reqDate = req.query.date;
   const reqQuery = req.query.newsQuery;
   // eslint-disable-next-line max-len
@@ -182,7 +181,7 @@ router.get('/user/:id/bookmarks', async (req, res) => {
   }
 });
 
-router.put('/user/:id/profile/update',
+router.put('/user/:id/profile',
     [check('pwdone')
         .trim().escape(),
     check('pwdtwo').trim()

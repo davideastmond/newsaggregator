@@ -52,7 +52,7 @@ function passwordsMatch(pwd1, pwd2) {
  */
 function submitPasswordChange() {
   return $.ajax({
-    url: '/user/:id/profile/update',
+    url: '/user/:id/profile',
     data: $('#profile-update-password-change-form').serialize(),
     type: 'PUT',
   });

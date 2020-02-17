@@ -91,7 +91,8 @@ function passwordSecurityValid(pwd) {
 }
 
 /**
-   * Returs
+   * Evaluates password against a regular expression and returns false if it
+   * doesn't meet requirements.
    * @param {string} email
    * @return {boolean}
    */
@@ -100,10 +101,10 @@ function validateEmail(email) {
 }
 
 /**
-     *
-     * @param {object} serializedData
-     * @return {Promise} A promise indicating that the request will eventually be resolved
-     */
+ *
+ * @param {object} serializedData
+ * @return {Promise} A promise indicating that the request will eventually be resolved
+ */
 function sendRegistrationRequest(serializedData) {
   // Validation has passed. Send an ajax request to the server with registration info.
   return $.ajax({
