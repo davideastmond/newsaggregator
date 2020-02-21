@@ -1,4 +1,3 @@
-
 $(() => {
   $('#header-top-nav-logout-link').click((e) => {
     // Send an ajax POST request to /logout to log the user out
@@ -18,7 +17,7 @@ const doLogout = ()=> {
     success: () => {
       window.location = '/';
     },
-    error: () => {
+    fail: () => {
       alert('There was an error sending the request');
     },
   });
