@@ -71,7 +71,7 @@
 ### Dependencies
 
 - axios
-- bcrypt
+- bcryptjs
 - body-parser
 - bootstrap
 - cookie-parser

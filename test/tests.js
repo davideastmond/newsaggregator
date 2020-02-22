@@ -188,7 +188,7 @@ describe('Helper Functions', ()=> {
     });
   });
 
-  describe('requests to local api', ()=> {
+  describe('requests to newsaggregator API', ()=> {
     it('should return a 200 response when hitting the newsaggregator website homepage', async () => {
       const result = await axios.get(`http://localhost:6565/`);
       return expect(result.status === 200);
