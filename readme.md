@@ -68,21 +68,6 @@
 
 - Navigate to the server home (typically `localhost:PORT`)
 
-### Dependencies
-
-- axios
-- bcryptjs
-- body-parser
-- bootstrap
-- cookie-parser
-- cookie-session
-- dotenv
-- express.js
-- express-validator
-- knex.js
-- moment.js
-- node.js
-
 ### .ENV file
 
 - Rename the sample_env file to a .env, and fill out the parameters
