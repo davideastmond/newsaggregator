@@ -1,8 +1,8 @@
 $(() => {
   /**
-   * This procedure is called when user updates their profile attribute.
+   * This function is called when user updates one of their profile attributes.
    * It resets any error messages displayed and sanitizes and validates password input.
-   * Finally it sends an AJAX post request to the server w/ the updated info.
+   * Finally it sends an AJAX post request to the server w/ to update the info.
    */
   $('#change-profile-submit-button').click((e) => {
     $('#change-password-error-message').css('display', 'none');
@@ -11,14 +11,9 @@ $(() => {
 
     const $pwd1 = $('#change-password-box-one').val().trim();
     const $pwd2 = $('#change-password-box-two').val().trim();
-
-    if ($pwd1 === '' || $pwd2 === '') {
-      showErrorMessage('Please enter a valid password.');
-      return;
-    }
-
-    if (!passwordsMatch($pwd1, $pwd2)) {
-      showErrorMessage('Please enter a valid password.');
+    const pwdResult = isPasswordValid($pwd1, $pwd2);
+    if (pwdResult.result === false) {
+      showErrorMessage(pwdResult.message);
       return;
     }
 
@@ -27,10 +22,10 @@ $(() => {
     const ajaxPromise = submitPasswordChange();
 
     ajaxPromise.done(()=> {
-      showSuccessMessage('Password updated successfully');
+      showSuccessMessage('Password updated successfully.');
     })
-        .fail((message) => {
-          showErrorMessage(message.responseJSON.error);
+        .fail((data) => {
+          showErrorMessage(data.responseJSON.error);
         });
   });
 });
@@ -48,7 +43,7 @@ function passwordsMatch(pwd1, pwd2) {
 /**
  * Allows user to submit a request to change their password.
  * Sends an AJAX post request to the server to update info
- * @return {Promise} A promise, the result of a POST request to update user profile info
+ * @return {Promise} Contains the result of a POST request to update user profile info
  */
 function submitPasswordChange() {
   return $.ajax({
@@ -79,4 +74,23 @@ function showSuccessMessage(message) {
   $('#change-password-success-message')
       .text(`${message}`).css('display', 'block')
       .css('color', 'green');
+}
+
+/**
+ *
+ * @param {string} first first instance of string password
+ * @param {string} second second instance of string password
+ * @return {object} object containing a bool and a string message response
+ */
+function isPasswordValid(first, second) {
+  if ($pwd1 === '' || $pwd2 === '') {
+    return { result: false, message: 'Please enter a valid password.' };
+  }
+
+  if (!passwordsMatch($pwd1, $pwd2)) {
+    showErrorMessage('Please enter a valid password.');
+    return { result: false, message: 'Please enter a valid password.' };
+  }
+
+  return { result: true, message: undefined };
 }
