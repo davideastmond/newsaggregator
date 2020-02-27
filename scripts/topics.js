@@ -30,7 +30,6 @@ $(() => {
 });
 
 /**
- *
  * @param {array} iTopics
  */
 function rebuildTopicList(iTopics) {
@@ -50,7 +49,6 @@ function rebuildTopicList(iTopics) {
 }
 
 /**
- *
  * @param {string} itemName
  * @param {number} iIndex
  * @return {object} returns a jQuery listItem DOM object
@@ -93,7 +91,7 @@ function processDeleteTopicClick(e) {
     return element != targetTopic;
   });
 
-  // Send the new (filtered array) for re-building in the DOM
+  // the new (filtered array) for re-building in the DOM
   rebuildTopicList(arrOfTopics);
 }
 
@@ -115,18 +113,15 @@ function getTopicListFromDOM() {
 }
 
 /**
- *
- * Builds a list client side of the current topic subscriptions
+ * Builds a list client side of the current topic subscriptions.
+ * It disallows empty strings from being entered as topics
  * @param {object} e An event object
  */
 function processAddTopicClick(e) {
   // Adds topics to the list and then summons a function
   const targetTopic = $('#topic-to-add').val().toLowerCase().trim();
-  // Get the current state
 
-  // Disallow empty strings from being entered as topics
   if (targetTopic === '' || targetTopic.length > 30 ) {
-    // Show an error message
     respondToError('Topic entered is not valid. Make sure it is max 30 characters long.');
     return;
   }
@@ -139,7 +134,6 @@ function processAddTopicClick(e) {
 }
 
 /**
- *
  * This function gathers the topics the user desires to subscribe to based on
  * certain DOM elements. It then sends an ajax HTTP request to server
  * to update the database w/ user's topic list

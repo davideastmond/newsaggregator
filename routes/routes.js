@@ -346,6 +346,7 @@ router.delete('/user/:id/bookmarks', async (req, res) => {
 
 router.post('/logout', (req, res) => {
   req.session.session_id = null;
+  console.log('LOGOUT MESSAGE', req.body.data);
   res.render('home.ejs', { logged_in: false, uId: null });
 });
 

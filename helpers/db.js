@@ -179,8 +179,7 @@ module.exports = {
         .passwordMeetsSecurityRequirements({ first: newData.first_password,
           second: newData.second_password });
 
-    console.log(result);
-    if (result === false) {
+    if (!result) {
       Promise.reject(new Error({
         error: 'Password does not meet security requirements' }));
     }
@@ -211,10 +210,10 @@ module.exports = {
   */
   addBookmarkForUser: async (updateData) => {
     /* We should first check if the article is
-    in the article table already. If so, grab the id
-    then check the user_article table if it is associated with the user.
-    If it is not in the article table - add it,
-    grab the id and then add it to the user_article table
+      in the article table already. If so, grab the id
+      then check the user_article table if it is associated with the user.
+      If it is not in the article table - add it,
+      grab the id and then add it to the user_article table
     */
 
     const rows = await knex('article').where({ url: updateData.url }).returning(['id']);
