@@ -186,10 +186,7 @@ router.put('/user/:id/profile',
         .trim().escape(),
     check('pwdtwo').trim()
         .escape()], async (req, res) => {
-      // This route handles password changes
-
       if (req.session.session_id) {
-        // Database request. This essentially updates the user's password
         try {
           await dbFunctions
               .updateUserPassword({ forUser: req.session.session_id,
@@ -226,11 +223,9 @@ router.put('/user/:id/topics', async (req, res) => {
   }
 });
 
-// Receiving sign-up data.
 router.post('/register', [check('emailAddr').isEmail().trim().escape(),
   check('passwordOne').trim().escape(),
   check('passwordTwo').trim().escape()], async (req, res) => {
-  // If there is a current session, user must log out
   if (req.session.session_id) {
     res.status(400).send({ response: 'user should log out first before registering' });
     return;
@@ -313,9 +308,8 @@ router.post('/user/:id/bookmarks', async (req, res) => {
 });
 
 
+// Deletes a bookmarked favorite for a logged-in user
 router.delete('/user/:id/bookmarks/:id', async (req, res) => {
-  // Deletes a bookmarked favorite for a logged-in user
-
   if (req.session.session_id) {
     const bookmarkObject = { email: req.session.session_id,
       user_id: req.session.database_id,
@@ -331,8 +325,6 @@ router.delete('/user/:id/bookmarks/:id', async (req, res) => {
 });
 
 router.delete('/user/:id/bookmarks', async (req, res) => {
-  // Deletes all the bookmarks for the user
-
   if (req.session.session_id) {
     const bookmarkObject = { email: req.session.session_id,
       user_id: req.session.database_id };
