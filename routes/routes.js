@@ -299,7 +299,6 @@ router.post('/user/:id/bookmarks', async (req, res) => {
         res.status(400).json({ status: 'error updating database' });
       }
     } catch (error) {
-      // console.log(error);
       res.status(400).json({ status: 'error updating database' });
     }
   } else {

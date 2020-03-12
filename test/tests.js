@@ -1,9 +1,7 @@
 /* eslint-disable max-len */
 require('dotenv').config();
 const chai = require('chai');
-const chaiAsPromised = require('chai-as-promised');
 
-chai.use(chaiAsPromised);
 const expect = chai.expect;
 const dbFunctions = require('../helpers/db');
 const helpers = require('../helpers/helper');
@@ -56,7 +54,7 @@ describe('DB functions', ()=> {
       }
     });
 
-    it('should throw if there is a empty string e-mail', async ()=> {
+    it('should throw if there is an empty string e-mail', async ()=> {
       const testUser = { email: '', password: process.env.TEST_PASSWORD, last_login: new Date() };
 
       try {
@@ -66,7 +64,7 @@ describe('DB functions', ()=> {
       }
     });
 
-    it('should eventually throw if empty password is provided', async ()=> {
+    it('should throw if empty password is provided', async ()=> {
       const testUser = { email: process.env.TEST_USER, password: '', last_login: new Date() };
 
       try {
