@@ -75,8 +75,12 @@ $(() => {
       makeBookMarkIconRed(e);
     });
   });
-  $('.article-thumbnail').on('error', () => {
-    $(this).attr('src', 'https://ipsumimage.appspot.com/160x128');
+});
+
+$(() => {
+  $('img').on('error', () => {
+    console.log('article thumbnail error!');
+    // $('.article-thumb').attr('src', 'https://ipsumimage.appspot.com/160x128');
   });
 });
 

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,17 +9,20 @@
   <link rel="stylesheet" href="../styles/homemain.css">
   <link rel="stylesheet" href="../styles/newsarticles.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
   <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
   <script src="index.js" async></script>
 
   <title>News Aggregator</title>
-  
+
 </head>
+
 <body>
+
   <head>
-    
+
     <%- include('./partials/_login_header', { logged_in: logged_in, uId: uId }); %>
   </head>
   <div class="home-page-master-div-enclosure">
@@ -42,11 +46,12 @@
     </form>
 
     <div>
-      <p class="lead"> Check out latest top <a href="/headlines?country=us">headlines </a></p>
+      <p class="lead"> Check out latest top <a href="/headlines">headlines </a></p>
     </div>
     <div>
       <p class="lead"> Or go to your <a href="/user/user/feed"> personalized feed</a></p>
     </div>
   </div>
 </body>
+
 </html>
