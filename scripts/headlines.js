@@ -32,45 +32,51 @@ $(() => {
     ff the events are being triggered by the feed.ejs or
     headlines.ejs as the DOM hierarchy is different for each */
     const headlineText = e.target.parentNode
-        .parentNode
-        .parentNode
-        .parentNode
-        .children[1]
-        .children[0].innerHTML;
+      .parentNode
+      .parentNode
+      .parentNode
+      .children[1]
+      .children[0].innerHTML;
     let articleURL = e.target.parentNode
-        .parentNode
-        .parentNode
-        .parentNode
-        .children[0]
-        .href;
+      .parentNode
+      .parentNode
+      .parentNode
+      .children[0]
+      .href;
     let imageRef;
 
     if (!e.target.parentNode.parentNode.parentNode.parentNode.children[0].children[0]) {
       imageRef = e.target.parentNode
-          .parentNode
-          .parentNode
-          .parentNode
-          .children[0]
-          .currentSrc;
+        .parentNode
+        .parentNode
+        .parentNode
+        .children[0]
+        .currentSrc;
     } else {
       imageRef = e.target.parentNode
-          .parentNode
-          .parentNode
-          .parentNode
-          .children[0]
-          .children[0]
-          .currentSrc;
+        .parentNode
+        .parentNode
+        .parentNode
+        .children[0]
+        .children[0]
+        .currentSrc;
     }
     if (!articleURL) {
       articleURL = e.target.parentNode.children[1].children[0].href;
     }
 
-    const favArticleData = { headlineText: headlineText,
-      url: articleURL, imageSrc: imageRef };
+    const favArticleData = {
+      headlineText: headlineText,
+      url: articleURL,
+      imageSrc: imageRef,
+    };
     // The url we want to save is index[3]
     doUpdateFavoritesAjaxRequest(favArticleData).then((result) => {
       makeBookMarkIconRed(e);
     });
+  });
+  $('.article-thumbnail').on('error', () => {
+    $(this).attr('src', 'https://ipsumimage.appspot.com/160x128');
   });
 });
 
@@ -136,7 +142,7 @@ function doHTTPRequest() {
 
   // Gather the query and the date
   xhr.onreadystatechange = () => {
-    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200 ) {
+    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
       // Load the page once we get a response
       window.location.href = xhr.responseURL;
     }

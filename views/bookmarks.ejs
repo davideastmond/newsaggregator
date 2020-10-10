@@ -1,21 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  
+
   <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-  <script src="moment.js"></script>
+  <script src="https://momentjs.com/downloads/moment.js" crossorigin="anonymous"></script>
   <script src="bookmarks.js" async></script>
 
   <title>Bookmarks</title>
 
 </head>
+
 <body>
+
   <head>
     <% include ./partials/_login_header %>
   </head>
@@ -25,29 +29,31 @@
   </div>
 
   <% if (data.length > 0) { %>
-    <div id="div-bookmarks-menu" class="div-bookmarks-menu">
-      <button class="btn btn-danger btn-clear-all-bookmarks">Clear All</button>
-    </div>
+  <div id="div-bookmarks-menu" class="div-bookmarks-menu">
+    <button class="btn btn-danger btn-clear-all-bookmarks">Clear All</button>
+  </div>
   <% } %>
-  
+
   <div class="articles-master-container">
     <!-- This is going to contain the list of bookmarks -->
     <% if (data.length > 0) { %>
-      <% data.forEach((bookmark) => { %>
-        <div class="media padded-media">
-          <img class="align-self-center mr-3 article-thumbnail" src= <%= bookmark.image_src %>>
-          <div class="media-body div-media-body">
-            <h5 class="mt-0"> <p> <a href=<%= bookmark.url %> target="_blank"> <%= bookmark.headline %> </p> </a></h5>
-            <footer class="article-footer-margin-bottom-bookmark">
-              <p class="h6 bookmark-date"><%= bookmark.created_at %></p>
-              <i class="far fa-trash-alt"></i>
-            </footer>
-          </div>
-        </div>
-      <% }); %>
+    <% data.forEach((bookmark) => { %>
+    <div class="media padded-media">
+      <img class="align-self-center mr-3 article-thumbnail" src=<%= bookmark.image_src %>>
+      <div class="media-body div-media-body">
+        <h5 class="mt-0">
+          <p> <a href=<%= bookmark.url %> target="_blank"> <%= bookmark.headline %> </p> </a>
+        </h5>
+        <footer class="article-footer-margin-bottom-bookmark">
+          <p class="h6 bookmark-date"><%= bookmark.created_at %></p>
+          <i class="far fa-trash-alt"></i>
+        </footer>
+      </div>
+    </div>
+    <% }); %>
     <% } else { %>
-      <!-- No bookmarks-->
-      <p class="lead error-message"> No bookmarks.</p>
+    <!-- No bookmarks-->
+    <p class="lead error-message"> No bookmarks.</p>
     <% } %>
   </div>
 </body>
