@@ -188,17 +188,17 @@ describe('Helper Functions', ()=> {
 
   describe('requests to newsaggregator API', ()=> {
     it('should return a 200 response when hitting the newsaggregator website homepage', async () => {
-      const result = await axios.get(`http://localhost:6565/`);
+      const result = await axios.get(`http://localhost:80/`);
       return expect(result.status === 200);
     });
 
     it('should return a 200 after request to /user/:id/feed', async ()=> {
-      const result = await axios.get(`http://localhost:6565/user/:id/feed`);
+      const result = await axios.get(`http://localhost:80/user/:id/feed`);
       return expect(result.res === 200);
     });
 
     it('should return a 200 after request to /user/:id/topics', async ()=> {
-      const result = await axios.get(`http://localhost:6565/user/:id/topics`);
+      const result = await axios.get(`http://localhost:80/user/:id/topics`);
       return expect(result.res === 200);
     });
   });
