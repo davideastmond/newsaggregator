@@ -51,7 +51,42 @@
 
 - This app uses [NewsAPI](https://newsapi.org/) to grab news articles. You'll need to obtain your own API key for their service. Once obtained, include the key in your `.env` file
 
-### How to Use
+### Using the app
+
+#### Home Page
+
+1. Select a date from the calendar and type in a topic and click `Get News`.
+2. You can also checkout the latest headlines by clicking the `top headlines` link. 
+3. Or you can go to your personalized feed (log-in required)
+
+#### Sign up
+
+1. If you don't have an account, use the sign up feature to register for the service.
+2. Enter an e-mail and a secure password then click submit. You'll be taken to a screen where you can enter topics for which you would like news articles.
+3. Type a topic keyword and click add. When done adding topics, be sure to click save.
+
+#### Settings
+- Here you can change your password.
+- You can also change your topics by clicking the link.
+
+#### My Feed
+
+- Articles that are linked to your feed topic keyword(s) appear here.
+- Change your topics by hovering over your username to show the drop-down menu (or on mobile, tap the `Settings` link), clicking `Settings` > `Topics` > `Change your topics`.
+- You can save (bookmark) articles for future reading by clicking the bookmark icon underneath an article element.
+- The bookmark icon will turn red, indicating it has been saved.
+
+#### Bookmarks
+
+- On mobile click the `Bookmarks` link. On desktop hover over your username to display the menu. Click bookmarks.
+- All articles you bookmarked are displayed here. 
+- Delete a bookmark by clicking / tapping the trash can icon. To delete all bookmarks, tap the `Clear All` button.
+
+
+#### Log out
+- Click or tap to log out of the service.
+
+### How to Install (Dev)
 
 - Clone or fork the project.
 - Run `npm i` to install all required packages
