@@ -43,6 +43,7 @@ module.exports = {
    */
   hashPassword: function(rawPassword) {
     // This sync method is used for seeding the database
+    const bcrypt = require('bcryptjs');
     return bcrypt.hashSync(rawPassword, parseInt(process.env.SALT_ROUNDS));
   },
 
