@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-const functionHelpers = require('../helper');
+const functionHelpers = require('../helpers/helper.js');
 require('dotenv').config();
 exports.seed = function(knex) {
   // Delete ALL Existing entries from each table
