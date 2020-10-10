@@ -37,6 +37,7 @@
 - multiple language options
 - social media sharing (using some kind of API)
 - UI themes (dark / light etc)
+- Password reset feature
 
 ### What it looks like
 
@@ -59,6 +60,9 @@
 2. You can also checkout the latest headlines by clicking the `top headlines` link. 
 3. Or you can go to your personalized feed (log-in required)
 
+#### Login
+- Enter the e-mail and password combination you used to registered with the service.
+- Lost password feature coming soon!
 #### Sign up
 
 1. If you don't have an account, use the sign up feature to register for the service.
