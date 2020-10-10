@@ -1,72 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <link rel="stylesheet" href="../styles/newsarticles.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-  
-  <script src="moment.js"></script>
-  
+
+  <script src="https://momentjs.com/downloads/moment.js" crossorigin="anonymous"></script>
+
   <script src="headlines.js" async></script>
   <title>News Results</title>
 
 </head>
+
 <body>
+
   <head>
     <% include ./partials/_login_header %>
   </head>
   <div class="headlines-header-div">
-  
-    <a href="/headlines"><p class="lead">Headlines</p></a>
-    <a href="/"><p class="lead">Home</p></a>
-    
+
+    <a href="/headlines">
+      <p class="lead">Headlines</p>
+    </a>
+    <a href="/">
+      <p class="lead">Home</p>
+    </a>
+
   </div>
   <div class="div-headlines-header">
     <p class="h2 space-left"> The latest headlines </p>
-    <p class="lead space-left"> Total Results: <%= count %> items  </p>
+    <p class="lead space-left"> Total Results: <%= count %> items </p>
     <div>
       <label for="search-box" class="space-left"> Enter keywords:</label>
     </div>
     <div>
-      <input class="space-left" type="text" id="search-box" name="search-box" placeholder="top headlines for <%= country %>"> <button type="button" class="btn btn-primary" id="headlines-submit-new-search">Search Again</button>
+      <input class="space-left" type="text" id="search-box" name="search-box"
+        placeholder="top headlines"> <button type="button" class="btn btn-primary"
+        id="headlines-submit-new-search">Search Again</button>
     </div>
   </div>
   <div class="articles-master-container">
     <br>
     <% articles.forEach((article) => { %>
-      <div class="media">
-        <a href=<%= article.url %>> <img class="align-self-center mr-3 article-thumbnail" src= <%= article.urlToImage %> alt="<%= article.title %>" ></a>
-        <div class="media-body div-media-body">
-          <h5 class="mt-0"><%= article.title %></h5>
-          <p class="article-description-blurb-justify"> <%= article.description %></p>
-          <footer>
-            <span>
-              
-              <% if (loggedIn) { %>
-                <% if (bookmarkCache && bookmarkCache.includes(article.url)) { %>
-                  <i class="fas fa-bookmark" disabled></i>
-                <% } else { %>
-                  <i class="far fa-bookmark"></i>
-                <% } %>
-              <% } %>
-              <p> <a target="_blank" href=<%= article.url %>> <%= article.source.name %> </a></p>
-              <p class="label-published-at-date h6"> Published:  </p>
-            </span>
-          </footer>
-        </div>
-      
+    <div class="media">
+      <a href=<%= article.url %>> <img class="align-self-center mr-3 article-thumbnail" src=<%= article.urlToImage %>>
+      </a>
+      <div class="media-body div-media-body">
+        <h5 class="mt-0"><%= article.title %></h5>
+        <p class="article-description-blurb-justify"> <%= article.description %></p>
+        <footer>
+          <span>
+
+            <% if (loggedIn) { %>
+            <% if (bookmarkCache && bookmarkCache.includes(article.url)) { %>
+            <i class="fas fa-bookmark" disabled></i>
+            <% } else { %>
+            <i class="far fa-bookmark"></i>
+            <% } %>
+            <% } %>
+            <p> <a target="_blank" href=<%= article.url %>> <%= article.source.name %> </a></p>
+            <p class="label-published-at-date h6"> Published: </p>
+          </span>
+        </footer>
       </div>
+
+    </div>
     <% }); %>
   </div>
-  
+
   <script>
     const pubDate = moment().format("MM/DD/YYYY");
     $(".label-published-at-date").text(`Published: ${pubDate}`);
   </script>
 </body>
+
 </html>
