@@ -3,7 +3,7 @@ require('dotenv').config();
 const app = express();
 const path = require('path');
 const bodyParser = require('body-parser');
-const PORT = 80;
+const PORT = process.env.PORT;
 const cookieParser = require('cookie-parser');
 const cookieSession = require('cookie-session');
 const cookieKeys = [process.env.COOKIE_KEYS];
@@ -15,8 +15,12 @@ app.use(cookieSession({
   maxAge: parseInt(process.env.COOKIE_TIME_OUT),
 }));
 
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
+app.use(express.urlencoded({
+  extended: true
+}));
 app.use(express.static(path.join(__dirname, 'scripts')));
 app.use(express.static(path.join(__dirname, 'public')));
 
