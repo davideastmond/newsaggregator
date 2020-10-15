@@ -7,7 +7,8 @@ const { check } = require('express-validator');
 const cache = require('memory-cache');
 const cacheFunctions = require('../helpers/cache');
 const dbFunctions = require('../helpers/db');
-
+const { sendPasswordResetEmail } = require('../helpers/mailer');
+const { v4: uuidv4 } = require('uuid');
 module.exports = router;
 
 router.get('/', (req, res) => {
@@ -181,6 +182,10 @@ router.get('/user/:id/bookmarks', async (req, res) => {
   }
 });
 
+router.get('/reset', (_, res) => {
+  res.render('password-reset.ejs', { message: '' });
+});
+
 router.put('/user/:id/profile',
     [check('pwdone')
         .trim().escape(),
@@ -275,12 +280,12 @@ router.post('/login',
 });
 
 router.post('/user/:id/bookmarks', async (req, res) => {
-  /* This handles updating of saved/favourite
+  /* This handles updating of saved/favorite
   articles for logged in users via a POST request.
     We add a bookmark for the user and then update a cache
     that stores the user's bookmarks. That way, when a user visits a
     headlines or topics page
-    that has a bookmarked article therin, the article entry will show as being
+    that has a bookmarked article therein, the article entry will show as being
     bookmarked with a cute little red bookmark ^_^
   */
 
@@ -337,10 +342,29 @@ router.delete('/user/:id/bookmarks', async (req, res) => {
 
 router.post('/logout', (req, res) => {
   req.session.session_id = null;
-  console.log('LOGOUT MESSAGE', req.body.data);
   res.render('home.ejs', { logged_in: false, uId: null });
 });
 
+router.post('/validate-email',
+    [check('email').isEmail().trim().escape()], async (req, res) => {
+      // We have to hit the db, ensure that the e-mail is a valid user. \
+      // If so, send the user an e-mail reset link URL
+      // with uuid (the url should be cached)
+      if (await dbFunctions.doesEmailExistInDatabase(req.body.email) === true) {
+        // create a cache entry
+        // send an e-mail
+
+        const hash = uuidv4();
+
+        // cache.put('prec', [ { email: req.body.email, hash: hash, claimed: false, requestDate: datetime.now() } ]);
+        const result = await sendPasswordResetEmail(req.body.email, hash);
+        console.log('result from mailer', result);
+        res.render('password-reset-success',
+            { successMessage: 'Please check your e-mail for a password reset link' });
+      } else {
+        res.render('password-reset', { message: 'Unrecognized e-mail address' });
+      }
+    });
 // eslint-disable-next-line no-extend-native
 Object.defineProperty(Array.prototype, 'flat', {
   value: function(depth = 1) {
@@ -349,5 +373,4 @@ Object.defineProperty(Array.prototype, 'flat', {
       toFlatten.flat(depth - 1) : toFlatten);
     }, []);
   },
-
 });

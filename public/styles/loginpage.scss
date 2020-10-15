@@ -1,11 +1,13 @@
 @import './globals';
 
-html, body {
+html,
+body {
   margin-left: 10%;
   margin-right: 10%;
-  background-color:$mainBackDropColor;
+  background-color: $mainBackDropColor;
   height: 100%;
 }
+
 .main-enclosing-login-box {
   border-style: solid;
   border-width: 0.1em;
@@ -24,20 +26,26 @@ html, body {
 
 .login-button-div {
   margin-top: 0.8em;
-  
+
 }
 
 .login-error-message {
   color: $errorMessageColor;
 }
 
+.password-reset-success-message {
+  color: white;
+}
+
 @media only screen and (min-width: 100px) and (max-width: 700px) {
   .main-enclosing-login-box {
-   
+
     width: 100%;
     height: 100%;
   }
-  body, html {
+
+  body,
+  html {
     margin: 0%;
     height: 100%;
   }
@@ -45,7 +53,7 @@ html, body {
 
 @media only screen and (min-width: 100px) and (max-width: 700px) and (orientation: landscape) {
   .main-enclosing-login-box {
-   
+
     width: 100%;
     height: 100%;
   }
@@ -54,13 +62,14 @@ html, body {
     padding: 0px;
   }
 
-  body, html {
+  body,
+  html {
     margin: 0%;
     height: 100%;
   }
 }
 
-@media only screen and (min-width: 701px) and (max-width: 830px)  {
+@media only screen and (min-width: 701px) and (max-width: 830px) {
   .main-enclosing-login-box {
     position: relative;
     width: 100%;
@@ -68,23 +77,8 @@ html, body {
   }
 
 
-  body, html {
-    margin: 0%;
-    height: 100%;
-  }
-}
-
-@media only screen and (min-width: 701px) and (max-width: 830px) and (orientation: landscape)  {
-  .main-enclosing-login-box {
-    position: relative;
-    width: 100%;
-    height: 100%;
-  }
-
-  .jumbotron {
-    padding: 0px;
-  }
-  body, html {
+  body,
+  html {
     margin: 0%;
     height: 100%;
   }
@@ -97,7 +91,26 @@ html, body {
     height: 100%;
   }
 
-  body, html {
+  .jumbotron {
+    padding: 0px;
+  }
+
+  body,
+  html {
+    margin: 0%;
+    height: 100%;
+  }
+}
+
+@media only screen and (min-width: 701px) and (max-width: 830px) and (orientation: landscape) {
+  .main-enclosing-login-box {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  body,
+  html {
     margin: 0%;
     height: 100%;
   }

@@ -289,6 +289,20 @@ module.exports = {
       return Promise.reject(err);
     }
   },
+
+  /**
+   * Returns if e-mail address was found in the database
+   * @param {string} emailAddress
+   * @return {boolean} true if found in database
+   */
+  doesEmailExistInDatabase: async (emailAddress) => {
+    try {
+      const result = await knex('user').where({ email: emailAddress });
+      return result.length >= 1;
+    } catch (exception) {
+      console.log(exception);
+    }
+  },
 };
 
 /**

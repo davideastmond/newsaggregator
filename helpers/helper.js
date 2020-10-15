@@ -1,6 +1,6 @@
 require('dotenv').config();
 const axiosHelpers = require('./fetchTopicHelper');
-const duplicatesHelper = require('./duplicateArticlesHelper');
+const duplicatesHelper = require('./duplicate-articles-helper');
 
 /* This module consists of helper functions concerning password
   validation and doing fetch requests to the API,

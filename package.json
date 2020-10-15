@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "nodemon --exec mocha",
+    "test": "jest",
     "start": "nodemon server.js",
     "dev": "nodemon server.js"
   },
@@ -23,6 +23,7 @@
     "express": "^4.17.1",
     "express-validator": "^6.6.1",
     "knex": "^0.19.5",
+    "mailgun-js": "^0.22.0",
     "memory-cache": "^0.2.0",
     "mocha": "^7.2.0",
     "moment": "^2.29.1",
@@ -32,6 +33,7 @@
   "devDependencies": {
     "eslint": "^6.8.0",
     "eslint-config-google": "^0.14.0",
+    "jest": "^26.5.3",
     "nodemon": "^1.19.4"
   }
 }

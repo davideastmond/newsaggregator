@@ -11,4 +11,25 @@ module.exports = {
       });
     }
   },
+
+
+  isAlreadyInCache: (cacheReference, emailString)=> {
+    // Returns
+    const recoveryItems = cacheReference.get('prec');
+
+    return false;
+  },
+  writeToCatch: (cacheReference, data) =>{
+    // First ge the catch
+    const recoveryItems = cacheReference.get('prec'); // Should get an array of objects
+    if (recoveryItems === null) {
+      // Create new list
+      const emptyItems = [];
+      emptyItems.push(data);
+      cacheReference.put('prec', emptyItems);
+    } else {
+
+    }
+    // const checkFilter =
+  },
 };

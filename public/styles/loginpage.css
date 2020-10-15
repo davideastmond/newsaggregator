@@ -1,5 +1,6 @@
 /* Global Color constants */
-html, body {
+html,
+body {
   margin-left: 10%;
   margin-right: 10%;
   background-color: #042204;
@@ -28,12 +29,17 @@ html, body {
   color: rgba(255, 0, 0, 0.726);
 }
 
+.password-reset-success-message {
+  color: white;
+}
+
 @media only screen and (min-width: 100px) and (max-width: 700px) {
   .main-enclosing-login-box {
     width: 100%;
     height: 100%;
   }
-  body, html {
+  body,
+  html {
     margin: 0%;
     height: 100%;
   }
@@ -47,7 +53,8 @@ html, body {
   .jumbotron {
     padding: 0px;
   }
-  body, html {
+  body,
+  html {
     margin: 0%;
     height: 100%;
   }
@@ -59,7 +66,8 @@ html, body {
     width: 100%;
     height: 108%;
   }
-  body, html {
+  body,
+  html {
     margin: 0%;
     height: 100%;
   }
@@ -74,7 +82,8 @@ html, body {
   .jumbotron {
     padding: 0px;
   }
-  body, html {
+  body,
+  html {
     margin: 0%;
     height: 100%;
   }
@@ -86,7 +95,8 @@ html, body {
     width: 100%;
     height: 100%;
   }
-  body, html {
+  body,
+  html {
     margin: 0%;
     height: 100%;
   }
