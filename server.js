@@ -7,6 +7,7 @@ const PORT = process.env.PORT;
 const cookieParser = require('cookie-parser');
 const cookieSession = require('cookie-session');
 const cookieKeys = [process.env.COOKIE_KEYS];
+const mongodb = require('./helpers/mongo/db')
 // Middle-ware
 app.use(cookieParser());
 app.use(cookieSession({
@@ -38,6 +39,8 @@ app.use('/user/:id/bookmarks', express.static(path.join(__dirname, 'public')));
 
 app.set('view engine', 'ejs');
 app.use(require('./routes/routes'));
+
+mongodb.connect();
 
 app.listen(PORT, () => {
   console.log('Listening on port', PORT);

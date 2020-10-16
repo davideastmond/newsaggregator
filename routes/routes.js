@@ -2,12 +2,12 @@ const express = require('express');
 // eslint-disable-next-line new-cap
 const router = express.Router();
 const axios = require('axios');
-const helperFunctions = require('../helpers/helper');
+const helperFunctions = require('../helpers/helper/helper');
 const { check } = require('express-validator');
 const cache = require('memory-cache');
-const cacheFunctions = require('../helpers/cache');
-const dbFunctions = require('../helpers/db');
-const { sendPasswordResetEmail } = require('../helpers/mailer');
+const cacheFunctions = require('../helpers/cache/cache');
+const dbFunctions = require('../helpers/db/db');
+const { sendPasswordResetEmail } = require('../helpers/mailer/mailer');
 const { v4: uuidv4 } = require('uuid');
 module.exports = router;
 
@@ -42,30 +42,34 @@ router.get('/news', async (req, res) => {
     if (cacheData === [] && loggedInState) {
       // hit the database
       const bookmarkResponses = await dbFunctions
-          .getBookmarks({ email: req.session.session_id });
+        .getBookmarks({ email: req.session.session_id });
       cacheData = cacheFunctions.strip(bookmarkResponses);
-      res.render('news.ejs', { loggedIn: loggedInState,
+      res.render('news.ejs', {
+        loggedIn: loggedInState,
         bookmarkCache: cacheData,
         articles: response.data.articles,
         searchQuery: reqQuery, uId: req.session.session_id,
         requestDate: reqDate, count: response.data.articles.length,
-        logged_in: req.session.session_id || false });
+        logged_in: req.session.session_id || false
+      });
     } else {
-      res.render('news.ejs', { loggedIn: loggedInState,
+      res.render('news.ejs', {
+        loggedIn: loggedInState,
         bookmarkCache: cacheData,
         articles: response.data.articles,
         searchQuery: reqQuery,
         uId: req.session.session_id,
         requestDate: reqDate,
         count: response.data.articles.length,
-        logged_in: req.session.session_id || false });
+        logged_in: req.session.session_id || false
+      });
     }
   } catch (error) {
     res.status(400).send({ error: error });
   }
 });
 
-router.get('/headlines', async (req, res)=> {
+router.get('/headlines', async (req, res) => {
   req.session.session_id ? loggedIn = true : loggedIn = false;
   let url;
   req.query.country ?
@@ -77,13 +81,15 @@ router.get('/headlines', async (req, res)=> {
   try {
     const response = await axios.get(url);
     const strippedCache = cacheFunctions.strip(cache.get(req.session.session_id));
-    res.render('headlines.ejs', { articles: response.data.articles,
+    res.render('headlines.ejs', {
+      articles: response.data.articles,
       bookmarkCache: strippedCache,
       uId: req.session.session_id,
       loggedIn: loggedIn,
       count: response.data.articles.length,
       country: req.query.country || 'us',
-      logged_in: req.session.session_id || false });
+      logged_in: req.session.session_id || false
+    });
   } catch (error) {
     res.status(400).send({ error: error, message: 'Unable to retrieve' });
   }
@@ -110,10 +116,12 @@ router.get('/user/:id/feed', async (req, res) => {
 
     try {
       const resultingData = await dbFunctions
-          .getUserTopics({ email: req.session.session_id });
+        .getUserTopics({ email: req.session.session_id });
       const fetchResults = await helperFunctions
-          .doTopicsAxiosFetchRequest({ userTopics: resultingData,
-            db_id: req.session.database_id });
+        .doTopicsAxiosFetchRequest({
+          userTopics: resultingData,
+          db_id: req.session.database_id
+        });
       const listTopics = resultingData.map((resultElement) => {
         return resultElement.name;
       });
@@ -125,11 +133,13 @@ router.get('/user/:id/feed', async (req, res) => {
       const flattenedArticlesArray = dataArticles.flat();
 
       const filteredArticleData = Array.from(new Set(flattenedArticlesArray));
-      res.render('feed.ejs', { topics_list: listTopics, uId: req.session.session_id,
+      res.render('feed.ejs', {
+        topics_list: listTopics, uId: req.session.session_id,
         data: resultingData,
         arrayCount: filteredArticleData.length,
         data_articles: filteredArticleData,
-        bookmarkCache: strippedCache } );
+        bookmarkCache: strippedCache
+      });
     } catch (error) {
       console.log(error);
     }
@@ -147,10 +157,12 @@ router.get('/user/:id/topics', async (req, res) => {
     We plug the results into the ejs view variable for display.
     */
     const result = await dbFunctions.getUserTopics({ email: req.session.session_id });
-    res.render('topics.ejs', { email: req.params.id,
+    res.render('topics.ejs', {
+      email: req.params.id,
       topics: result,
       logged_in: true,
-      uId: req.session.session_id });
+      uId: req.session.session_id
+    });
   } else {
     res.redirect('/login');
   }
@@ -183,24 +195,31 @@ router.get('/user/:id/bookmarks', async (req, res) => {
 });
 
 router.get('/reset', (_, res) => {
-  res.render('password-reset.ejs', { message: '' });
+  res.render('password-reset-email-validation.ejs', { message: '' });
 });
 
+router.get('/recover', (req, res) => {
+  res.response(200).json({ response: `ok` })
+})
 router.put('/user/:id/profile',
-    [check('pwdone')
-        .trim().escape(),
-    check('pwdtwo').trim()
-        .escape()], async (req, res) => {
+  [check('pwdone')
+    .trim().escape(),
+  check('pwdtwo').trim()
+    .escape()], async (req, res) => {
       if (req.session.session_id) {
         try {
           await dbFunctions
-              .updateUserPassword({ forUser: req.session.session_id,
-                first_password: req.body.pwdone,
-                second_password: req.body.pwdtwo });
+            .updateUserPassword({
+              forUser: req.session.session_id,
+              first_password: req.body.pwdone,
+              second_password: req.body.pwdtwo
+            });
           res.status(200).json({ status: 'ok', newURL: '#' });
         } catch (error) {
-          res.status(400).json({ error: error.error,
-            message: 'Unable to update the password' });
+          res.status(400).json({
+            error: error.error,
+            message: 'Unable to update the password'
+          });
         }
       } else {
         res.redirect('/login');
@@ -211,9 +230,11 @@ router.put('/user/:id/topics', async (req, res) => {
   if (req.session.session_id) {
     /* This route is responsible for updating the DB
     with the changes to a user's topics subscription. */
-    const updateData = { email: req.session.session_id,
+    const updateData = {
+      email: req.session.session_id,
       database_id: req.session.database_id,
-      topicArray: JSON.parse(req.body.topics) };
+      topicArray: JSON.parse(req.body.topics)
+    };
     /* We have an array of new topics for the user.
     We need to hit the database. Reference by email */
     try {
@@ -229,8 +250,8 @@ router.put('/user/:id/topics', async (req, res) => {
 });
 
 router.post('/register', [check('emailAddr').isEmail().trim().escape(),
-  check('passwordOne').trim().escape(),
-  check('passwordTwo').trim().escape()], async (req, res) => {
+check('passwordOne').trim().escape(),
+check('passwordTwo').trim().escape()], async (req, res) => {
   if (req.session.session_id) {
     res.status(400).send({ response: 'user should log out first before registering' });
     return;
@@ -238,10 +259,12 @@ router.post('/register', [check('emailAddr').isEmail().trim().escape(),
 
   try {
     const result = await dbFunctions
-        .registerUser({ email: req.body.emailAddr,
-          first_password: req.body.passwordOne,
-          second_password: req.body.passwordTwo,
-          is_registered: true });
+      .registerUser({
+        email: req.body.emailAddr,
+        first_password: req.body.passwordOne,
+        second_password: req.body.passwordTwo,
+        is_registered: true
+      });
     req.session.session_id = result.response[0].email;
     req.session.database_id = result.response[0].id;
     res.status(200).json({ response: `/user/${req.session.session_id}/topics` });
@@ -251,33 +274,35 @@ router.post('/register', [check('emailAddr').isEmail().trim().escape(),
 });
 
 router.post('/login',
-    [check('email').isEmail().trim().escape(),
-      check('password').trim().escape()], async (req, res) => {
-      /* After the user logs in, we set a cookie and forward the user to their
-      landing page - which user users/:id/feed.
-    We retrieve their bookmarks, store it in cache. */
-      const timeStamp = new Date();
-      const verificationObject = { email: req.body.email,
-        password: req.body.password,
-        last_login: timeStamp };
+  [check('email').isEmail().trim().escape(),
+  check('password').trim().escape()], async (req, res) => {
+    /* After the user logs in, we set a cookie and forward the user to their
+    landing page - which user users/:id/feed.
+  We retrieve their bookmarks, store it in cache. */
+    const timeStamp = new Date();
+    const verificationObject = {
+      email: req.body.email,
+      password: req.body.password,
+      last_login: timeStamp
+    };
 
+    try {
+      const result = await dbFunctions.verifyLogin(verificationObject);
+      req.session.session_id = req.body.email;
+      req.session.database_id = result.db_id;
       try {
-        const result = await dbFunctions.verifyLogin(verificationObject);
-        req.session.session_id = req.body.email;
-        req.session.database_id = result.db_id;
-        try {
-          const bookmarkData = await dbFunctions
-              .getBookmarks({ email: req.session.session_id });
-          cache.put(req.session.session_id, bookmarkData);
-          res.redirect(`/user/${req.session.session_id}/feed`);
-        } catch (_) {
-          res.redirect(`/user/${req.session.session_id}/feed`);
-        }
-      } catch (err) {
-        res.render('login.ejs', { message: err });
+        const bookmarkData = await dbFunctions
+          .getBookmarks({ email: req.session.session_id });
+        cache.put(req.session.session_id, bookmarkData);
+        res.redirect(`/user/${req.session.session_id}/feed`);
+      } catch (_) {
+        res.redirect(`/user/${req.session.session_id}/feed`);
       }
-      // eslint-disable-next-line indent
-});
+    } catch (err) {
+      res.render('login.ejs', { message: err });
+    }
+    // eslint-disable-next-line indent
+  });
 
 router.post('/user/:id/bookmarks', async (req, res) => {
   /* This handles updating of saved/favorite
@@ -290,11 +315,13 @@ router.post('/user/:id/bookmarks', async (req, res) => {
   */
 
   if (req.session.session_id) {
-    const articleUpdatePackage = { user_id: req.session.session_id,
+    const articleUpdatePackage = {
+      user_id: req.session.session_id,
       database_id: req.session.database_id,
       url: req.body.url,
       headline: req.body.headlineText,
-      thumbnail: req.body.imageSrc };
+      thumbnail: req.body.imageSrc
+    };
     try {
       const result = await dbFunctions.addBookmarkForUser(articleUpdatePackage);
       if (result.response) {
@@ -315,9 +342,11 @@ router.post('/user/:id/bookmarks', async (req, res) => {
 // Deletes a bookmarked favorite for a logged-in user
 router.delete('/user/:id/bookmarks/:id', async (req, res) => {
   if (req.session.session_id) {
-    const bookmarkObject = { email: req.session.session_id,
+    const bookmarkObject = {
+      email: req.session.session_id,
       user_id: req.session.database_id,
-      url_to_delete: req.body.url };
+      url_to_delete: req.body.url
+    };
     try {
       const result = await dbFunctions.deleteBookmarkForUser(bookmarkObject);
       cache.put(req.session.session_id, result.result);
@@ -330,13 +359,15 @@ router.delete('/user/:id/bookmarks/:id', async (req, res) => {
 
 router.delete('/user/:id/bookmarks', async (req, res) => {
   if (req.session.session_id) {
-    const bookmarkObject = { email: req.session.session_id,
-      user_id: req.session.database_id };
+    const bookmarkObject = {
+      email: req.session.session_id,
+      user_id: req.session.database_id
+    };
     const result = await dbFunctions.deleteAllBookmarksForUser(bookmarkObject);
     cache.put(req.session.session_id, result.result);
     res.status(200).json({ response: 'ok' });
   } else {
-    res.status(404).json( { response: 'not authorized' });
+    res.status(404).json({ response: 'not authorized' });
   }
 });
 
@@ -346,31 +377,34 @@ router.post('/logout', (req, res) => {
 });
 
 router.post('/validate-email',
-    [check('email').isEmail().trim().escape()], async (req, res) => {
-      // We have to hit the db, ensure that the e-mail is a valid user. \
-      // If so, send the user an e-mail reset link URL
-      // with uuid (the url should be cached)
-      if (await dbFunctions.doesEmailExistInDatabase(req.body.email) === true) {
-        // create a cache entry
-        // send an e-mail
-
-        const hash = uuidv4();
-
+  [check('email').isEmail().trim().escape()], async (req, res) => {
+    const emailExistsInDatabase = await dbFunctions.doesEmailExistInDatabase(req.body.email)
+    if (emailExistsInDatabase === true) {
+      if (!cacheFunctions.contains(cache, req.body.email)) {
         // cache.put('prec', [ { email: req.body.email, hash: hash, claimed: false, requestDate: datetime.now() } ]);
-        const result = await sendPasswordResetEmail(req.body.email, hash);
+        const result = await sendPasswordResetEmail(req.body.email, uuidv4());
         console.log('result from mailer', result);
-        res.render('password-reset-success',
-            { successMessage: 'Please check your e-mail for a password reset link' });
+        res.render('password-reset-success.ejs',
+          { successMessage: 'Please check your e-mail for a password reset link', failMessage: null });
       } else {
-        res.render('password-reset', { message: 'Unrecognized e-mail address' });
+        if (req.session.session_id) {
+          res.render('home.ejs', { logged_in: true, uId: req.session.session_id });
+        } else {
+          res.render('home.ejs', { logged_in: false, uId: null });
+        }
       }
-    });
+    } else {
+      res.render('password-reset-success.ejs', { successMessage: null, failMessage: `${req.body.email} is an unrecognized e-mail address` });
+    }
+  });
+
+
 // eslint-disable-next-line no-extend-native
 Object.defineProperty(Array.prototype, 'flat', {
-  value: function(depth = 1) {
-    return this.reduce(function(flat, toFlatten) {
+  value: function (depth = 1) {
+    return this.reduce(function (flat, toFlatten) {
       return flat.concat((Array.isArray(toFlatten) && (depth > 1)) ?
-      toFlatten.flat(depth - 1) : toFlatten);
+        toFlatten.flat(depth - 1) : toFlatten);
     }, []);
   },
 });

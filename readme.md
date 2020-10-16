@@ -1,4 +1,4 @@
-# News Aggregator Web App
+# NewsOne Web App
 
 ### About
 
