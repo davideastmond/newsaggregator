@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,30 +9,35 @@
   <link rel="stylesheet" href="/../styles/profilepage.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="profile.js" async></script>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-  <title>News Aggregator - Profile</title>
+  <title>NewsOne - Profile</title>
 </head>
+
 <body>
+
   <head>
     <% include ./partials/_login_header %>
-	</head>
-	<div class="settings-home-div-header">
-		<a class="h5 home-link" href="/">Home</a>
-	</div>
+  </head>
+  <div class="settings-home-div-header">
+    <a class="h5 home-link" href="/">Home</a>
+  </div>
   <div class="jumbotron">
     <p class="h1">Your Profile</p>
   </div>
   <div class="password-input-layout div-profile-edit-password">
     <h4> Password</h4>
-    <form id="profile-update-password-change-form" method="PUT" action="/user/:id/profile" >
+    <form id="profile-update-password-change-form" method="PUT" action="/user/:id/profile">
       <div class="form-group">
         <label for="change-password-box-one">New Password:</label>
-        <input type="password" class="form-control" name= "pwdone" id="change-password-box-one" placeholder="Password" required>
+        <input type="password" class="form-control" name="pwdone" id="change-password-box-one" placeholder="Password"
+          required>
       </div>
       <div class="form-group">
         <label for="change-password-box-two">New Password:</label>
-        <input type="password" class="form-control" name= "pwdtwo" id="change-password-box-two" placeholder="Confirm New Password" required>
+        <input type="password" class="form-control" name="pwdtwo" id="change-password-box-two"
+          placeholder="Confirm New Password" required>
       </div>
       <div class="form-group">
         <button type="submit" id="change-profile-submit-button" class="form-control btn btn-primary">Update</button>
