@@ -90,8 +90,6 @@ module.exports = {
     } else {
       return Promise.reject("Record not found");
     }
-    // Create a password update packages for the psql operation
-
   }
 }
 
