@@ -4,6 +4,7 @@ const friendlyDomain = process.env.MAILER_FRIENDLY_DOMAIN;
 const apiKey = process.env.MAILER_API_KEY;
 
 const mailer = require('mailgun-js')({ domain: domain, apiKey: apiKey });
+const { hashPassword } = require('../crypto/crypto')
 
 /**
  * @param {string} email e-mail address to send mailer too
@@ -12,13 +13,15 @@ const mailer = require('mailgun-js')({ domain: domain, apiKey: apiKey });
 
 module.exports = {
   sendPasswordResetEmail: async (email, hash) => {
+    const hashedEmailAddress = await hashPassword(email);
     const data = {
-      from: `no-reply@${friendlyDomain} <no-reply@${friendlyDomain}>`,
+      from: process.env.MAILER_ADMIN_EMAIL,
       to: `${email}`,
       subject: 'NewsOne password recovery',
       // eslint-disable-next-line max-len
-      html: `<html><body> <p>Please use http://${friendlyDomain}/recover/${hash} to recover your password</p></body></html>`,
+      html: `<html><body> <p>Please use <a href="http://${friendlyDomain}/recover/?id=${hashedEmailAddress}&hash=${hash}"> this link</a> to recover your password</p></body></html>`,
     };
+
     try {
       return await mailer.messages().send(data);
     } catch (exception) {

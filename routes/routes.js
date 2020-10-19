@@ -7,8 +7,8 @@ const { check } = require('express-validator');
 const cache = require('memory-cache');
 const cacheFunctions = require('../helpers/cache/cache');
 const dbFunctions = require('../helpers/db/db');
-const { sendPasswordResetEmail } = require('../helpers/mailer/mailer');
-const { v4: uuidv4 } = require('uuid');
+const passwordResetRequest = require('../helpers/password-recovery/password-reset');
+const { authenticateEmailRecoveryRequest, doPasswordUpdate } = require('../helpers/password-recovery/password-reset');
 module.exports = router;
 
 router.get('/', (req, res) => {
@@ -187,7 +187,7 @@ router.get('/user/:id/bookmarks', async (req, res) => {
       const response = await dbFunctions.getBookmarks({ email: req.session.session_id });
       res.render('bookmarks.ejs', { uId: req.session.session_id, data: response });
     } catch (err) {
-      res.response(400).json({ message: 'Server Error' });
+      res.sendStatus(400).json({ message: 'Server Error' });
     }
   } else {
     res.redirect('/');
@@ -198,9 +198,20 @@ router.get('/reset', (_, res) => {
   res.render('password-reset-email-validation.ejs', { message: '' });
 });
 
-router.get('/recover', (req, res) => {
-  res.response(200).json({ response: `ok` })
-})
+router.get('/recover', async (req, res) => {
+  // user has clicked a recovery link, we need to find the hash
+  // and ensure it's not expired.
+
+  const result = await authenticateEmailRecoveryRequest(req.query.hash, req.query.id);
+  if (result.success === false) {
+    res.render('password-reset-success.ejs', { successMessage: null, failMessage: result.message });
+    return;
+  } else {
+    // If the request is valid, render a page to change password
+    res.render('password-reset-change.ejs', { recoveryHash: req.query.hash, emailHash: req.query.id });
+  }
+});
+
 router.put('/user/:id/profile',
   [check('pwdone')
     .trim().escape(),
@@ -380,23 +391,34 @@ router.post('/validate-email',
   [check('email').isEmail().trim().escape()], async (req, res) => {
     const emailExistsInDatabase = await dbFunctions.doesEmailExistInDatabase(req.body.email)
     if (emailExistsInDatabase === true) {
-      if (!cacheFunctions.contains(cache, req.body.email)) {
-        // cache.put('prec', [ { email: req.body.email, hash: hash, claimed: false, requestDate: datetime.now() } ]);
-        const result = await sendPasswordResetEmail(req.body.email, uuidv4());
-        console.log('result from mailer', result);
-        res.render('password-reset-success.ejs',
-          { successMessage: 'Please check your e-mail for a password reset link', failMessage: null });
-      } else {
+      const result = await passwordResetRequest.initiate(req.body.email);
+      if (result.success === false) {
         if (req.session.session_id) {
           res.render('home.ejs', { logged_in: true, uId: req.session.session_id });
         } else {
           res.render('home.ejs', { logged_in: false, uId: null });
         }
+      } else {
+        // Successful request
+        res.render('password-reset-success.ejs',
+          { successMessage: 'Please check your e-mail for a password reset link', failMessage: null });
       }
     } else {
-      res.render('password-reset-success.ejs', { successMessage: null, failMessage: `${req.body.email} is an unrecognized e-mail address` });
+      res.render('password-reset-success.ejs', { successMessage: null, failMessage: `${req.body.email} is an unrecognized e-mail address.` });
     }
   });
+
+router.post('/recover', async (req, res) => {
+  const { emailHash, recoveryHash, passwordText1 } = req.body;
+  try {
+    await doPasswordUpdate({ emailHash, recoveryHash, passwordText1 });
+    res.status(200).json({ status: "OK" });
+  } catch (exception) {
+    res.status(404).json(exception)
+  }
+
+
+});
 
 
 // eslint-disable-next-line no-extend-native

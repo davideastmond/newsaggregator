@@ -24,7 +24,11 @@ module.exports = {
    * @param {string} data.hash
    * @return {Promise<boolean>} boolean indicating if the hash matches
    */
-  compare: async (data)=> {
+  compare: async (data) => {
     return await bcrypt.compare(data.password, data.hash);
   },
+
+  genericCompare: async (originalData, hash) => {
+    return await bcrypt.compare(originalData, hash)
+  }
 };

@@ -19,3 +19,6 @@ TEST_WEAK_PASSWORD=[provide a weak password here for testing]
 
 MAILER_DOMAIN=
 MAILER_API_KEY=
+MONGO_URI=<your mongo atlas connection string>
+PASSWORD_RECOVERY_EXPIRY_MINUTES=20
+MAILER_ADMIN_EMAIL=

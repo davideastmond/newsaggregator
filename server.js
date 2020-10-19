@@ -37,6 +37,9 @@ app.use('/user/:id/profile', express.static(path.join(__dirname, 'public')));
 app.use('/user/:id/bookmarks', express.static(path.join(__dirname, 'scripts')));
 app.use('/user/:id/bookmarks', express.static(path.join(__dirname, 'public')));
 
+app.use('/recover', express.static(path.join(__dirname, 'public')));
+app.use('/recover', express.static(path.join(__dirname, 'scripts')));
+
 app.set('view engine', 'ejs');
 app.use(require('./routes/routes'));
 

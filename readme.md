@@ -2,7 +2,15 @@
 
 ### About
 
-- This is a full-stack news aggregator web app using JavaScript, HTML, CSS, jQuery, Node, Express and PostgreSQL.
+- This is a full-stack news aggregator web app called NewsOne.
+
+#### Stack
+- JavaScript, HTML, CSS, jQuery
+- Node, Express, MongoDB/Mongoose, PostgreSQL/knex.js.
+
+#### 3rd party APIs
+- Mailgun
+- NewsAPI
 
 ### Features
 
@@ -59,6 +67,10 @@
 #### Login
 - Enter the e-mail and password combination you used to registered with the service.
 - Lost password feature coming soon!
+
+### Reset password
+- User can reset their password by having a unique code sent to their registered e-mail address.
+
 #### Sign up
 
 1. If you don't have an account, use the sign up feature to register for the service.
