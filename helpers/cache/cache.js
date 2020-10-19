@@ -11,39 +11,4 @@ module.exports = {
       });
     }
   },
-
-
-  contains: (cacheReference, emailString) => {
-    // Returns
-    const recoveryItems = cacheReference.get('prec');
-    if (recoveryItems) {
-      const filteredItems = recoveryItems.filter((item) => {
-        return item.email === emailString;
-      });
-
-      if (filteredItems.length >= 1) {
-        return true;
-      }
-    }
-    return false;
-  },
-
-  write: (cacheReference, data) => {
-    // First ge the catch
-    try {
-      const recoveryItems = cacheReference.get('prec'); // Should get an array of objects
-      if (recoveryItems === null) {
-        // Create new list
-        const emptyItems = [];
-        emptyItems.push(data);
-        cacheReference.put('prec', emptyItems);
-      } else {
-        recoveryItems.push(data);
-        cacheReference.put('prec', recoveryItems);
-      }
-    } catch (exception) {
-      console.log('Please check your inputs:', exception);
-    }
-    // const checkFilter =
-  },
 };
