@@ -1,3 +1,4 @@
+import { passwordSecurityValid, passwordsMatch } from "./password-security.js";
 document.getElementById('registration-form').onsubmit = (e) => {
   e.preventDefault();
 
@@ -18,17 +19,17 @@ document.getElementById('registration-form').onsubmit = (e) => {
   if (!passwordSecurityValid(passwordText1)) {
     $('#validation-error-space').css('display', 'block');
     $('#validation-error')
-        // eslint-disable-next-line max-len
-        .text('Password should be minimum 8 characters, contain upper and lower case characters, a special character and a number.')
-        .css({ 'display': 'block', 'color': 'red' });
+      // eslint-disable-next-line max-len
+      .text('Password should be minimum 8 characters, contain upper and lower case characters, a special character and a number.')
+      .css({ 'display': 'block', 'color': 'red' });
     $('#submit-form').attr('disabled', true);
     return;
   }
 
-  if (passwordText1 !== passwordText2) {
+  if (!passwordsMatch(passwordText1, passwordText2)) {
     // Display an error, the password texts must match
     $('#validation-error')
-        .text('Please enter matching passwords').css('display', 'block');
+      .text('Please enter matching passwords').css('display', 'block');
     $('#submit-form').attr('disabled', false);
     return;
   }
@@ -46,8 +47,8 @@ document.getElementById('registration-form').onsubmit = (e) => {
     if (err) {
       $('#validation-error-space').css('display', 'block');
       $('#validation-error')
-          .text(err.responseJSON.error || 'Error registering account.')
-          .css('display', 'block').css('color', 'red');
+        .text(err.responseJSON.error || 'Error registering account.')
+        .css('display', 'block').css('color', 'red');
       $('#submit-form').attr('disabled', false);
     }
   });
@@ -75,19 +76,6 @@ $('#pwd2').on('click', (e) => {
 function clearValidationErrorMessage() {
   $('#validation-error').text('').css('display', 'none');
   $('#submit-form').attr('disabled', false);
-}
-/**
-   *
-   * @param {string} pwd Password string to evaluate if it meets requirements
-   * @return {boolean}
-   */
-function passwordSecurityValid(pwd) {
-  // Enforcement principles should be a js object
-  // { captialLetters: true or false }
-  // { specialCharacters: true or false }
-  // { numberRequired: true or false }
-  const regEx = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{8,}$/;
-  return regEx.test(pwd);
 }
 
 /**
