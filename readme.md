@@ -120,8 +120,3 @@
 
 - Rename the sample_env file to a .env, and fill out the parameters
 - `PERSONAL_API_KEY=` visit newsAPI.org and register for a key. Place it here
-
-### Database stack
-
-- postgresql
-- knex.js
