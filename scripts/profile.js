@@ -1,3 +1,4 @@
+import { passwordSecurityValid, passwordsMatch } from "./password-security.js";
 $(() => {
   /**
    * This function is called when user updates one of their profile attributes.
@@ -21,24 +22,21 @@ $(() => {
 
     const ajaxPromise = submitPasswordChange();
 
-    ajaxPromise.done(()=> {
+    ajaxPromise.done(() => {
       showSuccessMessage('Password updated successfully.');
     })
-        .fail((data) => {
-          showErrorMessage(data.responseJSON.error);
-        });
+      .fail((data) => {
+        showErrorMessage(data.responseJSON.error);
+      });
   });
-});
 
-/**
- * Return true if pwd1 === pwd2. Used for checking password security on the front end
- * @param {string} pwd1
- * @param {string} pwd2
- * @return {boolean}
- */
-function passwordsMatch(pwd1, pwd2) {
-  return pwd1 === pwd2;
-}
+  $("#change-password-box-one").click((e) => {
+    hideErrorMessage()
+  });
+  $("#change-password-box-two").click((e) => {
+    hideErrorMessage()
+  })
+});
 
 /**
  * Allows user to submit a request to change their password.
@@ -60,11 +58,15 @@ function submitPasswordChange() {
  */
 function showErrorMessage(message) {
   $('#change-password-error-message')
-      .text(`${message}`)
-      .css('display', 'block')
-      .css('color', 'red');
+    .text(`${message}`)
+    .css('display', 'block')
+    .css('color', 'red');
 }
 
+function hideErrorMessage() {
+  $('#change-password-error-message')
+    .css('display', 'none')
+}
 /**
  * Displays a success message when password
  * is successfully changed
@@ -72,8 +74,8 @@ function showErrorMessage(message) {
  */
 function showSuccessMessage(message) {
   $('#change-password-success-message')
-      .text(`${message}`).css('display', 'block')
-      .css('color', 'green');
+    .text(`${message}`).css('display', 'block')
+    .css('color', 'green');
 }
 
 /**
@@ -82,15 +84,19 @@ function showSuccessMessage(message) {
  * @param {string} second second instance of string password
  * @return {object} object containing a bool and a string message response
  */
-function isPasswordValid(first, second) {
-  if ($pwd1 === '' || $pwd2 === '') {
+function isPasswordValid(firstPasswordInstance, secondPasswordInstance) {
+  if (firstPasswordInstance === '' || secondPasswordInstance === '') {
     return { result: false, message: 'Please enter a valid password.' };
   }
 
-  if (!passwordsMatch($pwd1, $pwd2)) {
+  if (!passwordsMatch(firstPasswordInstance, secondPasswordInstance)) {
     showErrorMessage('Please enter a valid password.');
-    return { result: false, message: 'Please enter a valid password.' };
+    return { result: false, message: 'Passwords entered do not match.' };
   }
 
-  return { result: true, message: undefined };
+  if (!passwordSecurityValid(firstPasswordInstance)) {
+    return { result: false, message: 'Password does not meet security / complexity requirements' };
+  }
+
+  return { result: true, message: "OK" };
 }
