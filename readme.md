@@ -22,6 +22,7 @@
   - password hashing and validation have been implemented.
     #### User Profile
     - Users can change their password
+    - Users can recover a lost password using a security code delivered to their e-mail (using Mailgun)
 - #### User custom news feed:
   - logged-in users can add/remove news topic subscriptions.
   - logged-in users can view their custom news feed based on their chosen topics.
@@ -42,10 +43,10 @@
 
 ### Future Feature ideas
 - ad hoc custom searches with multiple search topics
-- multiple language options
+- option to customize the amount of articles that are retrieved.
 - social media sharing (using some kind of API)
 - UI themes (dark / light etc)
-- Password reset feature
+- Two factor authentication implementation
 
 ### What it looks like
 
