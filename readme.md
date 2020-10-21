@@ -121,18 +121,6 @@
 - Rename the sample_env file to a .env, and fill out the parameters
 - `PERSONAL_API_KEY=` visit newsAPI.org and register for a key. Place it here
 
-#### Database information
-- `DB_HOST=` 
-- `DB_USER=`
-- `DB_USER_PASSWORD=`
-- `DB_NAME=`
-- `DB_CONNECTIONSTRING=`
-
-#### Cookie Info
-- `COOKIE_SESSION=`
-- `COOKIE_KEYS=`
-- `COOKIE_TIME_OUT=`
-
 ### Database stack
 
 - postgresql
