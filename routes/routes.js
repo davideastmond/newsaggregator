@@ -113,7 +113,6 @@ router.get('/user/:id/feed', async (req, res) => {
     /* This function queries the database and grabs all of the saved topics for the user.
       With the resulting data it will query the newsAPI for each topic.
     */
-
     try {
       const resultingData = await dbFunctions
         .getUserTopics({ email: req.session.session_id });
@@ -193,6 +192,17 @@ router.get('/user/:id/bookmarks', async (req, res) => {
     res.redirect('/');
   }
 });
+
+router.get('user/:id/news_sources', async (req, res) => {
+  /**
+   * This route is going to list all the user's topics and the associated trusted sources filter
+   */
+  if (req.session.session_id) {
+    res.status(200).json({ message: 'News sources route' })
+  } else {
+    res.redirect('/');
+  }
+})
 
 router.get('/reset', (_, res) => {
   res.render('password-reset-email-validation.ejs', { message: '' });
@@ -416,10 +426,7 @@ router.post('/recover', async (req, res) => {
   } catch (exception) {
     res.status(404).json(exception)
   }
-
-
 });
-
 
 // eslint-disable-next-line no-extend-native
 Object.defineProperty(Array.prototype, 'flat', {
