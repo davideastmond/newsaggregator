@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const recoverySchema = require('./schema/user-password-recovery-schema');
+const recoverySchema = require('./schema/password-recovery/user-password-recovery-schema');
 const model = mongoose.model("user_recovery", recoverySchema.userPasswordRecovery, "user_recovery");
 const dayjs = require('dayjs');
 module.exports = {
