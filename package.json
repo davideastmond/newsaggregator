@@ -14,8 +14,6 @@
     "axios": "^0.19.2",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
-    "chai": "^4.2.0",
-    "chai-as-promised": "^7.1.1",
     "cookie-parser": "^1.4.5",
     "cookie-session": "^1.4.0",
     "dayjs": "^1.9.4",
@@ -26,9 +24,7 @@
     "knex": "^0.19.5",
     "mailgun-js": "^0.22.0",
     "memory-cache": "^0.2.0",
-    "mocha": "^7.2.0",
     "mongoose": "^5.10.9",
-    "node-fetch": "^2.6.1",
     "pg": "^7.18.2"
   },
   "devDependencies": {
