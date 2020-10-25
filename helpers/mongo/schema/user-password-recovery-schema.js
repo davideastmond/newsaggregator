@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const moment = require('moment');
+const dayjs = require('dayjs');
 
 const userPasswordRecoverySchema = new mongoose.Schema({
   email: String,
@@ -14,7 +14,7 @@ const userPasswordRecoverySchema = new mongoose.Schema({
   },
   expiryDate: {
     type: Date,
-    default: moment().add(parseInt(process.env.PASSWORD_RECOVERY_EXPIRY_MINUTES), 'minutes')
+    default: dayjs().add(parseInt(process.env.PASSWORD_RECOVERY_EXPIRY_MINUTES), 'minutes')
   }
 })
 
