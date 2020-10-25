@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const recoverySchema = require('./schema/user-password-recovery-schema');
 const model = mongoose.model("user_recovery", recoverySchema.userPasswordRecovery, "user_recovery");
-const moment = require('moment');
+const daysjs = require('daysjs');
 module.exports = {
   insertRecoveryRecordIntoDatabase: async (record) => {
     try {
@@ -25,7 +25,7 @@ module.exports = {
           return { result: true, message: "Recovery request has already been claimed." }
         }
         // If the request is not expired, return true
-        const isValid = moment().isBefore(result.expiryDate);
+        const isValid = daysjs().isBefore(result.expiryDate);
         if (isValid) {
           return { result: true, message: "Recovery request already exists" };
         }

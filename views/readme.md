@@ -91,7 +91,6 @@
 - Clone or fork the project.
 - Run `npm i` to install all required packages
 - Obtain your own api key from [NewsAPI](https://newsapi.org/)
-- Download or use moment.js CDN for client side
 - Create a .ENV file in the app folder (more below)
 
 - Download and install the latest version of PostgreSQL

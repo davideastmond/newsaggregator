@@ -1,18 +1,18 @@
 
 /* This handles deleting the links.
 User has clicked the little trash icon for a bookmarked article */
-$(()=> {
+$(() => {
   $('.fa-trash-alt').on('click', (e) => {
     const delUrl = e.target.parentNode
-        .parentNode
-        .children[0].children[0].children[0].href;
+      .parentNode
+      .children[0].children[0].children[0].href;
     // Complete an AJAX post request, then refresh the page
     doAjaxRequestDeleteBookmark(delUrl).then(() => {
       window.location = '/user/user/bookmarks';
     })
-        .catch(() => {
-          window.location = '/';
-        });
+      .catch(() => {
+        window.location = '/';
+      });
   });
 
   $('.btn-clear-all-bookmarks').on('click', (e) => {
@@ -21,12 +21,12 @@ $(()=> {
     doAjaxRequestDeleteAllBookmarks().then((res) => {
       window.location = '/user/user/bookmarks';
     })
-        .catch((err)=> {
-          console.log(err);
-        });
+      .catch((err) => {
+        console.log(err);
+      });
   });
 
-  convertMomentDates();
+  convertDatesToDateString();
 });
 
 /**
@@ -56,10 +56,10 @@ function doAjaxRequestDeleteAllBookmarks() {
 
 /**
  * A DOM helper function that converts date elements
- * in the bookmark-date class into friendly readable date formats using moment.js
+ * in the bookmark-date class into friendly readable date formats
  *
  */
-function convertMomentDates() {
+function convertDatesToDateString() {
   const domObjectArray = document.getElementsByClassName('bookmark-date');
 
   for (let i = 0; i < domObjectArray.length; i++) {
