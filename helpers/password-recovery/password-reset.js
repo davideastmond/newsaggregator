@@ -3,7 +3,7 @@ const { v4: uuidv4 } = require('uuid');
 const crud = require('../mongo/crud');
 const crypto = require('../crypto/crypto');
 const assert = require('assert');
-const daysjs = require('daysjs');
+const dayjs = require('dayjs');
 const db = require('../db/db');
 const e = require('express');
 
@@ -99,6 +99,6 @@ async function verifyHashedEmail(record, hashedEmailValue) {
 }
 
 function isRequestWithinExpiryDate(record) {
-  const requestStillValid = daysjs().isBefore(record.expiryDate);
+  const requestStillValid = dayjs().isBefore(record.expiryDate);
   return requestStillValid;
 }

@@ -137,7 +137,7 @@ function doHTTPRequest() {
   }
 
   const xhr = new XMLHttpRequest();
-  const queryDate = daysjs().format('MM/DD/YYYY');
+  const queryDate = dayjs().format('MM/DD/YYYY');
   const params = `date=${queryDate}&newsQuery=${mSearch}`;
 
   xhr.open('GET', '/news' + '?' + params, true);
