@@ -1,9 +1,10 @@
 const mongoose = require('mongoose');
+const { whitelistSource } = require('./whitelist-schema')
 
 const newsSourcesSchema = new mongoose.Schema({
   email: String,
   lastUpdated: Date,
-  whiteList: [String], // POIJ - might be a better data structure for this feature
+  whiteList: [whitelistSource], // POIJ - might be a better data structure for this feature
 })
 
 userPasswordRecovery = mongoose.model('sources', newsSourcesSchema)
