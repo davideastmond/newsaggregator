@@ -10,6 +10,6 @@ module.exports = {
     assert(apiKey !== null || apiKey !== undefined, "API key is null or undefined");
     const uri = `https://newsapi.org/v2/sources?language=en&apiKey=${apiKey}`
     const { data } = await axios.get(uri);
-    return data.sources;
+    return data;
   }
 }

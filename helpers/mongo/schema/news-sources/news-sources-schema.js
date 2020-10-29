@@ -7,5 +7,5 @@ const newsSourcesSchema = new mongoose.Schema({
   whiteList: [whitelistSource], // POIJ - might be a better data structure for this feature
 })
 
-userPasswordRecovery = mongoose.model('sources', newsSourcesSchema)
-module.exports = userPasswordRecovery;
+const newsSourceModel = mongoose.model('sources', newsSourcesSchema)
+module.exports = newsSourceModel

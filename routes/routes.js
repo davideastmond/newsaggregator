@@ -10,6 +10,7 @@ const dbFunctions = require('../helpers/db/db');
 const passwordResetRequest = require('../helpers/password-recovery/password-reset');
 const { authenticateEmailRecoveryRequest, doPasswordUpdate } = require('../helpers/password-recovery/password-reset');
 const { fetchAllSources } = require('../helpers/news-sources/all-news-sources-fetcher');
+const { findSourcesForUser } = require('../helpers/news-sources/user-sources-fetcher')
 module.exports = router;
 
 router.get('/', (req, res) => {
@@ -194,16 +195,22 @@ router.get('/user/:id/bookmarks', async (req, res) => {
   }
 });
 
-router.get('/sources', async (req, res) => {
+router.get('/sources', (req, res) => {
   /**
    * This route is going to list all the user's topics and the associated trusted sources filter
    */
   if (req.session.session_id) {
-    const data = await fetchAllSources();
     res.render('sources.ejs', { uId: req.session.session_id });
   } else {
     res.redirect('/');
   }
+})
+
+router.get("/user/:id/sources", async (req, res) => {
+  // We should get all sources and then get a user's preferred sources and return
+  // those objects in the JSON response.
+  // const result = await findSourcesForUser("test@test.com");
+  res.json({ result: 'ok for sources' })
 })
 
 router.get('/reset', (_, res) => {
