@@ -9,6 +9,7 @@ const cacheFunctions = require('../helpers/cache/cache');
 const dbFunctions = require('../helpers/db/db');
 const passwordResetRequest = require('../helpers/password-recovery/password-reset');
 const { authenticateEmailRecoveryRequest, doPasswordUpdate } = require('../helpers/password-recovery/password-reset');
+const { fetchAllSources } = require('../helpers/news-sources/all-news-sources-fetcher');
 module.exports = router;
 
 router.get('/', (req, res) => {
@@ -193,12 +194,13 @@ router.get('/user/:id/bookmarks', async (req, res) => {
   }
 });
 
-router.get('user/:id/news_sources', async (req, res) => {
+router.get('/sources', async (req, res) => {
   /**
    * This route is going to list all the user's topics and the associated trusted sources filter
    */
   if (req.session.session_id) {
-    res.status(200).json({ message: 'News sources route' })
+    const data = await fetchAllSources();
+    res.render('sources.ejs', { uId: req.session.session_id });
   } else {
     res.redirect('/');
   }

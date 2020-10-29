@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="/../styles/newssources.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+  <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
+  <script src="sources.js" async></script>
+  <title>News Sources</title>
+
+</head>
+
+<body>
+
+  <head>
+    <% include ./partials/_login_header %>
+  </head>
+  <div class="jumbotron jumbo-tron-margin-top large-header-desktop">
+    <div>
+      <h1>Your news sources</h1>
+    </div>
+  </div>
+  <div class="mobile-mini-sources-header lead centered-header-text">
+    <div>
+      <h1>Sources</h1>
+    </div>
+  </div>
+  <div class="search-text-container">
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+      </div>
+      <input type="text" id="sources-search-textbox-filter" class="form-control" placeholder="Filter"
+        aria-label="Filter">
+    </div>
+  </div>
+  <div class="sources-list-back-ground">
+    <ul class="ul-sources-list">
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="No sources" id="no-source">
+        <label class="form-check-label" for="defaultCheck1">
+          No sources
+        </label>
+      </div>
+    </ul>
+  </div>
+</body>
+
+</html>

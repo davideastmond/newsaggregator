@@ -1,0 +1,32 @@
+/* Global Color constants */
+.large-header-desktop {
+  display: none;
+}
+
+.mobile-mini-sources-header {
+  display: block;
+}
+
+.centered-header-text {
+  text-align: center;
+}
+
+.form-check-input:hover {
+  cursor: pointer;
+}
+
+@media only screen and (min-width: 701px) {
+  .ul-sources-list {
+    padding-top: 1.5em;
+  }
+  .sources-list-back-ground {
+    background-color: white;
+  }
+  .large-header-desktop {
+    display: block;
+  }
+  .mobile-mini-sources-header {
+    display: none;
+  }
+}
+/*# sourceMappingURL=newssources.css.map */
