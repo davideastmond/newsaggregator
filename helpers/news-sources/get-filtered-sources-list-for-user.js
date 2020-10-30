@@ -25,7 +25,7 @@ module.exports = {
           }
         }
       })
-      return mappedSources;
+      return { mappedSources, byTopic: false };
     } else {
       throw new Error("Feature not yet implemented");
     }

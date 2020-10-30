@@ -4,7 +4,7 @@ const mockMasterSources = require('./mock-master-sources.json');
 
 test('filtered sources list check flag is set to true', () => {
   const allUserSources = getFilteredSourcesList(false, mockMasterSources.sources,
-    mockUserData.whiteList);
+    mockUserData.whiteList).mappedSources;
   const filtered = allUserSources.filter((element) => {
     return element.id === "politico"
       || element.id === "abc-news"
