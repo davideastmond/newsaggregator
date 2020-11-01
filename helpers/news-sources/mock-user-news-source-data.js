@@ -5,4 +5,12 @@ const MOCK_USER_SOURCES = {
   { topic: 'religion', sourceIds: ["politico", "polygon", "the-hill", "the-jerusalem-post", "the-times-of-india", "vice-news"] }]
 }
 
-module.exports = MOCK_USER_SOURCES;
+const MOCK_CLEAN_DATA = {
+  email: 'test@test.com',
+  whiteList: [{
+    topic: 'science', sourceIds:
+      ["al-jazeera-english", "mtv-news", "abc-news", "abc-news", "breitbart-news", "fortune", "independent", "the-verge", "the-washington-post"]
+  }]
+}
+
+module.exports = { MOCK_USER_SOURCES, MOCK_CLEAN_DATA };

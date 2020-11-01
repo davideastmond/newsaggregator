@@ -1,5 +1,5 @@
 const { getFilteredSourcesList } = require("./get-filtered-sources-list-for-user");
-const mockUserData = require('./mock-user-news-source-data');
+const mockUserData = require('./mock-user-news-source-data').MOCK_USER_SOURCES;
 const mockMasterSources = require('./mock-master-sources.json');
 
 test('filtered sources list check flag is set to true', () => {
@@ -11,8 +11,12 @@ test('filtered sources list check flag is set to true', () => {
       || element === "the-times-of-india"
       || element.id === "vice-news"
   })
-
   expect(filtered.every(item => item.checked === true)).toBe(true);
+})
+
+test('filtered sources list check flag is set to false when appropriate', () => {
+  const allUserSources = getFilteredSourcesList(false, mockMasterSources.sources,
+    mockUserData.whiteList).mappedSources;
   const anotherFilter = allUserSources.filter(element => element.id === "abc-news-au");
   expect(anotherFilter[0].checked).toBe(false);
 })

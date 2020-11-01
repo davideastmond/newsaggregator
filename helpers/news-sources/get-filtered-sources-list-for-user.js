@@ -27,7 +27,8 @@ module.exports = {
       })
       return { mappedSources, byTopic: false };
     } else {
-      throw new Error("Feature not yet implemented");
+      // This basically returns the whitelist array
+      return { uWhiteListArray, byTopic: true };
     }
   }
 }

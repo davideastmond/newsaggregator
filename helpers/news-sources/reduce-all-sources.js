@@ -5,6 +5,6 @@ module.exports = {
     const sourceIds = userWhiteList.forEach((whiteListObject) => {
       baseSources.push(Array.from(new Set(whiteListObject.sourceIds)));
     })
-    return _(baseSources);
+    return [...new Set(_(baseSources))];
   }
 }
