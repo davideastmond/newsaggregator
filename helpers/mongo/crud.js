@@ -69,8 +69,12 @@ module.exports = {
       email: emailAddress
     }
     try {
-      const result = await newsSourceModel.create(defaultRecord);
-      return result;
+      const record = await newsSourceModel.findOne({ email: emailAddress });
+      if (!record) {
+        const result = await newsSourceModel.create(defaultRecord);
+        return result;
+      }
+      return record;
     } catch (exception) {
       console.log(exception)
     }

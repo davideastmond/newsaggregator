@@ -10,7 +10,8 @@ const dbFunctions = require('../helpers/db/db');
 const passwordResetRequest = require('../helpers/password-recovery/password-reset');
 const { authenticateEmailRecoveryRequest, doPasswordUpdate } = require('../helpers/password-recovery/password-reset');
 const { fetchAllSources } = require('../helpers/news-sources/all-news-sources-fetcher');
-const { findSourcesForUser } = require('../helpers/news-sources/user-sources-fetcher')
+const { findSourcesForUser } = require('../helpers/news-sources/user-sources-fetcher');
+const { insertDefaultNewsSourceRecordByEmail } = require('../helpers/mongo/crud');
 module.exports = router;
 
 router.get('/', (req, res) => {
@@ -210,7 +211,17 @@ router.get("/user/:id/sources", async (req, res) => {
   // We should get all sources and then get a user's preferred sources and return
   // those objects in the JSON response.
   // const result = await findSourcesForUser("test@test.com");
-  res.json({ result: 'ok for sources' })
+  if (req.session.session_id) {
+    try {
+      const allSources = await fetchAllSources();
+      const userSources = await findSourcesForUser(req.session.session_id)
+      res.json({ allSources, userSources })
+    } catch (exception) {
+      console.log(exception);
+    }
+  } else {
+    res.status(404);
+  }
 })
 
 router.get('/reset', (_, res) => {
@@ -328,6 +339,8 @@ router.post('/login',
       } catch (_) {
         res.redirect(`/user/${req.session.session_id}/feed`);
       }
+      const newsSourceRecord = await insertDefaultNewsSourceRecordByEmail(req.session.session_id);
+      console.log(newsSourceRecord)
     } catch (err) {
       res.render('login.ejs', { message: err });
     }
