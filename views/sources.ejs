@@ -24,16 +24,6 @@
   <head>
     <% include ./partials/_login_header %>
   </head>
-  <div class="jumbotron jumbo-tron-margin-top large-header-desktop">
-    <div>
-      <h1>Your news sources</h1>
-    </div>
-  </div>
-  <div class="mobile-mini-sources-header lead centered-header-text">
-    <div>
-      <h1>Sources</h1>
-    </div>
-  </div>
   <div class="sources-mode-container">
     <p class="lead pad-left"> News sources filter options </p>
     <div class="btn-group btn-group-toggle pad-left toggle-button-padding" data-toggle="buttons">
@@ -56,16 +46,21 @@
         aria-label="Filter">
     </div>
   </div>
-  <div class="sources-list-back-ground hide">
-    <p class="lead pad-left">News sources</p>
-    <ul class="ul-sources-list">
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="No sources" id="no-source">
-        <label class="form-check-label" for="defaultCheck1">
-          No sources
-        </label>
-      </div>
-    </ul>
+  <div class="sources-master-container">
+    <div class="sources-list-back-ground hide">
+      <p class="lead pad-left">News sources</p>
+      <ul class="ul-sources-list">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="No sources" id="no-source">
+          <label class="form-check-label" for="defaultCheck1">
+            No sources
+          </label>
+        </div>
+      </ul>
+    </div>
+    <div class="topics-container hide">
+      <p class="lead pad-left"> Your topics</p>
+    </div>
   </div>
 </body>
 
