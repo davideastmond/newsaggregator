@@ -32,6 +32,22 @@
   margin:0.5em;
 }
 
+.hide {
+  display: none;
+}
+
+.show {
+  display: block;
+}
+
+.half {
+  width: 50%;
+}
+
+.hover-pointer:hover {
+  cursor: pointer;
+}
+
 @media only screen and (max-width: 700px) {
   #sources-search-textbox-filter {
     margin-left: 1.25em;
