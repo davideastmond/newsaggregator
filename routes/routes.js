@@ -13,6 +13,7 @@ const { authenticateEmailRecoveryRequest, doPasswordUpdate } = require('../helpe
 const { fetchAllSources } = require('../helpers/news-sources/all-news-sources-fetcher');
 const { findSourcesForUser } = require('../helpers/news-sources/user-sources-fetcher');
 const { insertDefaultNewsSourceRecordByEmail } = require('../helpers/mongo/crud');
+const db = require('../helpers/db/db');
 module.exports = router;
 
 router.get('/', (req, res) => {
@@ -171,6 +172,16 @@ router.get('/user/:id/topics', async (req, res) => {
   }
 });
 
+router.get('/user/data/:id/topics', async (req, res) => {
+  if (req.session.session_id) {
+    const data = { email: req.session.session_id };
+    const topics = await dbFunctions.getUserTopics(data);
+    res.json({ topics });
+  } else {
+    res.redirect('/login');
+  }
+});
+
 router.get('/user/:id/profile', (req, res) => {
   /*
   This route will display the user's profile page.
@@ -208,7 +219,7 @@ router.get('/sources', (req, res) => {
   }
 });
 
-router.get('/user/:id/sources', async (req, res) => {
+router.get('/user/data/:id/sources', async (req, res) => {
   // We should get all sources and then get a user's preferred sources and return
   // those objects in the JSON response.
   // const result = await findSourcesForUser("test@test.com");

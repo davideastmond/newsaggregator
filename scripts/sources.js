@@ -2,7 +2,7 @@ import { checkBoxSource } from './partials/source-checkbox-item.js';
 let masterList;
 $(async () => {
   // Test get sources
-  const { data } = await axios.get('/user/user/sources');
+  const { data } = await axios.get('/user/data/user/sources');
   const { allSources, userSources } = data;
   console.log(allSources);
   console.log(userSources);
