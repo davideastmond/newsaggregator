@@ -1,8 +1,9 @@
+/* eslint-disable max-len */
 export const checkBoxSource = ({
   cbValue,
   cbId,
   cbLabel,
-  cbChecked
+  cbChecked,
 }) => `
       <div class="form-check">
         <input class="form-check-input" type="checkbox" value=${cbValue} id=${cbId} ${cbChecked}>
@@ -10,4 +11,4 @@ export const checkBoxSource = ({
           ${cbLabel}
         </label>
       </div>
-`
+`;

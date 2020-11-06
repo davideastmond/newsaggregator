@@ -2,7 +2,7 @@ const dbConnectString = require('../../knexfile');
 const knex = require('knex')(dbConnectString.development);
 const crypto = require('../crypto/crypto');
 const helperFunctions = require('../helper/helper');
-const { insertDefaultNewsSourceRecordByEmail } = require('../mongo/crud')
+const { insertDefaultNewsSourceRecordByEmail } = require('../mongo/crud');
 module.exports = {
 
   /** Registers the user into the system.
@@ -19,42 +19,42 @@ module.exports = {
   registerUser: async (registrationData) => {
     // First check to see if password meets security requirements
     if (!helperFunctions
-      .passwordMeetsSecurityRequirements({
-        first: registrationData.first_password,
-        second: registrationData.second_password
-      })) {
+        .passwordMeetsSecurityRequirements({
+          first: registrationData.first_password,
+          second: registrationData.second_password,
+        })) {
       return Promise.reject(new Error('Password does not meet security requirements'));
     }
 
     try {
       const hashedPassword = await crypto
-        .hashPassword((registrationData.first_password));
+          .hashPassword((registrationData.first_password));
       const result = await knex('user')
-        .insert({
-          email: registrationData.email,
-          password: hashedPassword,
-          is_registered: true,
-          has_chosen_topics: false
-        })
-        .returning(['id', 'email', 'is_registered', 'has_chosen_topics']);
+          .insert({
+            email: registrationData.email,
+            password: hashedPassword,
+            is_registered: true,
+            has_chosen_topics: false,
+          })
+          .returning(['id', 'email', 'is_registered', 'has_chosen_topics']);
 
       const newsSourceRecord = await insertDefaultNewsSourceRecordByEmail(registrationData.email);
-      console.log(newsSourceRecord)
+      console.log(newsSourceRecord);
       return Promise.resolve({
         response: result,
         message: 'successful insertion into database',
-        success: true
+        success: true,
       });
     } catch (error) {
       const displayMessage = error.detail
-        .split('(')
-        .join('')
-        .split(')')
-        .join('')
-        .split('email=')
-        .join('')
-        .split('Key')
-        .join('');
+          .split('(')
+          .join('')
+          .split(')')
+          .join('')
+          .split('email=')
+          .join('')
+          .split('Key')
+          .join('');
       return Promise.reject(new Error(`Please use a different email: ${displayMessage}`));
     }
   },
@@ -65,21 +65,21 @@ module.exports = {
    * @param {string} loginData.email
    * @return {Promise<{}>}
    */
-  verifyLogin: async function (loginData) {
+  verifyLogin: async function(loginData) {
     // Access the DB, verify user name, password and registration, return true or false
     try {
       const rows = await knex('user').where({ email: loginData.email });
       const res = await crypto
-        .compare({ password: loginData.password, hash: rows[0].password });
+          .compare({ password: loginData.password, hash: rows[0].password });
 
       if (res) {
         await knex('user')
-          .where({ email: loginData.email })
-          .update({ last_login: loginData.last_login });
+            .where({ email: loginData.email })
+            .update({ last_login: loginData.last_login });
         return Promise.resolve({
           email: loginData.email,
           success: true, response: `ok`,
-          has_chosen_topics: rows[0].has_chosen_topics, db_id: rows[0].id
+          has_chosen_topics: rows[0].has_chosen_topics, db_id: rows[0].id,
         });
       } else {
         // eslint-disable-next-line max-len
@@ -98,14 +98,14 @@ module.exports = {
    * @return {Promise<{}>} An user object from the database if successful
    * otherwise an error
    */
-  getUser: async function (loginData) {
+  getUser: async function(loginData) {
     try {
       const userObject = await knex('user')
-        .where({ email: loginData.email });
+          .where({ email: loginData.email });
 
       if (crypto.compare({
         password: loginData.password,
-        hash: userObject[0].password
+        hash: userObject[0].password,
       })) {
         return Promise.resolve(userObject[0]);
       } else {
@@ -124,9 +124,9 @@ module.exports = {
   getUserTopics: (userData) => {
     // Get all topics a user is subscribed to
     return knex.select('email', 'name').from('user as U')
-      .innerJoin('user_topic as UT', 'U.id', 'UT.user_id')
-      .innerJoin('topic as T', 'UT.topic_id', 'T.id')
-      .where('U.email', userData.email);
+        .innerJoin('user_topic as UT', 'U.id', 'UT.user_id')
+        .innerJoin('topic as T', 'UT.topic_id', 'T.id')
+        .where('U.email', userData.email);
   },
 
   /** Gets the bookmarks for a given user, performing join operations
@@ -137,11 +137,11 @@ module.exports = {
   getBookmarks: (userData) => {
     // Get all saved bookedmarks for a specific user
     return knex.select('email', 'url', 'headline',
-      'image_src', 'UA.id', 'UA.created_at')
-      .from('user as U')
-      .innerJoin('user_article as UA', 'U.id', 'UA.user_id')
-      .innerJoin('article as A', 'UA.article_id', 'A.id')
-      .where('U.email', userData.email);
+        'image_src', 'UA.id', 'UA.created_at')
+        .from('user as U')
+        .innerJoin('user_article as UA', 'U.id', 'UA.user_id')
+        .innerJoin('article as A', 'UA.article_id', 'A.id')
+        .where('U.email', userData.email);
   },
 
   /** Checks if the topics already exist in the DB. If not, add it.
@@ -163,7 +163,7 @@ module.exports = {
 
     const firstResult = await knex.select('id', 'name').from('topic');
     const insertList = createListOfTopicsToBeInsertedIntoDB(firstResult,
-      inputData.topicArray);
+        inputData.topicArray);
     if (insertList && insertList.length >= 1) {
       await insertNewTopicsIntoDB(insertList);
       await updateUserTopicTable(inputData);
@@ -172,8 +172,8 @@ module.exports = {
     }
 
     await knex('user').where({ id: inputData.database_id })
-      .update({ has_chosen_topics: true })
-      .returning(['id', 'email', 'has_chosen_topics']);
+        .update({ has_chosen_topics: true })
+        .returning(['id', 'email', 'has_chosen_topics']);
 
     return Promise.resolve(firstResult);
   },
@@ -188,28 +188,28 @@ module.exports = {
    */
   updateUserPassword: async (newData) => {
     const result = helperFunctions
-      .passwordMeetsSecurityRequirements({
-        first: newData.first_password,
-        second: newData.second_password
-      });
+        .passwordMeetsSecurityRequirements({
+          first: newData.first_password,
+          second: newData.second_password,
+        });
 
     if (!result) {
       Promise.reject(new Error({
-        error: 'Password does not meet security requirements'
+        error: 'Password does not meet security requirements',
       }));
     }
 
     try {
       const hashedPassword = await helperFunctions
-        .hashPasswordAsync(newData.first_password);
+          .hashPasswordAsync(newData.first_password);
       const result = await knex('user').where({ email: newData.forUser })
-        .update({ password: hashedPassword })
-        .returning(['id', 'email', 'password']);
+          .update({ password: hashedPassword })
+          .returning(['id', 'email', 'password']);
       return Promise.resolve({ returning: result, message: 'ok ' });
     } catch (error) {
       return Promise.reject(new Error({
         error: error,
-        message: 'unable to update password in database'
+        message: 'unable to update password in database',
       }));
     }
   },
@@ -238,14 +238,14 @@ module.exports = {
     if (rows.length === 0) {
       try {
         const rows1 = await knex('article')
-          .insert({
-            url: updateData.url,
-            headline: updateData.headline,
-            image_src: updateData.thumbnail
-          })
-          .returning(['id']);
+            .insert({
+              url: updateData.url,
+              headline: updateData.headline,
+              image_src: updateData.thumbnail,
+            })
+            .returning(['id']);
         await knex('user_article')
-          .insert({ article_id: rows1[0].id, user_id: updateData.database_id });
+            .insert({ article_id: rows1[0].id, user_id: updateData.database_id });
         const resultingData = await getBookmarks({ email: updateData.user_id });
         return Promise.resolve({ response: resultingData });
       } catch (err) {
@@ -254,16 +254,16 @@ module.exports = {
     } else {
       try {
         const results = await knex('user_article')
-          .where({
-            user_id: updateData.database_id,
-            article_id: rows[0].id
-          });
+            .where({
+              user_id: updateData.database_id,
+              article_id: rows[0].id,
+            });
         if (results.length === 0) {
           await knex('user_article')
-            .insert({
-              article_id: rows[0].id,
-              user_id: updateData.database_id
-            });
+              .insert({
+                article_id: rows[0].id,
+                user_id: updateData.database_id,
+              });
           const resultingData = await getBookmarks({ email: updateData.user_id });
           return Promise.resolve({ response: resultingData });
         }
@@ -287,14 +287,14 @@ module.exports = {
         const targetArticleID = results1[0].id;
         await deleteUserArticleFavorite({
           article_id: targetArticleID,
-          user_id: articleUserData.user_id
+          user_id: articleUserData.user_id,
         });
         const resultingData = await getBookmarks({ email: articleUserData.email });
         return Promise.resolve({ result: resultingData });
       }
     } catch (err) {
       return Promise.reject(new Error({
-        error: 'unable to delete entry from the user_article table.'
+        error: 'unable to delete entry from the user_article table.',
       }));
     }
   },
@@ -372,8 +372,8 @@ function insertNewTopicsIntoDB(topicListArray) {
  */
 function insertTopic(stringTopic) {
   return knex('topic')
-    .returning(['id', 'name'])
-    .insert({ name: stringTopic });
+      .returning(['id', 'name'])
+      .insert({ name: stringTopic });
 }
 
 /**
@@ -386,9 +386,9 @@ function insertTopic(stringTopic) {
 async function updateUserTopicTable(userData) {
   const topicsFromDb = await knex.select().table('topic');
   await knex('user_topic')
-    .del()
-    .where('user_id', userData.database_id)
-    .returning(['user_id', 'topic_id']);
+      .del()
+      .where('user_id', userData.database_id)
+      .returning(['user_id', 'topic_id']);
 
   const insertQuery = userData.topicArray.map((el) => {
     const fnd = topicsFromDb.find((qElement) => {
@@ -396,7 +396,7 @@ async function updateUserTopicTable(userData) {
     });
     return insertUserTopic({
       user_id: userData.database_id,
-      topic_id: fnd.id
+      topic_id: fnd.id,
     });
   });
 
@@ -411,8 +411,8 @@ async function updateUserTopicTable(userData) {
  */
 function insertUserTopic(iData) {
   return knex('user_topic')
-    .returning(['user_id', 'topic_id'])
-    .insert({ user_id: iData.user_id, topic_id: iData.topic_id });
+      .returning(['user_id', 'topic_id'])
+      .insert({ user_id: iData.user_id, topic_id: iData.topic_id });
 }
 
 /**
@@ -422,7 +422,7 @@ function insertUserTopic(iData) {
  */
 function getArticleIDByURL(searchUrl) {
   return knex.select('id').from('article')
-    .where({ url: searchUrl });
+      .where({ url: searchUrl });
 }
 
 /**
@@ -434,8 +434,8 @@ function getArticleIDByURL(searchUrl) {
  */
 function deleteUserArticleFavorite(deleteInfo) {
   return knex('user_article').del()
-    .where({ article_id: deleteInfo.article_id })
-    .andWhere({ user_id: deleteInfo.user_id });
+      .where({ article_id: deleteInfo.article_id })
+      .andWhere({ user_id: deleteInfo.user_id });
 }
 
 /**
@@ -445,8 +445,8 @@ function deleteUserArticleFavorite(deleteInfo) {
  */
 function getBookmarks(userData) {
   return knex.select('email', 'url', 'headline',
-    'image_src', 'UA.id', 'UA.created_at').from('user as U')
-    .innerJoin('user_article as UA', 'U.id', 'UA.user_id')
-    .innerJoin('article as A', 'UA.article_id', 'A.id')
-    .where('U.email', userData.email);
+      'image_src', 'UA.id', 'UA.created_at').from('user as U')
+      .innerJoin('user_article as UA', 'U.id', 'UA.user_id')
+      .innerJoin('article as A', 'UA.article_id', 'A.id')
+      .where('U.email', userData.email);
 }

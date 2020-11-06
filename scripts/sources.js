@@ -1,18 +1,31 @@
 import { checkBoxSource } from './partials/source-checkbox-item.js';
-let masterList;
-$(async () => {
-  // Test get sources
-  const { data } = await axios.get('/user/data/user/sources');
-  const { allSources, userSources } = data;
-  console.log(allSources);
-  console.log(userSources);
+import { topicDropDownItem } from './partials/topic-dropdow-item.js';
+let masterSourcesList;
+let masterTopicsList;
 
-  loadNewsSourceList(allSources.sources);
-  masterList = allSources.sources;
+$(async () => {
+  let allSources;
+  // eslint-disable-next-line no-unused-vars
+  let userSources;
+  try {
+    const data = await getSourcesAndTopicsFromAPI(
+        ['/user/data/user/sources', '/user/data/user/topics']);
+
+    ({ allSources, userSources } = data[0].data);
+    masterSourcesList = allSources.sources;
+    masterTopicsList = data[1].data.topics;
+
+    console.log(masterSourcesList, masterTopicsList);
+    loadNewsSourceList(masterSourcesList);
+    loadTopicsIntoDropdown(masterTopicsList);
+  } catch (exception) {
+    console.log(exception);
+    window.location.href = '/';
+  }
 
   $('#sources-search-textbox-filter').on('keyup', () => {
     const filterString = $('#sources-search-textbox-filter').val().toLowerCase();
-    const filteredSourcesList = masterList.filter((source) => {
+    const filteredSourcesList = masterSourcesList.filter((source) => {
       return source.name.toLowerCase().includes(filterString);
     });
     loadNewsSourceList(filteredSourcesList);
@@ -29,6 +42,10 @@ $(async () => {
   $('#source-option-topic').on('click', (e) => {
     sourcesByTopicClicked();
   });
+
+  $('#topicsSelect').on('change', ()=> {
+    console.log('changed!');
+  });
 });
 
 /**
@@ -36,7 +53,7 @@ $(async () => {
  * @param {[{}]} sourceArray
  */
 function loadNewsSourceList(sourceArray) {
-  $('.ul-sources-list').empty();
+  // $('.ul-sources-list').empty();
   $('.ul-sources-list').html(sourceArray.map((source) => {
     return {
       cbValue: source.name,
@@ -45,6 +62,20 @@ function loadNewsSourceList(sourceArray) {
       cbChecked: null,
     };
   }).map(checkBoxSource).join(''));
+}
+
+/**
+ *
+ * @param {[{}]} topicArray array of topic objects ({email, name})
+ */
+function loadTopicsIntoDropdown(topicArray) {
+  $('#topicsSelect').empty();
+  $('#topicsSelect').html(topicArray.map((topic) => {
+    console.log(topic.name);
+    return {
+      topicItemCaption: topic.name,
+    };
+  }).map(topicDropDownItem).join(''));
 }
 
 /**
@@ -84,4 +115,13 @@ function sourcesByTopicClicked() {
   $('.search-text-container').addClass('half').removeClass('hide');
   $('.sources-list-back-ground').removeClass('hide').addClass('half');
   $('.topics-container').removeClass('hide').addClass('half');
+}
+
+/**
+ *  @param {[]} requests Array of requests
+ */
+async function getSourcesAndTopicsFromAPI(requests) {
+  return Promise.all(requests.map((request) => {
+    return axios.get(request);
+  }));
 }

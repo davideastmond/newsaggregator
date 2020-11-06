@@ -2,12 +2,10 @@
 <html lang="en">
 
 <head>
-
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <link rel="stylesheet" href="/../styles/newssources.css">
@@ -16,11 +14,9 @@
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="sources.js" type="module" async></script>
   <title>News Sources</title>
-
 </head>
 
 <body>
-
   <head>
     <% include ./partials/_login_header %>
   </head>
@@ -59,13 +55,11 @@
       </ul>
     </div>
     <div class="topics-container hide">
-      <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle pad-left" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-         Topics
-        </button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-          <a class="dropdown-item" href="#">No topics</a>
-        </div>
+      <div class="form-group field-padding">
+        <label for="topicsSelect" class="lead">Topic</label>
+        <select class="form-control" id="topicsSelect">
+          <option>No topics</option>
+        </select>
       </div>
     </div>
   </div>
