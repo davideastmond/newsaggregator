@@ -1,11 +1,12 @@
 const mongoose = require('mongoose');
-const recoverySchema = require('./schema/user-password-recovery-schema');
-const model = mongoose.model("user_recovery", recoverySchema.userPasswordRecovery, "user_recovery");
+const recoverySchema = require('./schema/password-recovery/user-password-recovery-schema');
+const recoveryModel = mongoose.model("user_recovery", recoverySchema.userPasswordRecovery, "user_recovery");
+const newsSourceModel = require('./schema/news-sources/news-sources-schema')
 const dayjs = require('dayjs');
 module.exports = {
   insertRecoveryRecordIntoDatabase: async (record) => {
     try {
-      const result = await model.create(record);
+      const result = await recoveryModel.create(record);
       return result;
     } catch (exception) {
       console.log(exception);
@@ -18,7 +19,7 @@ module.exports = {
  */
   passwordResetRequestAlreadyExists: async (emailAddress) => {
     try {
-      const result = await model.findOne({ email: emailAddress }).exec();
+      const result = await recoveryModel.findOne({ email: emailAddress }).exec();
       if (result) {
         // If the request is claimed return true
         if (result.claimed === true) {
@@ -41,7 +42,7 @@ module.exports = {
   */
   deleteExistingRequests: async (emailAddress) => {
     try {
-      return await model.deleteMany({ email: emailAddress })
+      return await recoveryModel.deleteMany({ email: emailAddress })
     } catch (exception) {
       console.log(exception);
     }
@@ -49,7 +50,7 @@ module.exports = {
 
   getRecordByEmail: async (emailAddress) => {
     try {
-      return await model.find({ email: emailAddress }).exec();
+      return await recoveryModel.find({ email: emailAddress }).exec();
     } catch (exception) {
       console.log(exception)
     }
@@ -57,7 +58,23 @@ module.exports = {
 
   getRecordByHash: async (hashValue) => {
     try {
-      return await model.findOne({ hash: hashValue }).exec();
+      return await recoveryModel.findOne({ hash: hashValue }).exec();
+    } catch (exception) {
+      console.log(exception)
+    }
+  },
+
+  insertDefaultNewsSourceRecordByEmail: async (emailAddress) => {
+    const defaultRecord = {
+      email: emailAddress
+    }
+    try {
+      const record = await newsSourceModel.findOne({ email: emailAddress });
+      if (!record) {
+        const result = await newsSourceModel.create(defaultRecord);
+        return result;
+      }
+      return record;
     } catch (exception) {
       console.log(exception)
     }
