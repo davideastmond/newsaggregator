@@ -1,4 +1,4 @@
-import { passwordSecurityValid, passwordsMatch } from "./password-security.js";
+import { passwordSecurityValid, passwordsMatch } from './password-security.js';
 document.getElementById('registration-form').onsubmit = (e) => {
   e.preventDefault();
 
@@ -19,9 +19,9 @@ document.getElementById('registration-form').onsubmit = (e) => {
   if (!passwordSecurityValid(passwordText1)) {
     $('#validation-error-space').css('display', 'block');
     $('#validation-error')
-      // eslint-disable-next-line max-len
-      .text('Password should be minimum 8 characters, contain upper and lower case characters, a special character and a number.')
-      .css({ 'display': 'block', 'color': 'red' });
+    // eslint-disable-next-line max-len
+        .text('Password should be minimum 8 characters, contain upper and lower case characters, a special character and a number.')
+        .css({ 'display': 'block', 'color': 'red' });
     $('#submit-form').attr('disabled', true);
     return;
   }
@@ -29,7 +29,7 @@ document.getElementById('registration-form').onsubmit = (e) => {
   if (!passwordsMatch(passwordText1, passwordText2)) {
     // Display an error, the password texts must match
     $('#validation-error')
-      .text('Please enter matching passwords').css('display', 'block');
+        .text('Please enter matching passwords').css('display', 'block');
     $('#submit-form').attr('disabled', false);
     return;
   }
@@ -47,8 +47,8 @@ document.getElementById('registration-form').onsubmit = (e) => {
     if (err) {
       $('#validation-error-space').css('display', 'block');
       $('#validation-error')
-        .text(err.responseJSON.error || 'Error registering account.')
-        .css('display', 'block').css('color', 'red');
+          .text(err.responseJSON.error || 'Error registering account.')
+          .css('display', 'block').css('color', 'red');
       $('#submit-form').attr('disabled', false);
     }
   });

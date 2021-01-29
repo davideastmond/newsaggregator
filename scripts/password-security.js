@@ -4,10 +4,6 @@
    * @return {boolean}
    */
 export function passwordSecurityValid(pwd) {
-  // Enforcement principles should be a js object
-  // { captialLetters: true or false }
-  // { specialCharacters: true or false }
-  // { numberRequired: true or false }
   const regEx = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{8,}$/;
   return regEx.test(pwd);
 }

@@ -37,7 +37,7 @@ module.exports = {
   },
 
   /**
-   * Synchornously hashes a password - mainly used for the db seeding
+   * Synchronously hashes a password - mainly used for the db seeding
    * @function
    * @param {string} rawPassword
    * @return {string} returns a hashed string
