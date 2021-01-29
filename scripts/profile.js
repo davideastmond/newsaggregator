@@ -1,4 +1,4 @@
-import { passwordSecurityValid, passwordsMatch } from "./password-security.js";
+import { passwordSecurityValid, passwordsMatch } from './password-security.js';
 $(() => {
   /**
    * This function is called when user updates one of their profile attributes.
@@ -25,17 +25,17 @@ $(() => {
     ajaxPromise.done(() => {
       showSuccessMessage('Password updated successfully.');
     })
-      .fail((data) => {
-        showErrorMessage(data.responseJSON.error);
-      });
+        .fail((data) => {
+          showErrorMessage(data.responseJSON.error);
+        });
   });
 
-  $("#change-password-box-one").click((e) => {
-    hideErrorMessage()
+  $('#change-password-box-one').click((e) => {
+    hideErrorMessage();
   });
-  $("#change-password-box-two").click((e) => {
-    hideErrorMessage()
-  })
+  $('#change-password-box-two').click((e) => {
+    hideErrorMessage();
+  });
 });
 
 /**
@@ -58,14 +58,17 @@ function submitPasswordChange() {
  */
 function showErrorMessage(message) {
   $('#change-password-error-message')
-    .text(`${message}`)
-    .css('display', 'block')
-    .css('color', 'red');
+      .text(`${message}`)
+      .css('display', 'block')
+      .css('color', 'red');
 }
 
+/**
+ * Auto hides the error message
+ */
 function hideErrorMessage() {
   $('#change-password-error-message')
-    .css('display', 'none')
+      .css('display', 'none');
 }
 /**
  * Displays a success message when password
@@ -74,14 +77,14 @@ function hideErrorMessage() {
  */
 function showSuccessMessage(message) {
   $('#change-password-success-message')
-    .text(`${message}`).css('display', 'block')
-    .css('color', 'green');
+      .text(`${message}`).css('display', 'block')
+      .css('color', 'green');
 }
 
 /**
  *
- * @param {string} first first instance of string password
- * @param {string} second second instance of string password
+ * @param {string} firstPasswordInstance first instance of string password
+ * @param {string} secondPasswordInstance second instance of string password
  * @return {object} object containing a bool and a string message response
  */
 function isPasswordValid(firstPasswordInstance, secondPasswordInstance) {
@@ -95,8 +98,9 @@ function isPasswordValid(firstPasswordInstance, secondPasswordInstance) {
   }
 
   if (!passwordSecurityValid(firstPasswordInstance)) {
-    return { result: false, message: 'Password does not meet security / complexity requirements' };
+    return { result: false,
+      message: 'Password does not meet security / complexity requirements' };
   }
 
-  return { result: true, message: "OK" };
+  return { result: true, message: 'OK' };
 }

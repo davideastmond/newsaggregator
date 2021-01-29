@@ -1,6 +1,7 @@
+/* eslint-disable max-len */
 const mongoose = require('mongoose');
 const recoverySchema = require('./schema/user-password-recovery-schema');
-const model = mongoose.model("user_recovery", recoverySchema.userPasswordRecovery, "user_recovery");
+const model = mongoose.model('user_recovery', recoverySchema.userPasswordRecovery, 'user_recovery');
 const dayjs = require('dayjs');
 module.exports = {
   insertRecoveryRecordIntoDatabase: async (record) => {
@@ -14,7 +15,7 @@ module.exports = {
 
   /**
  * Hits the mongodb and verifies if a request has already been registered
- * @param {string} emailAddress 
+ * @param {string} emailAddress
  */
   passwordResetRequestAlreadyExists: async (emailAddress) => {
     try {
@@ -22,26 +23,27 @@ module.exports = {
       if (result) {
         // If the request is claimed return true
         if (result.claimed === true) {
-          return { result: true, message: "Recovery request has already been claimed." }
+          return { result: true, message: 'Recovery request has already been claimed.' };
         }
         // If the request is not expired, return true
         const isValid = dayjs().isBefore(result.expiryDate);
         if (isValid) {
-          return { result: true, message: "Recovery request already exists" };
+          return { result: true, message: 'Recovery request already exists' };
         }
       }
-      return { result: false, message: "No request exists. OK to go" };
+      return { result: false, message: 'No request exists. OK to go' };
     } catch (exception) {
       console.log(exception);
     }
   },
 
-  /**  
-   * Deletes all requests for a given e-mail address
-  */
+  /**
+   * Deletes requests for given e-mail address
+   * @param {string} emailAddress user e-mail address
+   */
   deleteExistingRequests: async (emailAddress) => {
     try {
-      return await model.deleteMany({ email: emailAddress })
+      return await model.deleteMany({ email: emailAddress });
     } catch (exception) {
       console.log(exception);
     }
@@ -51,7 +53,7 @@ module.exports = {
     try {
       return await model.find({ email: emailAddress }).exec();
     } catch (exception) {
-      console.log(exception)
+      console.log(exception);
     }
   },
 
@@ -59,7 +61,7 @@ module.exports = {
     try {
       return await model.findOne({ hash: hashValue }).exec();
     } catch (exception) {
-      console.log(exception)
+      console.log(exception);
     }
-  }
-}
+  },
+};

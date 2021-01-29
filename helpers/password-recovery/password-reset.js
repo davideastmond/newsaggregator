@@ -5,7 +5,6 @@ const crypto = require('../crypto/crypto');
 const assert = require('assert');
 const dayjs = require('dayjs');
 const db = require('../db/db');
-const e = require('express');
 
 module.exports = {
   initiate: async (emailAddress) => {
@@ -16,8 +15,8 @@ module.exports = {
       // Create a password recovery document / record for MongoDB
       const recoveryObject = {
         email: emailAddress,
-        hash: hash
-      }
+        hash: hash,
+      };
 
       // Send a recovery email
       const result = await sendPasswordResetEmail(emailAddress, hash);
@@ -25,15 +24,15 @@ module.exports = {
       if (result) {
         // Insert into mongo
         await crud.insertRecoveryRecordIntoDatabase(recoveryObject);
-        return { success: true, message: result }
-
+        return { success: true, message: result };
       } else {
-        console.log("Line 28 Problem sending e-mail")
-        return { success: false, message: "There was a problem sending recovery e-mail." }
+        console.log('Line 28 Problem sending e-mail');
+        return { success: false,
+          message: 'There was a problem sending recovery e-mail.' };
       }
-
     } else {
-      return { success: false, message: `Request for ${emailAddress}: ${doesExist.message}` }; // Not successful
+      return { success: false,
+        message: `Request for ${emailAddress}: ${doesExist.message}` }; // Not successful
     }
   },
 
@@ -41,19 +40,21 @@ module.exports = {
     try {
       const record = await crud.getRecordByHash(hash);
       if (record) {
-        const isHashVerified = await verifyHashedEmail(record, hashedEmail)
+        const isHashVerified = await verifyHashedEmail(record, hashedEmail);
         if (isHashVerified === true) {
           // Make sure it's not expired
           return isRequestWithinExpiryDate(record) ?
-            { success: true, message: "Request is valid." } : { success: false, message: "Request expired. Please try completing a new request." }
+            { success: true, message: 'Request is valid.' } :
+            { success: false,
+              message: 'Request expired. Please try completing a new request.' };
         } else {
-          return { success: false, message: "Unable to verify hash." }
+          return { success: false, message: 'Unable to verify hash.' };
         }
       } else {
-        return { success: false, message: "Database returned no result." }
+        return { success: false, message: 'Database returned no result.' };
       }
     } catch (exception) {
-      console.log(exception)
+      console.log(exception);
     }
   },
 
@@ -73,8 +74,8 @@ module.exports = {
         const updatePackage = {
           forUser: record.email,
           first_password: data.passwordText1,
-          second_password: data.passwordText1
-        }
+          second_password: data.passwordText1,
+        };
 
         try {
           await db.updateUserPassword(updatePackage);
@@ -85,19 +86,27 @@ module.exports = {
           console.log(exception);
         }
       } else {
-        return Promise.reject("Request is already claimed")
+        return new Error('Request is already claimed');
       }
     } else {
-      return Promise.reject("Record not found");
+      return new Error('Record not found');
     }
-  }
-}
+  },
+};
 
+/**
+ * @param {*} record
+ * @param {*} hashedEmailValue
+ */
 async function verifyHashedEmail(record, hashedEmailValue) {
-  assert(record.email, "E-mail field doesn't exist on record.");
+  assert(record.email, 'E-mail field doesn\'t exist on record.');
   return await crypto.genericCompare(record.email, hashedEmailValue);
 }
 
+/**
+ * @param {{}} record document from mongoDb
+ * @return {boolean}
+ */
 function isRequestWithinExpiryDate(record) {
   const requestStillValid = dayjs().isBefore(record.expiryDate);
   return requestStillValid;

@@ -29,6 +29,6 @@ module.exports = {
   },
 
   genericCompare: async (originalData, hash) => {
-    return await bcrypt.compare(originalData, hash)
-  }
+    return await bcrypt.compare(originalData, hash);
+  },
 };
