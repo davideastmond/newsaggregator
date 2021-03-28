@@ -1,6 +1,5 @@
 // Update with your config settings.
 require('dotenv').config();
-console.log(process.env.DB_USER)
 module.exports = {
   client: 'pg',
   pool: {
