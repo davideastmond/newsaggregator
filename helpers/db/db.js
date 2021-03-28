@@ -1,5 +1,5 @@
 const dbConnectString = require('../../knexfile');
-const knex = require('knex')(dbConnectString.development);
+const knex = require('knex')(dbConnectString);
 const crypto = require('../crypto/crypto');
 const helperFunctions = require('../helper/helper');
 
